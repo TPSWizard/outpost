@@ -17,6 +17,12 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import com.conza.outpost.data.InventoryItem
+import com.conza.outpost.data.MapMarker
+import com.conza.outpost.data.Note
+import com.conza.outpost.griddown.AssistantTools
+import com.conza.outpost.griddown.ProposedAction
+import com.conza.outpost.griddown.WaterDisinfection
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AssistantViewModel(app: Application) : AndroidViewModel(app) {
@@ -40,8 +46,13 @@ class AssistantViewModel(app: Application) : AndroidViewModel(app) {
     val indexStatus = c.index.status
     val crashNote = MutableStateFlow(c.llm.consumeCrashNote())
 
+    val answerMode = MutableStateFlow(settings.answerMode)
+    val pdfStatus = c.index.pdfStatus
+    val firstAid get() = c.gridDown.firstAid
+
     init {
         refresh()
+        c.syncPdfIndex()
         // Resume the most recent chat.
         viewModelScope.launch { if (sessionId.value == null) sessionId.value = c.db.chats().observeSessions().first().firstOrNull()?.id }
     }
@@ -66,6 +77,46 @@ class AssistantViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun setUseSources(v: Boolean) { settings.useSources = v; useSources.value = v }
+
+    fun setAnswerMode(mode: String) { settings.answerMode = mode; answerMode.value = mode }
+
+    /** The Assistant screen is visible (true) or was left (false). Survival mode frees the model's memory on leave. */
+    fun setVisible(v: Boolean) {
+        assistant.assistantVisible = v
+        if (!v && settings.survivalMode && !assistant.busy) c.appScope.launch { runCatching { c.llm.unloadAll() } }
+    }
+
+    /** Runs a proposed action after the user taps Confirm (or records a dismissal). */
+    fun resolveAction(m: ChatMessage, index: Int, confirm: Boolean) = viewModelScope.launch {
+        val states = AssistantTools.decodeStates(m.actionState).toMutableList()
+        val st = states.getOrNull(index) ?: return@launch
+        if (st.status != "proposed") return@launch
+        states[index] = if (!confirm) st.copy(status = "dismissed") else runCatching { st.copy(status = "done", result = perform(st.action)) }
+            .getOrElse { st.copy(status = "failed", result = it.message) }
+        c.db.chats().updateActionState(m.id, AssistantTools.encodeStates(states))
+    }
+
+    private suspend fun perform(a: ProposedAction): String = when (a) {
+        is ProposedAction.AddSupply -> {
+            c.db.inventory().upsert(InventoryItem(category = a.category, name = a.name, quantity = a.quantity, unit = a.unit,
+                litersPerUnit = a.litersPerUnit, caloriesPerUnit = a.caloriesPerUnit))
+            "Added to Supplies."
+        }
+        is ProposedAction.WaterDose -> {
+            val d = WaterDisinfection.bleachDose(a.liters, a.bleachPercent, a.cloudy)
+            "Add ${d.friendly} of ${ProposedAction.fmt(a.bleachPercent)}% bleach (%.2f mL), stir, wait ${d.waitMinutes} min. Calculated by Outpost (EPA method), not the AI.".format(d.milliliters)
+        }
+        is ProposedAction.Checklist -> {
+            val note = Note(title = a.title, body = a.items.joinToString("\n") { "- [ ] $it" })
+            val id = c.db.notes().upsert(note)
+            runCatching { c.index.indexNote(note.copy(id = id)) }
+            "Saved to Notes."
+        }
+        is ProposedAction.MapPin -> {
+            c.db.markers().upsert(MapMarker(name = a.name, lat = a.lat, lon = a.lon))
+            "Pin added to the map."
+        }
+    }
 
     fun pickModel(id: String) {
         settings.chatModelId = id

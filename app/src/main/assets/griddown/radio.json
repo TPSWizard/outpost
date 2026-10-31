@@ -1,0 +1,88 @@
+{
+  "version": "2026-10",
+  "note": "Listen to anything. Transmit only where your license allows; in a real emergency, FCC rules (for example 47 CFR 97.403 for amateur radio) allow any means of radio communication to call for help when life or property is in immediate danger.",
+  "groups": [
+    {
+      "name": "FRS / GMRS (blister-pack walkie-talkies)",
+      "license": "FRS: none (2 W, 0.5 W on 8–14). GMRS: FCC license, no exam, covers your family (up to 5 W on 1–7, 50 W on 15–22).",
+      "channels": [
+        {"ch": "1", "mhz": "462.5625"}, {"ch": "2", "mhz": "462.5875"}, {"ch": "3", "mhz": "462.6125"}, {"ch": "4", "mhz": "462.6375"},
+        {"ch": "5", "mhz": "462.6625"}, {"ch": "6", "mhz": "462.6875"}, {"ch": "7", "mhz": "462.7125"},
+        {"ch": "8", "mhz": "467.5625"}, {"ch": "9", "mhz": "467.5875"}, {"ch": "10", "mhz": "467.6125"}, {"ch": "11", "mhz": "467.6375"},
+        {"ch": "12", "mhz": "467.6625"}, {"ch": "13", "mhz": "467.6875"}, {"ch": "14", "mhz": "467.7125"},
+        {"ch": "15", "mhz": "462.5500"}, {"ch": "16", "mhz": "462.5750"}, {"ch": "17", "mhz": "462.6000"}, {"ch": "18", "mhz": "462.6250"},
+        {"ch": "19", "mhz": "462.6500"}, {"ch": "20", "mhz": "462.6750", "use": "Widely used GMRS emergency/travel channel (often with 141.3 Hz tone)"},
+        {"ch": "21", "mhz": "462.7000"}, {"ch": "22", "mhz": "462.7250"}
+      ]
+    },
+    {
+      "name": "MURS (license-free VHF, 2 W)",
+      "license": "None. Better range than FRS outdoors.",
+      "channels": [
+        {"ch": "1", "mhz": "151.820"}, {"ch": "2", "mhz": "151.880"}, {"ch": "3", "mhz": "151.940"},
+        {"ch": "4", "mhz": "154.570", "use": "Blue Dot"}, {"ch": "5", "mhz": "154.600", "use": "Green Dot"}
+      ]
+    },
+    {
+      "name": "CB (11 m, 4 W AM)",
+      "license": "None.",
+      "channels": [
+        {"ch": "9", "mhz": "27.065", "use": "Emergency and traveler assistance"},
+        {"ch": "19", "mhz": "27.185", "use": "Highway / truckers: road conditions"}
+      ]
+    },
+    {
+      "name": "NOAA Weather Radio (listen only)",
+      "license": "Receive only. Continuous forecasts and alerts; find your local transmitter's frequency by scanning.",
+      "channels": [
+        {"ch": "WX1", "mhz": "162.550"}, {"ch": "WX2", "mhz": "162.400"}, {"ch": "WX3", "mhz": "162.475"}, {"ch": "WX4", "mhz": "162.425"},
+        {"ch": "WX5", "mhz": "162.450"}, {"ch": "WX6", "mhz": "162.500"}, {"ch": "WX7", "mhz": "162.525"}
+      ]
+    },
+    {
+      "name": "Marine VHF",
+      "license": "For use on the water. Listening on land is fine.",
+      "channels": [
+        {"ch": "16", "mhz": "156.800", "use": "Distress, safety, and calling"},
+        {"ch": "9", "mhz": "156.450", "use": "Recreational boater calling"},
+        {"ch": "22A", "mhz": "157.100", "use": "U.S. Coast Guard liaison"}
+      ]
+    },
+    {
+      "name": "Amateur (ham) radio",
+      "license": "Transmitting needs an FCC amateur license (Technician exam: 35 questions). Study pool in Content → Field manuals → Grid-down essentials.",
+      "channels": [
+        {"ch": "2 m calling", "mhz": "146.520", "use": "National FM simplex calling frequency"},
+        {"ch": "70 cm calling", "mhz": "446.000", "use": "FM simplex calling"},
+        {"ch": "6 m calling", "mhz": "52.525", "use": "FM simplex calling"},
+        {"ch": "HWN", "mhz": "14.325", "use": "Hurricane Watch Net (USB, active during hurricanes; 7.268 LSB at night)"},
+        {"ch": "MMSN", "mhz": "14.300", "use": "Maritime Mobile Service Net (USB)"},
+        {"ch": "Local", "mhz": "", "use": "Find your county ARES/RACES net and repeaters before the outage (ask a local ham club)"}
+      ]
+    },
+    {
+      "name": "Time & propagation (shortwave, listen only)",
+      "license": "Receive only.",
+      "channels": [
+        {"ch": "WWV", "mhz": "2.5 / 5 / 10 / 15 / 20 / 25", "use": "NIST time signal, Fort Collins CO; space weather at :18 past each hour"},
+        {"ch": "WWVH", "mhz": "2.5 / 5 / 10 / 15", "use": "NIST time signal, Hawaii; space weather at :45"},
+        {"ch": "CHU", "mhz": "3.330 / 7.850 / 14.670", "use": "Canadian time signal"}
+      ]
+    },
+    {
+      "name": "Aviation (listen only)",
+      "license": "Receive only.",
+      "channels": [
+        {"ch": "Guard", "mhz": "121.500", "use": "Aircraft emergency"}
+      ]
+    }
+  ],
+  "schedule": [
+    {"time": "Every hour, :00–:05", "channel": "GMRS 20 / MURS 1 / 146.520", "text": "Family & neighborhood check-in window (agree on this with your group in advance)"},
+    {"time": "Morning and evening", "channel": "NOAA Weather Radio", "text": "Forecast and alerts"},
+    {"time": "Top of the hour", "channel": "Local AM news station", "text": "News and official announcements (write your station here)"},
+    {"time": "As needed", "channel": "WWV 10 MHz", "text": "Set clocks; space-weather report at :18"},
+    {"time": "Evenings", "channel": "Shortwave 5.9–15.8 MHz bands", "text": "International broadcasters for outside news (scan; schedules change by season)"},
+    {"time": "Local net night", "channel": "Your ARES/RACES net", "text": "Write the day, time, and frequency here"}
+  ]
+}

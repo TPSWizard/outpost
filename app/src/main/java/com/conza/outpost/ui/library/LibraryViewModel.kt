@@ -95,6 +95,7 @@ class LibraryViewModel(app: Application) : AndroidViewModel(app) {
             .sortedBy { it.name.lowercase() }
         _pdfTitles.value = app().container.db.installed().byKind(com.conza.outpost.catalog.ResourceKind.DOC.name)
             .associate { java.io.File(it.filePath).name to it.title }
+        app().container.syncPdfIndex()
     }
 
     private fun app() = getApplication<Application>()

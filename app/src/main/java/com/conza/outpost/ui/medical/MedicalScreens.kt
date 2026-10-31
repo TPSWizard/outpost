@@ -78,7 +78,8 @@ class MedicalNav(
 private const val DISCLAIMER = "Reference information from FDA labels, CDC and NIH. Not a substitute for a doctor or pharmacist."
 
 @Composable
-fun MedicalHome(nav: MedicalNav, vm: MedicalViewModel = viewModel()) {
+fun MedicalHome(nav: MedicalNav, initialQuery: String? = null, vm: MedicalViewModel = viewModel()) {
+    androidx.compose.runtime.LaunchedEffect(initialQuery) { if (!initialQuery.isNullOrBlank()) vm.query.value = initialQuery }
     var tab by rememberSaveable { mutableIntStateOf(0) }
     val selected by vm.selected.collectAsStateWithLifecycle()
     Scaffold(

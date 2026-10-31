@@ -1,0 +1,510 @@
+{
+ "version": "2026-10-31",
+ "tasks": [
+  {
+   "id": "w-fill",
+   "category": "WATER",
+   "phases": [
+    1
+   ],
+   "frequency": "once",
+   "text": "Fill every clean container, tub, and pot with water while taps still work",
+   "detail": "Water pressure often fails in the first days. Bathtubs, pots, bottles, and jugs all count."
+  },
+  {
+   "id": "w-heater",
+   "category": "WATER",
+   "phases": [
+    1
+   ],
+   "frequency": "once",
+   "text": "Shut off the water heater's power/gas and note it holds 30–80 gallons of drinkable water",
+   "detail": "Drain from the valve at the bottom into a clean container. Let sediment settle."
+  },
+  {
+   "id": "w-ration",
+   "category": "WATER",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Check water days-left on the Supplies screen",
+   "detail": "Each person needs about 1 gallon (3.8 L) a day; double it in heat."
+  },
+  {
+   "id": "w-treat",
+   "category": "WATER",
+   "phases": [
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Treat any water that isn't from sealed bottles",
+   "detail": "Boil 1 minute (3 above 6,500 ft) or use bleach. See Calculators."
+  },
+  {
+   "id": "w-collect",
+   "category": "WATER",
+   "phases": [
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Set out clean containers or tarps to catch rain",
+   "detail": "Treat rainwater before drinking."
+  },
+  {
+   "id": "w-source",
+   "category": "WATER",
+   "phases": [
+    3
+   ],
+   "frequency": "once",
+   "text": "Find and pin a backup water source on the map",
+   "detail": "Creek, pond, spring, or a neighbor's well. Pin it so everyone knows."
+  },
+  {
+   "id": "w-filter",
+   "category": "WATER",
+   "phases": [
+    3,
+    4
+   ],
+   "frequency": "once",
+   "text": "Clean or backflush your water filter",
+   "detail": "A clogged filter wastes effort and can let germs through."
+  },
+  {
+   "id": "f-fridge",
+   "category": "FOOD",
+   "phases": [
+    1
+   ],
+   "frequency": "daily",
+   "text": "Eat food from the fridge first, then the freezer, then pantry",
+   "detail": "Fridge food is safe about 4 hours without power; a full freezer about 48. See Calculators."
+  },
+  {
+   "id": "f-inventory",
+   "category": "FOOD",
+   "phases": [
+    1
+   ],
+   "frequency": "once",
+   "text": "Count your food and enter it in Supplies with calories",
+   "detail": "Calories are on the label: multiply calories per serving by servings."
+  },
+  {
+   "id": "f-meals",
+   "category": "FOOD",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Plan today's meals from what spoils soonest",
+   "detail": ""
+  },
+  {
+   "id": "f-cook",
+   "category": "FOOD",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Cook outdoors only (grill, camp stove)",
+   "detail": "Never use a grill, camp stove, or generator indoors, in a garage, or near windows: carbon monoxide kills."
+  },
+  {
+   "id": "f-garden",
+   "category": "FOOD",
+   "phases": [
+    3,
+    4
+   ],
+   "frequency": "once",
+   "text": "Tend a garden or sprouts if you can",
+   "detail": "Even sprouted beans or lentils add fresh food in a week."
+  },
+  {
+   "id": "f-preserve",
+   "category": "FOOD",
+   "phases": [
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Preserve extra food (drying, salting, canning)",
+   "detail": "See the USDA canning guide in Field manuals before canning low-acid foods."
+  },
+  {
+   "id": "f-pets",
+   "category": "FOOD",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Feed and water the pets",
+   "detail": "Pets need water too; it's included in your water estimate.",
+   "requires": "pets"
+  },
+  {
+   "id": "h-meds",
+   "category": "HEALTH",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Give medications on schedule and update counts",
+   "detail": "Check the medication runway in Supplies.",
+   "requires": "meds"
+  },
+  {
+   "id": "h-firstaid",
+   "category": "HEALTH",
+   "phases": [
+    1
+   ],
+   "frequency": "once",
+   "text": "Gather first-aid supplies into one kit everyone knows",
+   "detail": "Tourniquet, gauze, tape, gloves, pain relievers, any prescriptions."
+  },
+  {
+   "id": "h-hygiene",
+   "category": "HEALTH",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Wash hands with soap before food and after the toilet",
+   "detail": "Most outage illnesses spread from hands to food."
+  },
+  {
+   "id": "h-toilet",
+   "category": "HEALTH",
+   "phases": [
+    1,
+    2
+   ],
+   "frequency": "once",
+   "text": "Set up a bucket toilet if water stops",
+   "detail": "Line a bucket with two bags; add sawdust, soil, or cat litter after each use. Bury or bag waste away from water."
+  },
+  {
+   "id": "h-check",
+   "category": "HEALTH",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Check everyone for injuries, rashes, fever, or low mood",
+   "detail": ""
+  },
+  {
+   "id": "h-heat",
+   "category": "HEALTH",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Hot day? Rest in the shade midday and drink before you're thirsty",
+   "detail": "",
+   "requires": "hot"
+  },
+  {
+   "id": "h-cold",
+   "category": "HEALTH",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Cold? Gather everyone into one small room and dress in layers",
+   "detail": "Never use outdoor heaters, grills, or generators indoors.",
+   "requires": "cold"
+  },
+  {
+   "id": "h-infant",
+   "category": "HEALTH",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Check formula, diapers, and the baby's wet diapers (6+ a day)",
+   "detail": "",
+   "requires": "infant"
+  },
+  {
+   "id": "h-sleep",
+   "category": "HEALTH",
+   "phases": [
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Keep a sleep schedule; take turns resting",
+   "detail": ""
+  },
+  {
+   "id": "s-co",
+   "category": "SECURITY",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Check that generators and grills are outside, 20+ ft from doors and windows",
+   "detail": "Carbon monoxide has no smell. Headache, dizziness, and nausea in several people means get to fresh air now."
+  },
+  {
+   "id": "s-lock",
+   "category": "SECURITY",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Lock doors and windows at dusk; agree who checks",
+   "detail": ""
+  },
+  {
+   "id": "s-light",
+   "category": "SECURITY",
+   "phases": [
+    1,
+    2
+   ],
+   "frequency": "daily",
+   "text": "Keep flashlights within reach; avoid candles",
+   "detail": "Candles cause many outage house fires."
+  },
+  {
+   "id": "s-fire",
+   "category": "SECURITY",
+   "phases": [
+    1
+   ],
+   "frequency": "once",
+   "text": "Locate fire extinguishers and agree on a fire escape plan",
+   "detail": "Two ways out of every room; a meeting spot outside."
+  },
+  {
+   "id": "s-quiet",
+   "category": "SECURITY",
+   "phases": [
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Keep a low profile: don't advertise supplies or lights at night",
+   "detail": ""
+  },
+  {
+   "id": "s-neighbors",
+   "category": "SECURITY",
+   "phases": [
+    2,
+    3
+   ],
+   "frequency": "once",
+   "text": "Check on trusted neighbors; agree on a signal for help",
+   "detail": "A neighborhood watch rota covers more ground with less sleep lost."
+  },
+  {
+   "id": "s-pins",
+   "category": "SECURITY",
+   "phases": [
+    1
+   ],
+   "frequency": "once",
+   "text": "Pin your rally points and safe places on the map",
+   "detail": "Home, a backup meeting place, nearest clinic, water source."
+  },
+  {
+   "id": "c-plan",
+   "category": "COMMS",
+   "phases": [
+    1
+   ],
+   "frequency": "once",
+   "text": "Fill in the family plan (contacts, rally points) and print the card",
+   "detail": "Toolkit → Print cards. Paper works when phones die."
+  },
+  {
+   "id": "c-radio",
+   "category": "COMMS",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Listen for news on AM/NOAA weather radio at your scheduled times",
+   "detail": "See Radio for frequencies and your listening schedule."
+  },
+  {
+   "id": "c-checkin",
+   "category": "COMMS",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Family check-in at an agreed time",
+   "detail": "Use Family mesh between phones, or radios."
+  },
+  {
+   "id": "c-battery",
+   "category": "COMMS",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Charge phones and radios while the sun is strongest",
+   "detail": "See Power for today's charging plan."
+  },
+  {
+   "id": "c-airplane",
+   "category": "COMMS",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Keep phones in airplane mode unless you're using them",
+   "detail": "With no cell signal, phones waste battery searching for towers."
+  },
+  {
+   "id": "c-log",
+   "category": "COMMS",
+   "phases": [
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Write down any news you hear in the radio log",
+   "detail": "Note time, station, and what was said."
+  },
+  {
+   "id": "m-routine",
+   "category": "MORALE",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Keep a simple routine: wake, meals, chores, bedtime",
+   "detail": ""
+  },
+  {
+   "id": "m-talk",
+   "category": "MORALE",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Spend time together: talk about the day and what went well",
+   "detail": ""
+  },
+  {
+   "id": "m-kids",
+   "category": "MORALE",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Give kids a job and some play time",
+   "detail": "Jobs help children feel useful and safe."
+  },
+  {
+   "id": "m-read",
+   "category": "MORALE",
+   "phases": [
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Read, play a game, or learn something from the Library",
+   "detail": ""
+  },
+  {
+   "id": "m-outside",
+   "category": "MORALE",
+   "phases": [
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Get some daylight and movement",
+   "detail": ""
+  },
+  {
+   "id": "m-journal",
+   "category": "MORALE",
+   "phases": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "frequency": "daily",
+   "text": "Write a short note about today",
+   "detail": "Notes → new note. Helps memory and morale."
+  }
+ ]
+}

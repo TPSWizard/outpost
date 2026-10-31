@@ -71,6 +71,9 @@ import com.conza.outpost.ai.Readiness
 import com.conza.outpost.ai.Source
 import com.conza.outpost.ai.Sources
 import com.conza.outpost.data.ChatMessage
+import com.conza.outpost.griddown.AnswerPolicy
+import com.conza.outpost.griddown.AssistantTools
+import androidx.compose.runtime.DisposableEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,8 +81,13 @@ fun AssistantScreen(
     onOpenSource: (Source) -> Unit,
     onGetModels: () -> Unit,
     onSettings: () -> Unit,
+    onRoute: (AnswerPolicy.Route) -> Unit = {},
     vm: AssistantViewModel = viewModel(),
 ) {
+    DisposableEffect(Unit) { vm.setVisible(true); onDispose { vm.setVisible(false) } }
+    val answerMode by vm.answerMode.collectAsStateWithLifecycle()
+    val pdfStatus by vm.pdfStatus.collectAsStateWithLifecycle()
+    val firstAid = remember { runCatching { vm.firstAid }.getOrNull() }
     val messages by vm.messages.collectAsStateWithLifecycle()
     val sessions by vm.sessions.collectAsStateWithLifecycle()
     val sid by vm.sessionId.collectAsStateWithLifecycle()
@@ -155,15 +163,28 @@ fun AssistantScreen(
 
             LazyColumn(Modifier.weight(1f).fillMaxWidth(), state = list, contentPadding = PaddingValues(12.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 if (messages.isEmpty() && readiness !is Readiness.NeedsModel) item { Intro(onPick = { input = it }) }
-                items(messages, key = { it.id }) { m -> MessageBubble(m, gen?.takeIf { it.messageId == m.id }, onOpenSource) }
+                items(messages, key = { it.id }) { m ->
+                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        if (m.role == "user") {
+                            val routes = remember(m.content) { AnswerPolicy.route(m.content, firstAid) }
+                            routes.forEach { r -> RouteCard(r, firstAid) { onRoute(r) } }
+                        }
+                        MessageBubble(m, gen?.takeIf { it.messageId == m.id }, onOpenSource, onAction = { i, ok -> vm.resolveAction(m, i, ok) })
+                    }
+                }
             }
 
+            pdfStatus?.let { Text(it, style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(horizontal = 16.dp), color = MaterialTheme.colorScheme.onSurfaceVariant) }
             if (index.running && index.pending > 0) {
                 Text("Indexing notes for search… ${index.pending} passages left", style = MaterialTheme.typography.labelSmall,
                     modifier = Modifier.padding(horizontal = 16.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             Row(Modifier.padding(horizontal = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-                FilterChip(useSources, { vm.setUseSources(!useSources) }, label = { Text("Use my library & notes") })
+                FilterChip(useSources, { vm.setUseSources(!useSources) }, label = { Text("My library") })
+                Spacer(Modifier.width(6.dp))
+                FilterChip(answerMode != "explain", { vm.setAnswerMode("short") }, label = { Text("Short") })
+                Spacer(Modifier.width(6.dp))
+                FilterChip(answerMode == "explain", { vm.setAnswerMode("explain") }, label = { Text("Explain") })
                 Spacer(Modifier.weight(1f))
                 gen?.tokensPerSecond?.let { Text("%.1f tok/s".format(it), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
             }
@@ -228,7 +249,27 @@ private fun Intro(onPick: (String) -> Unit) {
 }
 
 @Composable
-private fun MessageBubble(m: ChatMessage, live: Generation?, onOpenSource: (Source) -> Unit) {
+private fun RouteCard(r: AnswerPolicy.Route, firstAid: com.conza.outpost.griddown.FaFile?, onOpen: () -> Unit) {
+    val (title, body) = when (r) {
+        is AnswerPolicy.Route.FirstAidTopic -> "First-aid checklist: ${r.title}" to "Step by step from Army medical manuals, with page references. Open this first."
+        AnswerPolicy.Route.WaterTreatment -> "Water treatment calculator" to "Exact bleach drops for your amount of water (EPA method) and boiling time for your altitude."
+        AnswerPolicy.Route.FoodSafety -> "Fridge & freezer food safety" to "How long food stays safe without power (USDA)."
+    }
+    Card(Modifier.fillMaxWidth().clickable(onClick = onOpen), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)) {
+        Column(Modifier.padding(12.dp)) {
+            Text(title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onTertiaryContainer)
+            Text(body, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onTertiaryContainer)
+            if (r is AnswerPolicy.Route.FirstAidTopic) Text(com.conza.outpost.ui.griddown.CLINICIAN_NOTE, style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onTertiaryContainer)
+        }
+    }
+}
+
+/** Hides the model's ACTION lines while it streams (they become confirm cards when it finishes). */
+private fun visibleText(s: String) = s.lineSequence().filterNot { it.trimStart().startsWith("ACTION") }.joinToString("\n").trimEnd()
+
+@Composable
+private fun MessageBubble(m: ChatMessage, live: Generation?, onOpenSource: (Source) -> Unit, onAction: (Int, Boolean) -> Unit) {
     val mine = m.role == "user"
     Box(Modifier.fillMaxWidth(), contentAlignment = if (mine) Alignment.CenterEnd else Alignment.CenterStart) {
         Column(
@@ -239,7 +280,7 @@ private fun MessageBubble(m: ChatMessage, live: Generation?, onOpenSource: (Sour
                 )
                 .padding(12.dp),
         ) {
-            val text = if (live != null && m.content.isBlank()) live.text else m.content
+            val text = visibleText(if (live != null && m.content.isBlank()) live.text else m.content)
             if (text.isBlank() && live != null) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     CircularProgressIndicator(Modifier.size(14.dp), strokeWidth = 2.dp)
@@ -250,6 +291,30 @@ private fun MessageBubble(m: ChatMessage, live: Generation?, onOpenSource: (Sour
                 SelectionContainer { Text(text, style = MaterialTheme.typography.bodyMedium) }
             }
             val sources = remember(m.sourcesJson) { Sources.decode(m.sourcesJson) }
+            val actions = remember(m.actionState) { AssistantTools.decodeStates(m.actionState) }
+            actions.forEachIndexed { i, a ->
+                Spacer(Modifier.size(6.dp))
+                Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
+                    Column(Modifier.fillMaxWidth().padding(10.dp)) {
+                        Text(a.action.label, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
+                        when (a.status) {
+                            "proposed" -> Row {
+                                Button(onClick = { onAction(i, true) }) { Text("Confirm") }
+                                Spacer(Modifier.width(8.dp))
+                                TextButton(onClick = { onAction(i, false) }) { Text("Dismiss") }
+                            }
+                            "done" -> Text("✓ " + (a.result ?: "Done"), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                            "failed" -> Text("Couldn't do that: ${a.result}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                            else -> Text("Dismissed", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                    }
+                }
+            }
+            if (!mine && live == null && sources.isEmpty() && m.content.isNotBlank() && !m.content.startsWith("⚠️")) {
+                Spacer(Modifier.size(6.dp))
+                Text("Source: the model's general knowledge, not your library. Double-check anything important.",
+                    style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
             if (sources.isNotEmpty()) {
                 Spacer(Modifier.size(6.dp))
                 Text("Sources", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)

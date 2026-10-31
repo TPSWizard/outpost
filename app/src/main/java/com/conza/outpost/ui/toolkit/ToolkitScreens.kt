@@ -19,6 +19,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Notes
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Backup
+import androidx.compose.material.icons.filled.CloudDownload
+import androidx.compose.material.icons.automirrored.filled.FactCheck
 import androidx.compose.material.icons.filled.MedicalServices
 import androidx.compose.material.icons.filled.School
 import androidx.compose.material.icons.filled.Settings
@@ -62,6 +65,9 @@ private data class Tile(val title: String, val body: String, val icon: ImageVect
 fun ToolkitScreen(
     onMedical: () -> Unit,
     onManuals: () -> Unit,
+    onContent: () -> Unit,
+    onBeforeOutage: () -> Unit,
+    onBackup: () -> Unit,
     onNotes: () -> Unit,
     onTools: () -> Unit,
     onLearn: () -> Unit,
@@ -69,12 +75,15 @@ fun ToolkitScreen(
     onSettings: () -> Unit,
 ) {
     val tiles = listOf(
+        Tile("Content & downloads", "Maps, offline libraries, Wikipedia, AI models, tools, and field manuals. Download before the outage.", Icons.Filled.CloudDownload, onContent),
+        Tile("Before the outage", "Checklist of what to download and set up while you still have internet.", Icons.AutoMirrored.Filled.FactCheck, onBeforeOutage),
         Tile("Medical reference", "FDA drug labels, interaction check, conditions, and home & herbal remedies.", Icons.Filled.MedicalServices, onMedical),
         Tile("Field manuals", "Survival, navigation, casualty care, preparedness, home security, and firearm maintenance.", Icons.AutoMirrored.Filled.MenuBook, onManuals),
         Tile("Notes & documents", "Markdown notes and imported files. The assistant can search them.", Icons.AutoMirrored.Filled.Notes, onNotes),
         Tile("Data tools", "CyberChef and IT-Tools: encoding, encryption, hashing, converters.", Icons.Filled.Build, onTools),
         Tile("Education", "Khan Academy courses through the Kolibri app.", Icons.Filled.School, onLearn),
         Tile("Benchmark", "How fast is this phone, and which AI models suit it?", Icons.Filled.Speed, onBenchmark),
+        Tile("Backup & verify", "Back up to an SD card or USB drive; check downloads aren't damaged.", Icons.Filled.Backup, onBackup),
         Tile("Settings & about", "Storage location, downloads, assistant, map, credits.", Icons.Filled.Settings, onSettings),
     )
     Scaffold(topBar = { TopAppBar(title = { Text("Toolkit") }) }) { pad ->
@@ -162,6 +171,7 @@ fun BenchmarkScreen(onBack: () -> Unit) {
                     "Memory copy" to "%.1f GB/s".format(r.memoryGBs), "Storage write" to "%.0f MB/s".format(r.storageWriteMBs),
                     "Storage read (cached)" to "%.0f MB/s".format(r.storageReadMBs),
                     "AI generation" to (r.llmTokensPerSec?.let { "%.1f tokens/s · ${r.llmModel}".format(it) } ?: "No model installed"),
+                    "AI battery per answer" to (r.aiPercentPerAnswer?.let { "%.2f%% %s".format(it, if (r.aiCostMeasured) "(measured)" else "(estimated; unplug to measure)") } ?: "—"),
                 )
                 rows.forEach { (k, v) ->
                     Row { Text(k, Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium); Text(v, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium) }

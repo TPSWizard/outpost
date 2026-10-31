@@ -29,7 +29,7 @@ data class RetrievedPassage(val chunk: Chunk, val score: Double)
 class RetrievalIndex(
     private val db: OutpostDatabase,
     private val llm: LocalLlm,
-    @Suppress("unused") private val settings: Settings,
+    private val settings: Settings,
     private val scope: CoroutineScope,
 ) {
     private val dao = db.retrieval()
@@ -37,6 +37,40 @@ class RetrievalIndex(
     private var embedJob: Job? = null
     private val _status = MutableStateFlow(IndexStatus())
     val status: StateFlow<IndexStatus> = _status
+
+    /** Set by the container; null in tests. */
+    var pdfText: PdfTextSource? = null
+    private var pdfJob: Job? = null
+    private val _pdfStatus = MutableStateFlow<String?>(null)
+    /** "Reading FM 4-25.11…" while PDFs are being indexed. */
+    val pdfStatus: StateFlow<String?> = _pdfStatus
+
+    /**
+     * Brings the PDF passages in line with [files] (path → title): new PDFs are read page by page,
+     * removed ones dropped. Paused in Survival mode; resumes next time.
+     */
+    fun syncPdfs(files: List<Pair<File, String>>) {
+        val src = pdfText ?: return
+        if (pdfJob?.isActive == true) return
+        pdfJob = scope.launch(kotlinx.coroutines.Dispatchers.IO) {
+            try {
+                val have = dao.indexedPdfs().toSet()
+                val want = files.map { it.first.absolutePath }.toSet()
+                (have - want).forEach { p -> mutex.withLock { dao.deletePdfChunks(p) } }
+                for ((f, title) in files) {
+                    if (f.absolutePath in have) continue
+                    if (settings.survivalMode) break
+                    _pdfStatus.value = "Reading $title for search…"
+                    val pages = runCatching { src.pages(f) }.getOrNull() ?: continue
+                    val chunks = PdfPassages.chunks(f.absolutePath, title, pages)
+                        // Image-only PDFs have no text: keep an empty marker so we don't re-read them every time.
+                        .ifEmpty { listOf(Chunk(sourceType = PdfPassages.TYPE, sourceId = PdfPassages.idFor(f.absolutePath), sourceTitle = title, position = -1, text = "", sourceRef = f.absolutePath, page = 1)) }
+                    mutex.withLock { dao.deletePdfChunks(f.absolutePath); dao.insertChunks(chunks) }
+                }
+            } finally { _pdfStatus.value = null }
+            scheduleEmbedding()
+        }
+    }
 
     init {
         scope.launch {
@@ -80,14 +114,14 @@ class RetrievalIndex(
 
     /** Embed any passages that don't have a vector for the installed search model yet. */
     fun scheduleEmbedding() {
-        if (embedJob?.isActive == true) return
+        if (embedJob?.isActive == true || settings.survivalMode) return
         embedJob = scope.launch {
             val model = embeddingModel() ?: run { _status.value = IndexStatus(); return@launch }
             if (!llm.available) { _status.value = IndexStatus(error = llm.unavailableReason); return@launch }
             val tag = model.name
             try {
                 llm.ensureEmbedModel(model)
-                while (true) {
+                while (!settings.survivalMode) {
                     val batch = dao.stale(tag, 16)
                     if (batch.isEmpty()) break
                     _status.value = IndexStatus(dao.countStale(tag), true, tag)

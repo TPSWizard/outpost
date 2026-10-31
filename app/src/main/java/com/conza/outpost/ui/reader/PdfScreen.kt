@@ -59,7 +59,7 @@ import java.io.RandomAccessFile
  * This extracts the PDF from the ZIM to the cache and renders it with Android's PdfRenderer.
  */
 @Composable
-fun PdfScreen(bookId: String?, path: String, onBack: () -> Unit) {
+fun PdfScreen(bookId: String?, path: String, onBack: () -> Unit, initialPage: Int = 1, title: String? = null) {
     val ctx = LocalContext.current
     val state by produceState<Result<File>?>(null, bookId, path) {
         value = runCatching {
@@ -70,10 +70,10 @@ fun PdfScreen(bookId: String?, path: String, onBack: () -> Unit) {
             }
         }
     }
-    val title = path.substringAfterLast('/').substringBeforeLast('.').replace('_', ' ').replace("%20", " ")
+    val shownTitle = title ?: path.substringAfterLast('/').substringBeforeLast('.').replace('_', ' ').replace("%20", " ")
 
     Scaffold(topBar = {
-        BackTopBar(title, onBack) {
+        BackTopBar(shownTitle, onBack, subtitle = if (initialPage > 1) "Opened at page $initialPage" else null) {
             state?.getOrNull()?.let { f ->
                 IconButton(onClick = { openExternally(ctx, f) }) { Icon(Icons.AutoMirrored.Filled.OpenInNew, "Open in another app") }
             }
@@ -83,7 +83,7 @@ fun PdfScreen(bookId: String?, path: String, onBack: () -> Unit) {
             when (val s = state) {
                 null -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
                 else -> s.fold(
-                    onSuccess = { PdfPages(it) },
+                    onSuccess = { PdfPages(it, initialPage) },
                     onFailure = { Text("Couldn't open this PDF: ${it.message}", Modifier.padding(16.dp)) },
                 )
             }
@@ -128,13 +128,13 @@ private fun openExternally(ctx: android.content.Context, f: File) {
 }
 
 @Composable
-private fun PdfPages(file: File) {
+private fun PdfPages(file: File, initialPage: Int = 1) {
     val renderer = remember(file) { PdfRenderer(ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)) }
     val lock = remember(file) { Mutex() }
     DisposableEffect(renderer) { onDispose { runCatching { renderer.close() } } }
     var scale by remember { mutableFloatStateOf(1f) }
     var offsetX by remember { mutableFloatStateOf(0f) }
-    val list = rememberLazyListState()
+    val list = rememberLazyListState(initialFirstVisibleItemIndex = (initialPage - 1).coerceIn(0, (renderer.pageCount - 1).coerceAtLeast(0)))
 
     BoxWithConstraints(Modifier.fillMaxSize().background(Color(0xFF3A3F3C))) {
         val widthPx = with(LocalDensity.current) { maxWidth.toPx() }.toInt().coerceIn(400, 2000)

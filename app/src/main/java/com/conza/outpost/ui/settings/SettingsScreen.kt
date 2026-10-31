@@ -48,6 +48,8 @@ fun SettingsScreen(onBack: () -> Unit) {
     val scope = rememberCoroutineScope()
 
     var wifiOnly by remember { mutableStateOf(s.wifiOnly) }
+    var survival by remember { mutableStateOf(s.survivalMode) }
+    var largeText by remember { mutableStateOf(s.largeText) }
     var mapCompat by remember { mutableStateOf(s.mapCompatibilityMode) }
     var volume by remember { mutableIntStateOf(c.storage.selectedVolume) }
     val volumes = remember { c.storage.volumes() }
@@ -72,6 +74,15 @@ fun SettingsScreen(onBack: () -> Unit) {
             Modifier.padding(pad).fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
+            Heading("Display & power")
+            Toggle("Large text", "Bigger type for reading in poor light or one-handed.", largeText) { largeText = it; s.largeText = it }
+            Toggle("Survival mode", "Red-on-black, lowest refresh rate, background work paused, AI unloaded when idle. Details in Today → Power.", survival) {
+                survival = it; s.survivalMode = it
+                scope.launch { if (it) com.conza.outpost.griddown.PowerMonitor.enterSurvival(ctx) else com.conza.outpost.griddown.PowerMonitor.exitSurvival(ctx) }
+            }
+            Text("Privacy: everything stays on this phone or your SD card. No accounts, analytics, or telemetry. The internet is used only for downloads you start.",
+                style = MaterialTheme.typography.bodySmall)
+
             Heading("Downloads")
             Toggle("Download on Wi-Fi only", "Applies to new downloads. Maps, libraries, and models can be several GB.", wifiOnly) { wifiOnly = it; s.wifiOnly = it }
 

@@ -16,3 +16,9 @@
 -keep interface com.conza.outpost.ai.TokenCallback { *; }
 -keep class * implements com.conza.outpost.ai.TokenCallback { *; }
 -dontwarn org.commonmark.**
+# PDFBox-Android: optional JPEG2000 decoder and AWT-only paths aren't on Android
+-keep class com.tom_roush.pdfbox.** { *; }
+-keep class com.tom_roush.fontbox.** { *; }
+-dontwarn com.gemalto.jp2.**
+-dontwarn com.tom_roush.pdfbox.**
+-dontwarn org.bouncycastle.**

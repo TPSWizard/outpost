@@ -99,6 +99,8 @@ data class ChatMessage(
     /** JSON list of sources cited for this answer (see ai/Sources.kt). */
     val sourcesJson: String? = null,
     val createdAt: Long = System.currentTimeMillis(),
+    /** JSON of tool actions the model proposed and whether each was confirmed (v3). */
+    @androidx.room.ColumnInfo(defaultValue = "NULL") val actionState: String? = null,
 )
 
 @Dao
@@ -132,6 +134,9 @@ interface ChatDao {
 
     @Query("UPDATE chat_messages SET content = :content, sourcesJson = :sources WHERE id = :id")
     suspend fun updateMessage(id: Long, content: String, sources: String?)
+
+    @Query("UPDATE chat_messages SET actionState = :state WHERE id = :id")
+    suspend fun updateActionState(id: Long, state: String?)
 }
 
 // ---------- Retrieval index for notes + imported documents ----------
@@ -155,6 +160,9 @@ data class Chunk(
     val text: String,
     val embedding: ByteArray? = null,
     val embeddingModel: String? = null,
+    /** For PDFs: the file path, and the 1-based page the passage comes from (v3). */
+    @androidx.room.ColumnInfo(defaultValue = "NULL") val sourceRef: String? = null,
+    @androidx.room.ColumnInfo(defaultValue = "NULL") val page: Int? = null,
 )
 
 @Dao
@@ -177,10 +185,10 @@ interface RetrievalDao {
     @Query("SELECT * FROM chunks")
     suspend fun allChunks(): List<Chunk>
 
-    @Query("SELECT COUNT(*) FROM chunks WHERE embedding IS NULL OR embeddingModel IS NULL OR embeddingModel != :model")
+    @Query("SELECT COUNT(*) FROM chunks WHERE text != '' AND (embedding IS NULL OR embeddingModel IS NULL OR embeddingModel != :model)")
     suspend fun countStale(model: String): Int
 
-    @Query("SELECT * FROM chunks WHERE embedding IS NULL OR embeddingModel IS NULL OR embeddingModel != :model LIMIT :limit")
+    @Query("SELECT * FROM chunks WHERE text != '' AND (embedding IS NULL OR embeddingModel IS NULL OR embeddingModel != :model) LIMIT :limit")
     suspend fun stale(model: String, limit: Int): List<Chunk>
 
     @Query("UPDATE chunks SET embedding = :embedding, embeddingModel = :model WHERE id = :id")
@@ -191,6 +199,12 @@ interface RetrievalDao {
 
     @Query("DELETE FROM chunks WHERE sourceType = :type AND sourceId = :id")
     suspend fun deleteChunks(type: String, id: Long)
+
+    @Query("DELETE FROM chunks WHERE sourceType = 'pdf' AND sourceRef = :path")
+    suspend fun deletePdfChunks(path: String)
+
+    @Query("SELECT DISTINCT sourceRef FROM chunks WHERE sourceType = 'pdf'")
+    suspend fun indexedPdfs(): List<String>
 }
 
 // ---------- Map pins ----------
@@ -204,6 +218,8 @@ data class MapMarker(
     val color: String = "#E4572E",
     val notes: String = "",
     val createdAt: Long = System.currentTimeMillis(),
+    /** Stable id for merging pins between family phones (v3). */
+    @androidx.room.ColumnInfo(defaultValue = "") val uuid: String = java.util.UUID.randomUUID().toString(),
 )
 
 @Dao
@@ -216,16 +232,21 @@ interface MarkerDao {
 
     @Query("DELETE FROM map_markers WHERE id = :id")
     suspend fun delete(id: Long)
+
+    @Query("SELECT * FROM map_markers")
+    suspend fun all(): List<MapMarker>
 }
 
 @Database(
     entities = [
         InstalledResource::class, Note::class, ChatSession::class, ChatMessage::class,
         ImportedDocument::class, Chunk::class, MapMarker::class,
+        HouseholdMember::class, Medication::class, InventoryItem::class, ChecklistDone::class,
+        PressureSample::class, BatterySample::class, PlanItem::class, RadioLogEntry::class, MeshMessage::class,
     ],
-    version = 2,
+    version = 3,
     exportSchema = true,
-    autoMigrations = [AutoMigration(from = 1, to = 2)],
+    autoMigrations = [AutoMigration(from = 1, to = 2), AutoMigration(from = 2, to = 3)],
 )
 abstract class OutpostDatabase : RoomDatabase() {
     abstract fun installed(): InstalledDao
@@ -233,6 +254,9 @@ abstract class OutpostDatabase : RoomDatabase() {
     abstract fun chats(): ChatDao
     abstract fun retrieval(): RetrievalDao
     abstract fun markers(): MarkerDao
+    abstract fun household(): HouseholdDao
+    abstract fun inventory(): InventoryDao
+    abstract fun gridDown(): GridDownDao
 
     companion object {
         fun create(context: Context): OutpostDatabase =

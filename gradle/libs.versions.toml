@@ -15,6 +15,9 @@ maplibre = "13.7.1"
 libkiwix = "2.7.0"
 commonmark = "0.24.0"
 junit = "4.13.2"
+pdfboxAndroid = "2.0.27.0"
+pdfbox = "2.0.37"
+nearby = "19.5.1"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -39,6 +42,9 @@ commonmark-tables = { module = "org.commonmark:commonmark-ext-gfm-tables", versi
 libkiwix = { module = "org.kiwix:libkiwix", version.ref = "libkiwix" }
 maplibre-android = { module = "org.maplibre.gl:android-sdk", version.ref = "maplibre" }
 junit = { module = "junit:junit", version.ref = "junit" }
+pdfbox-android = { module = "com.tom-roush:pdfbox-android", version.ref = "pdfboxAndroid" }
+pdfbox-desktop = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox" }
+play-services-nearby = { module = "com.google.android.gms:play-services-nearby", version.ref = "nearby" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

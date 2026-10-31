@@ -78,10 +78,25 @@ import org.maplibre.android.maps.Style
 @Composable
 fun MapScreen(onOpenContent: () -> Unit, vm: MapViewModel = viewModel()) {
     val state by vm.state.collectAsStateWithLifecycle()
+    val survival = LocalContext.current.container.settings.survivalMode
+    var tapped by remember { mutableStateOf(false) }
 
     when {
         state.loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
         state.styleJson == null -> EmptyMaps(onOpenContent)
+        survival && !tapped -> Column(
+            Modifier.fillMaxSize().padding(32.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text("Map paused", style = MaterialTheme.typography.headlineSmall)
+            Text(
+                "Survival mode keeps the map off until you need it: drawing tiles uses the GPU and is one of the biggest battery costs.",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(vertical = 12.dp),
+            )
+            Button(onClick = { tapped = true }) { Text("Tap to load the map") }
+        }
         else -> OfflineMap(state)
     }
 }

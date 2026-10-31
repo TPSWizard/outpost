@@ -91,7 +91,7 @@ class AssistantLogicTest {
         assertTrue(tools.any { it.id == "cyberchef" && it.extra["entry"]!!.endsWith(".html") })
         val manuals = c.manuals.flatMap { s -> s.groups.flatMap { it.items } }
         assertTrue(manuals.size >= 20)
-        assertTrue(manuals.all { it.kind == ResourceKind.DOC && it.fileName.endsWith(".pdf") && it.url.startsWith("https://archive.org/download/") })
+        assertTrue(manuals.all { it.kind == ResourceKind.DOC && it.fileName.endsWith(".pdf") && (it.url.startsWith("https://archive.org/download/") || it.url.startsWith("https://www.ncvec.org/downloads/")) })
         // Model and tool ids must be unique: they key installs and downloads.
         val ids = (models + tools + manuals).map { it.id }
         assertEquals(ids.size, ids.toSet().size)

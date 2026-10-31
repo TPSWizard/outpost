@@ -14,8 +14,8 @@ android {
         applicationId = "com.conza.outpost"
         minSdk = 24
         targetSdk = 36
-        versionCode = 7
-        versionName = "1.1.0"
+        versionCode = 8
+        versionName = "1.2.0"
     }
 
     // One universal APK (emulators, any device) plus a slim arm64 APK for modern phones.
@@ -95,5 +95,10 @@ dependencies {
         exclude(group = "com.getkeepsafe.relinker")
     }
 
+    // PDF text for page-cited search (Apache-2.0). Text extraction only; rendering stays on PdfRenderer.
+    implementation(libs.pdfbox.android)
+    // Phone-to-phone sharing over Bluetooth/Wi-Fi with no network (Nearby Connections).
+    implementation(libs.play.services.nearby)
     testImplementation(libs.junit)
+    testImplementation(libs.pdfbox.desktop)
 }

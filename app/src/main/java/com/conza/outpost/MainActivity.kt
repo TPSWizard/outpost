@@ -5,6 +5,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -13,7 +16,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.AutoAwesome
-import androidx.compose.material.icons.filled.CloudDownload
+import androidx.compose.material.icons.filled.Today
 import androidx.compose.material.icons.filled.Handyman
 import androidx.compose.material.icons.filled.Map
 import androidx.compose.material3.AlertDialog
@@ -25,6 +28,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -68,11 +73,11 @@ import com.conza.outpost.ui.tools.ToolViewerScreen
 import com.conza.outpost.ui.tools.ToolsScreen
 
 private enum class Tab(val route: String, val label: String, val icon: ImageVector) {
+    Today("today", "Today", Icons.Filled.Today),
     Library("library", "Library", Icons.AutoMirrored.Filled.MenuBook),
     Map("map", "Map", Icons.Filled.Map),
     Assistant("assistant", "Assistant", Icons.Filled.AutoAwesome),
     Toolkit("toolkit", "Toolkit", Icons.Filled.Handyman),
-    Content("content", "Content", Icons.Filled.CloudDownload),
 }
 
 /** Screens that take over the whole display (no bottom bar). */
@@ -82,8 +87,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val settings = container.settings
         setContent {
-            OutpostTheme {
+            var survival by remember { mutableStateOf(settings.survivalMode) }
+            var largeText by remember { mutableStateOf(settings.largeText) }
+            DisposableEffect(Unit) {
+                val l = settings.listen { k -> if (k == "survival_mode") survival = settings.survivalMode; if (k == "large_text") largeText = settings.largeText }
+                onDispose { settings.unlisten(l) }
+            }
+            LaunchedEffect(survival) { applyRefreshRate(survival) }
+            OutpostTheme(dark = survival || isSystemInDarkTheme(), survival = survival, largeText = largeText) {
                 val nav = rememberNavController()
                 val backStack by nav.currentBackStackEntryAsState()
                 val current = backStack?.destination?.route
@@ -104,9 +117,52 @@ class MainActivity : ComponentActivity() {
                         }
                     },
                 ) { padding ->
-                    OutpostNavHost(nav, Modifier.padding(padding))
+                    Column(Modifier.padding(padding)) {
+                        LowBatteryBanner(onOpen = { nav.navigate("print?card=phone") })
+                        OutpostNavHost(nav, Modifier.weight(1f))
+                    }
                 }
             }
+        }
+    }
+}
+
+/**
+ * Survival mode asks for the display mode with the lowest refresh rate at the current
+ * resolution (Pixel 8: 60 Hz instead of up to 120 Hz). Off restores the system's choice.
+ */
+private fun ComponentActivity.applyRefreshRate(survival: Boolean) {
+    val lp = window.attributes
+    if (survival) {
+        @Suppress("DEPRECATION") val d = windowManager.defaultDisplay
+        val cur = d.mode
+        val low = d.supportedModes.filter { it.physicalWidth == cur.physicalWidth && it.physicalHeight == cur.physicalHeight }.minByOrNull { it.refreshRate }
+        if (low != null) { lp.preferredDisplayModeId = low.modeId; lp.preferredRefreshRate = low.refreshRate }
+    } else { lp.preferredDisplayModeId = 0; lp.preferredRefreshRate = 0f }
+    window.attributes = lp
+}
+
+/** Below 15 % on battery: offer the printable "if this phone dies" summary. */
+@Composable
+private fun LowBatteryBanner(onOpen: () -> Unit) {
+    val ctx = androidx.compose.ui.platform.LocalContext.current
+    var reading by remember { mutableStateOf(com.conza.outpost.griddown.PowerMonitor.read(ctx)) }
+    var dismissed by remember { mutableStateOf(false) }
+    DisposableEffect(Unit) {
+        val r = object : android.content.BroadcastReceiver() {
+            override fun onReceive(c: android.content.Context, i: android.content.Intent) { reading = com.conza.outpost.griddown.PowerMonitor.read(c) }
+        }
+        ctx.registerReceiver(r, android.content.IntentFilter(android.content.Intent.ACTION_BATTERY_CHANGED))
+        onDispose { runCatching { ctx.unregisterReceiver(r) } }
+    }
+    val rd = reading ?: return
+    if (dismissed || rd.charging || rd.percent >= 15f) return
+    androidx.compose.material3.Surface(color = MaterialTheme.colorScheme.errorContainer) {
+        androidx.compose.foundation.layout.Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp), verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+            Text("Battery %.0f%%. Save the \"if this phone dies\" summary while you can.".format(rd.percent), Modifier.weight(1f),
+                color = MaterialTheme.colorScheme.onErrorContainer, style = MaterialTheme.typography.bodySmall)
+            TextButton(onClick = onOpen) { Text("Open") }
+            TextButton(onClick = { dismissed = true }) { Text("Later") }
         }
     }
 }
@@ -135,10 +191,53 @@ private fun OutpostNavHost(nav: NavHostController, modifier: Modifier) {
             "zim" -> if (s.bookId != null) nav.openArticle(s.bookId, s.path)
             "note" -> s.refId?.let { nav.navigate("note/$it") }
             "doc" -> s.refId?.let { nav.navigate("document/$it") }
+            "pdf" -> s.path?.let { nav.navigate("pdffile?path=${Uri.encode(it)}&page=${s.refId ?: 1}") }
         }
     }
 
-    NavHost(nav, startDestination = "library?q={q}", modifier = modifier) {
+    val gridNav = com.conza.outpost.ui.griddown.GridNav(
+        firstAid = { nav.navigate("firstaid") },
+        supplies = { nav.navigate("supplies") },
+        household = { nav.navigate("household") },
+        calculators = { nav.navigate("calculators") },
+        weather = { nav.navigate("weather") },
+        power = { nav.navigate("power") },
+        radio = { nav.navigate("radio") },
+        mesh = { nav.navigate("mesh") },
+        print = { nav.navigate("print") },
+        beforeOutage = { nav.navigate("before") },
+        back = { nav.popBackStack() },
+        drugSearch = { nav.navigate("medical?q=${Uri.encode(it)}") },
+    )
+    val openPdfAt: (String, Int) -> Unit = { path, page -> nav.navigate("pdffile?path=${Uri.encode(path)}&page=$page") }
+
+    NavHost(nav, startDestination = "today", modifier = modifier) {
+        composable("today") { com.conza.outpost.ui.griddown.TodayScreen(gridNav) }
+        composable("household") { com.conza.outpost.ui.griddown.HouseholdScreen(onBack = gridNav.back) }
+        composable("supplies") { com.conza.outpost.ui.griddown.SuppliesScreen(onBack = gridNav.back, onDrugSearch = gridNav.drugSearch) }
+        composable("calculators?tab={tab}", arguments = listOf(navArgument("tab") { type = NavType.IntType; defaultValue = 0 })) { e ->
+            com.conza.outpost.ui.griddown.CalculatorsScreen(onBack = gridNav.back, initialTab = e.arguments?.getInt("tab") ?: 0)
+        }
+        composable("firstaid?topic={topic}", arguments = listOf(navArgument("topic") { type = NavType.StringType; nullable = true; defaultValue = null })) { e ->
+            com.conza.outpost.ui.griddown.FirstAidScreen(onBack = gridNav.back, openPdf = openPdfAt, getManuals = { nav.navigate("content?tab=5") },
+                initialTopic = e.arguments?.getString("topic"))
+        }
+        composable("weather") { com.conza.outpost.ui.griddown.WeatherScreen(onBack = gridNav.back, onHousehold = gridNav.household) }
+        composable("radio") { com.conza.outpost.ui.griddown.RadioScreen(onBack = gridNav.back) }
+        composable("mesh") { com.conza.outpost.ui.griddown.MeshScreen(onBack = gridNav.back) }
+        composable("backup") { com.conza.outpost.ui.griddown.BackupScreen(onBack = gridNav.back) }
+        composable("print?card={card}", arguments = listOf(navArgument("card") { type = NavType.StringType; nullable = true; defaultValue = null })) { e ->
+            com.conza.outpost.ui.griddown.PrintScreen(onBack = gridNav.back, openPdf = { openPdfAt(it, 1) }, preselect = e.arguments?.getString("card"))
+        }
+        composable("before") {
+            com.conza.outpost.ui.griddown.BeforeOutageScreen(onBack = gridNav.back, nav = com.conza.outpost.ui.griddown.BeforeNav(
+                maps = { nav.navigate("content?tab=0") }, reference = { nav.navigate("content?tab=1") }, models = { nav.navigate("content?tab=3") },
+                manuals = { nav.navigate("content?tab=5") }, medical = { nav.navigate("medical") }, household = gridNav.household,
+                supplies = gridNav.supplies, print = gridNav.print, backup = { nav.navigate("backup") }, mesh = gridNav.mesh,
+                radio = gridNav.radio, benchmark = { nav.navigate("benchmark") }, settings = { nav.navigate("settings") },
+            ))
+        }
+        composable("power") { com.conza.outpost.ui.griddown.PowerScreen(onBack = gridNav.back, onBenchmark = { nav.navigate("benchmark") }) }
         composable("library?q={q}", arguments = listOf(navArgument("q") { type = NavType.StringType; nullable = true; defaultValue = null })) { e ->
             LibraryScreen(
                 onOpen = { b, p -> nav.openArticle(b, p) },
@@ -150,8 +249,11 @@ private fun OutpostNavHost(nav: NavHostController, modifier: Modifier) {
         composable("pdf/{bookId}?path={path}") { e ->
             PdfScreen(e.arguments?.getString("bookId"), e.arguments?.getString("path").orEmpty(), onBack = { nav.popBackStack() })
         }
-        composable("pdffile?path={path}") { e ->
-            PdfScreen(null, e.arguments?.getString("path").orEmpty(), onBack = { nav.popBackStack() })
+        composable("pdffile?path={path}&page={page}", arguments = listOf(
+            navArgument("path") { type = NavType.StringType; defaultValue = "" },
+            navArgument("page") { type = NavType.IntType; defaultValue = 1 },
+        )) { e ->
+            PdfScreen(null, e.arguments?.getString("path").orEmpty(), onBack = { nav.popBackStack() }, initialPage = e.arguments?.getInt("page") ?: 1)
         }
         composable(
             "reader/{bookId}?path={path}",
@@ -169,12 +271,22 @@ private fun OutpostNavHost(nav: NavHostController, modifier: Modifier) {
         }
         composable(Tab.Map.route) { MapScreen(onOpenContent = { nav.navigate("content?tab=0") }) }
         composable(Tab.Assistant.route) {
-            AssistantScreen(onOpenSource = openSource, onGetModels = { nav.navigate("content?tab=3") }, onSettings = { nav.navigate("settings") })
+            AssistantScreen(onOpenSource = openSource, onGetModels = { nav.navigate("content?tab=3") }, onSettings = { nav.navigate("settings") },
+                onRoute = { r ->
+                    when (r) {
+                        is com.conza.outpost.griddown.AnswerPolicy.Route.FirstAidTopic -> nav.navigate("firstaid?topic=${r.topicId}")
+                        com.conza.outpost.griddown.AnswerPolicy.Route.WaterTreatment -> nav.navigate("calculators?tab=0")
+                        com.conza.outpost.griddown.AnswerPolicy.Route.FoodSafety -> nav.navigate("calculators?tab=1")
+                    }
+                })
         }
         composable(Tab.Toolkit.route) {
             ToolkitScreen(
                 onMedical = { nav.navigate("medical") },
                 onManuals = { nav.navigate("content?tab=5") },
+                onContent = { nav.navigate("content?tab=0") },
+                onBeforeOutage = { nav.navigate("before") },
+                onBackup = { nav.navigate("backup") },
                 onNotes = { nav.navigate("notes") },
                 onTools = { nav.navigate("tools") },
                 onLearn = { nav.navigate("learn") },
@@ -186,7 +298,9 @@ private fun OutpostNavHost(nav: NavHostController, modifier: Modifier) {
             ContentScreen(initialTab = e.arguments?.getInt("tab") ?: 0)
         }
 
-        composable("medical") { MedicalHome(medicalNav) }
+        composable("medical?q={q}", arguments = listOf(navArgument("q") { type = NavType.StringType; nullable = true; defaultValue = null })) { e ->
+            MedicalHome(medicalNav, initialQuery = e.arguments?.getString("q"))
+        }
         composable("drug/{id}", arguments = listOf(navArgument("id") { type = NavType.LongType })) { e ->
             DrugDetailScreen(e.arguments?.getLong("id") ?: 0, medicalNav)
         }

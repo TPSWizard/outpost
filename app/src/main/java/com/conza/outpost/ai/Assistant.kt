@@ -22,7 +22,7 @@ import java.io.File
 /** Where a passage in an answer came from; tapping it opens the article, note, or document. */
 @Serializable
 data class Source(
-    val type: String, // "zim" | "note" | "doc"
+    val type: String, // "zim" | "note" | "doc" | "pdf" (path = file, refId = page)
     val title: String,
     val subtitle: String = "",
     val bookId: String? = null,
@@ -152,16 +152,23 @@ class Assistant(private val context: Context, private val c: AppContainer) {
             job?.isActive != false
         }
 
-        var historyTurns = 6
+        val short = s.answerMode != "explain"
+        val maxTokens = if (short) 200 else 768
+        val system = systemPrompt(short, runCatching { c.gridDown.contextBlock() }.getOrNull())
+        // Kept out of the system prompt so the cached prompt prefix stays the same between questions.
+        val routed = com.conza.outpost.griddown.AnswerPolicy.route(question, runCatching { c.gridDown.firstAid }.getOrNull())
+        val prompt = if (routed.isEmpty()) question else question + "\n\n(A verified checklist or calculator for this is shown to me above your answer. " +
+            "Agree with it, point me to it for steps and doses, and never give different numbers.)"
+        var historyTurns = if (short) 4 else 6
         var keep = passages.size
         var stats: GenerationStats? = null
         while (stats == null) {
             val used = passages.take(keep)
-            val messages = buildMessages(history.takeLast(historyTurns), question, used)
+            val messages = buildMessages(system, history.takeLast(historyTurns), prompt, used)
             out.clear()
             try {
                 stats = when (readiness) {
-                    is Readiness.Local -> c.llm.generate(messages, 768, s.temperature, onToken)
+                    is Readiness.Local -> c.llm.generate(messages, maxTokens, s.temperature, onToken)
                     is Readiness.Remote -> remote.chat(s.remoteApi, s.remoteUrl, s.remoteModel, s.remoteApiKey, messages, s.temperature, onToken)
                     else -> error("unreachable")
                 }
@@ -174,7 +181,11 @@ class Assistant(private val context: Context, private val c: AppContainer) {
             }
         }
         val used = passages.take(keep)
-        chats.updateMessage(answerId, out.toString().trim().ifBlank { "(no answer)" }, Sources.encode(used.map { it.source }))
+        val (text, actions) = com.conza.outpost.griddown.AssistantTools.parse(out.toString())
+        chats.updateMessage(answerId, text.ifBlank { if (actions.isNotEmpty()) "Here's what I can do:" else "(no answer)" }, Sources.encode(used.map { it.source }))
+        if (actions.isNotEmpty()) chats.updateActionState(answerId, com.conza.outpost.griddown.AssistantTools.encodeStates(actions.map { com.conza.outpost.griddown.ActionState(it) }))
+        // Unload in Survival mode once the answer is done if the user has left the Assistant.
+        if (s.survivalMode && !assistantVisible) runCatching { c.llm.unloadAll() }
         chats.updateSession(sid, chats.session(sid)?.title ?: "Chat")
         _generation.value = Generation(sid, answerId, "Done", stats.tokensPerSecond, out.toString())
     }
@@ -203,8 +214,9 @@ class Assistant(private val context: Context, private val c: AppContainer) {
 
         // Notes and imported documents.
         runCatching {
-            for (r in c.index.search(question, 3)) {
-                val src = Source(r.chunk.sourceType, r.chunk.sourceTitle, if (r.chunk.sourceType == "note") "Note" else "Document", refId = r.chunk.sourceId)
+            for (r in c.index.search(question, 4)) {
+                val src = if (r.chunk.sourceType == PdfPassages.TYPE) PdfPassages.source(r.chunk)
+                    else Source(r.chunk.sourceType, r.chunk.sourceTitle, if (r.chunk.sourceType == "note") "Note" else "Document", refId = r.chunk.sourceId)
                 // Put notes on the same scale as library passages so neither swamps the other.
                 found += Passage(src, r.chunk.text, TextTools.rank(question, listOf(r.chunk.text)).first().second + r.score * 5)
             }
@@ -218,14 +230,26 @@ class Assistant(private val context: Context, private val c: AppContainer) {
             .take(max)
     }
 
-    private fun buildMessages(history: List<ChatMessage>, question: String, passages: List<Passage>): List<Pair<String, String>> {
-        val msgs = mutableListOf("system" to SYSTEM_PROMPT)
+    /** Set by the Assistant screen; lets Survival mode free the model's memory when nobody is looking. */
+    @Volatile var assistantVisible = false
+
+    fun systemPrompt(short: Boolean, context: String?): String = buildString {
+        append(SYSTEM_PROMPT)
+        append(if (short) " Answer in at most 80 words: the key steps or facts only." else " Explain fully, with reasons, in clear steps.")
+        append(" Never invent drug doses; refer to the label or a pharmacist.")
+        if (context != null) append("\n\n").append(context)
+        append("\n\n").append(com.conza.outpost.griddown.AssistantTools.TOOL_PROMPT)
+    }
+
+    private fun buildMessages(system: String, history: List<ChatMessage>, question: String, passages: List<Passage>): List<Pair<String, String>> {
+        val msgs = mutableListOf("system" to system)
         history.filter { it.content.isNotBlank() && !it.content.startsWith("⚠️") }.forEach { msgs += it.role to it.content }
         val user = if (passages.isEmpty()) question else buildString {
             append("Sources from my offline library and notes:\n\n")
             passages.forEachIndexed { i, p ->
                 append("[${i + 1}] ${p.source.title}")
-                if (p.source.subtitle.isNotBlank()) append(" (${p.source.subtitle})")
+                if (p.source.type == PdfPassages.TYPE) append(", ${p.source.subtitle}")
+                if (p.source.subtitle.isNotBlank() && p.source.type != PdfPassages.TYPE) append(" (${p.source.subtitle})")
                 append("\n").append(p.text.take(1200)).append("\n\n")
             }
             append("Question: ").append(question)

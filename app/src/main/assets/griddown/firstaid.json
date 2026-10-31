@@ -1,0 +1,862 @@
+{
+  "version": "2026-10-31",
+  "manuals": {
+    "atp-4-02-11": "ATP 4-02.11 Tactical Combat Casualty Care & First Aid (2026)",
+    "fm-4-25-11": "FM 4-25.11 First Aid (2002)",
+    "fm-21-10": "FM 21-10 Field Hygiene & Sanitation (2000)"
+  },
+  "topics": [
+    {
+      "id": "bleeding",
+      "title": "Severe bleeding",
+      "summary": "Blood spurting, pooling, or soaking through cloth. Act in the first minute.",
+      "keywords": [
+        "bleed",
+        "bleeding",
+        "blood",
+        "tourniquet",
+        "cut",
+        "gash",
+        "wound",
+        "hemorrhage",
+        "amputat"
+      ],
+      "start": "q-limb",
+      "nodes": [
+        {
+          "id": "q-limb",
+          "question": "Is the bleeding from an arm or leg?",
+          "yes": "limb",
+          "no": "q-junction"
+        },
+        {
+          "id": "limb",
+          "title": "Arm or leg: tourniquet first if bleeding is severe",
+          "steps": [
+            {
+              "text": "Put on gloves or a plastic bag if you have one. Don't let it slow you down.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 62
+              }
+            },
+            {
+              "text": "Place a tourniquet 2–3 inches above the wound (or high on the limb if you can't see it), over clothing.",
+              "urgent": true,
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 63
+              }
+            },
+            {
+              "text": "Pull the strap tight, then twist the rod until the bleeding stops. It will hurt; that means it's working.",
+              "urgent": true,
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 62
+              }
+            },
+            {
+              "text": "Lock the rod in its clip. Write the time on the tourniquet or the person's forehead.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 63
+              }
+            },
+            {
+              "text": "No tourniquet? Pack the wound and press hard (next step). Improvised tourniquets often fail; use one only if packing doesn't work.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 71
+              }
+            }
+          ],
+          "next": "q-stopped"
+        },
+        {
+          "id": "q-junction",
+          "question": "Is it in the neck, armpit, or groin (where a tourniquet won't fit)?",
+          "yes": "pack",
+          "no": "q-torso"
+        },
+        {
+          "id": "pack",
+          "title": "Pack the wound and press hard",
+          "steps": [
+            {
+              "text": "Expose the wound. Find where the blood is coming from.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 62
+              }
+            },
+            {
+              "text": "Stuff gauze (or a clean cloth) deep into the wound, right onto the bleeding spot, until it's full.",
+              "urgent": true,
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 64
+              }
+            },
+            {
+              "text": "Press down hard with both hands for at least 3 minutes without peeking.",
+              "urgent": true,
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 64
+              }
+            },
+            {
+              "text": "Wrap a pressure bandage tightly over the packing.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 64
+              }
+            },
+            {
+              "text": "Check fingers or toes beyond the bandage. If they turn cool, blue, or numb, loosen it slightly.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 64
+              }
+            }
+          ],
+          "next": "q-stopped"
+        },
+        {
+          "id": "q-torso",
+          "question": "Is it a chest or belly wound?",
+          "yes": "torso",
+          "no": "pack"
+        },
+        {
+          "id": "torso",
+          "title": "Chest or belly wound",
+          "steps": [
+            {
+              "text": "Do NOT pack gauze into the chest or belly.",
+              "urgent": true,
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 64
+              }
+            },
+            {
+              "text": "Cover the wound with plastic or an airtight dressing taped on all sides, and press over it.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 88
+              }
+            },
+            {
+              "text": "Keep them warm and still. Get help any way you can; this person needs a surgeon.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 105
+              }
+            }
+          ],
+          "next": "q-stopped"
+        },
+        {
+          "id": "q-stopped",
+          "question": "Has the bleeding stopped?",
+          "yes": "after",
+          "no": "again"
+        },
+        {
+          "id": "again",
+          "title": "Still bleeding",
+          "steps": [
+            {
+              "text": "Arm or leg: tighten the tourniquet more, or add a second one just above the first.",
+              "urgent": true,
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 63
+              }
+            },
+            {
+              "text": "Elsewhere: remove the packing, repack tightly, and press for another 3 minutes.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 70
+              }
+            }
+          ],
+          "next": "after"
+        },
+        {
+          "id": "after",
+          "title": "After the bleeding is controlled",
+          "steps": [
+            {
+              "text": "Watch for shock: pale, cold, sweaty skin; fast breathing; confusion. Lay them flat and keep them warm.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 99
+              }
+            },
+            {
+              "text": "Keep them warm even in hot weather. Blood loss makes people lose heat fast.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 105
+              }
+            },
+            {
+              "text": "Do not loosen a tourniquet once it's on. Leave that to a medic or doctor.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 63
+              }
+            },
+            {
+              "text": "Check the wound every few minutes for new bleeding. Get medical help as soon as you can.",
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 44
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "burns",
+      "title": "Burns",
+      "summary": "Heat, fire, hot liquid, or chemicals.",
+      "keywords": [
+        "burn",
+        "burned",
+        "burnt",
+        "scald",
+        "blister",
+        "fire",
+        "chemical burn"
+      ],
+      "start": "q-chemical",
+      "nodes": [
+        {
+          "id": "q-chemical",
+          "question": "Was it a chemical (lye, acid, cleaner)?",
+          "yes": "chemical",
+          "no": "thermal"
+        },
+        {
+          "id": "chemical",
+          "title": "Chemical burn",
+          "steps": [
+            {
+              "text": "Brush off any dry chemical with a dry cloth first.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 132
+              }
+            },
+            {
+              "text": "Flush with lots of running water for at least 15–20 minutes. Don't submerge the whole person.",
+              "urgent": true,
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 132
+              }
+            },
+            {
+              "text": "Remove contaminated clothing and jewelry while flushing.",
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 66
+              }
+            }
+          ],
+          "next": "care"
+        },
+        {
+          "id": "thermal",
+          "title": "Heat or fire burn",
+          "steps": [
+            {
+              "text": "Stop the burning: put out flames, move away from heat, remove hot clothing that isn't stuck to skin.",
+              "urgent": true,
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 65
+              }
+            },
+            {
+              "text": "Treat any bad bleeding or breathing problems before the burn.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 129
+              }
+            },
+            {
+              "text": "Small burns: cool with clean, cool (not icy) water for 10–20 minutes.",
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 66
+              }
+            },
+            {
+              "text": "Do not pop blisters, and don't put butter, grease, or ointment on serious burns.",
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 69
+              }
+            }
+          ],
+          "next": "q-big"
+        },
+        {
+          "id": "q-big",
+          "question": "Is the burn bigger than the person's palm, or on the face, hands, feet, groin, or all the way around a limb?",
+          "yes": "big",
+          "no": "care"
+        },
+        {
+          "id": "big",
+          "title": "Serious burn",
+          "steps": [
+            {
+              "text": "Their palm is about 1% of their body. Large burns (more than about 20%) are life-threatening.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 131
+              }
+            },
+            {
+              "text": "Cover loosely with clean, dry dressings or plastic wrap. Don't wrap tightly.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 131
+              }
+            },
+            {
+              "text": "Keep them warm. Burned people lose heat quickly.",
+              "urgent": true,
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 132
+              }
+            },
+            {
+              "text": "Face or neck burns, hoarse voice, or soot around the mouth: watch breathing closely and get help fast.",
+              "urgent": true,
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 132
+              }
+            }
+          ],
+          "next": "care"
+        },
+        {
+          "id": "care",
+          "title": "Ongoing burn care",
+          "steps": [
+            {
+              "text": "Give small sips of water if they're awake and not vomiting.",
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 67
+              }
+            },
+            {
+              "text": "Keep the burn covered and clean. Change dressings if they get wet or dirty.",
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 67
+              }
+            },
+            {
+              "text": "Watch for infection over the next days (see Infection warning signs).",
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 21
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fracture",
+      "title": "Broken bone",
+      "summary": "Pain, swelling, odd shape, or a snap; bone may show.",
+      "keywords": [
+        "broken",
+        "fracture",
+        "break",
+        "splint",
+        "bone",
+        "sprain",
+        "dislocat"
+      ],
+      "start": "q-open",
+      "nodes": [
+        {
+          "id": "q-open",
+          "question": "Is bone showing or is there a wound over the injury?",
+          "yes": "open",
+          "no": "closed"
+        },
+        {
+          "id": "open",
+          "title": "Open fracture",
+          "steps": [
+            {
+              "text": "Control bleeding first, without pushing on the bone.",
+              "urgent": true,
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 136
+              }
+            },
+            {
+              "text": "Do not push the bone back in. Cover the wound with a clean dressing.",
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 89
+              }
+            }
+          ],
+          "next": "closed"
+        },
+        {
+          "id": "closed",
+          "title": "Splint it",
+          "steps": [
+            {
+              "text": "Check the pulse, feeling, and color beyond the injury before splinting.",
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 90
+              }
+            },
+            {
+              "text": "Splint it as it lies. Pad the splint and include the joint above and below the break.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 137
+              }
+            },
+            {
+              "text": "Use boards, sticks, rolled magazines, or a pillow. Tie with strips of cloth or belts, not over the break.",
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 91
+              }
+            },
+            {
+              "text": "Recheck pulse and color after tying. Loosen if fingers or toes turn cold, blue, or numb.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 137
+              }
+            },
+            {
+              "text": "Arm: support it in a sling tied around the neck.",
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 95
+              }
+            }
+          ],
+          "next": "q-thigh"
+        },
+        {
+          "id": "q-thigh",
+          "question": "Is it the thigh, hip, pelvis, neck, or back?",
+          "yes": "serious",
+          "no": "watch"
+        },
+        {
+          "id": "serious",
+          "title": "High-risk injury",
+          "steps": [
+            {
+              "text": "These can bleed heavily inside. Keep them lying flat, warm, and still.",
+              "urgent": true,
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 136
+              }
+            },
+            {
+              "text": "Possible neck or back injury: don't move them unless they're in danger. Keep the head in line with the body.",
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 104
+              }
+            }
+          ],
+          "next": "watch"
+        },
+        {
+          "id": "watch",
+          "title": "Afterwards",
+          "steps": [
+            {
+              "text": "Keep the splinted limb still and supported. Recheck circulation every 15–30 minutes.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 137
+              }
+            },
+            {
+              "text": "Watch for shock and keep them warm.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 99
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hypothermia",
+      "title": "Hypothermia (too cold)",
+      "summary": "Shivering, clumsy, confused, slurred speech, or stopped shivering.",
+      "keywords": [
+        "hypotherm",
+        "too cold",
+        "freezing",
+        "shiver",
+        "frostbite",
+        "cold exposure"
+      ],
+      "start": "q-severe",
+      "nodes": [
+        {
+          "id": "q-severe",
+          "question": "Are they confused, very sleepy, or has their shivering stopped?",
+          "yes": "severe",
+          "no": "mild"
+        },
+        {
+          "id": "mild",
+          "title": "Mild hypothermia",
+          "steps": [
+            {
+              "text": "Get them out of the wind, rain, or snow, into shelter.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 104
+              }
+            },
+            {
+              "text": "Replace wet clothes with dry ones. Wrap them head to toe in blankets or sleeping bags.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 104
+              }
+            },
+            {
+              "text": "If they're awake and can swallow, give warm, sweet drinks. No alcohol, caffeine, or tobacco.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 104
+              }
+            },
+            {
+              "text": "Share body heat or put warm (not hot) water bottles at the armpits and chest.",
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 125
+              }
+            }
+          ]
+        },
+        {
+          "id": "severe",
+          "title": "Severe hypothermia",
+          "steps": [
+            {
+              "text": "Handle them gently and keep them lying down. Rough movement can stop the heart.",
+              "urgent": true,
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 104
+              }
+            },
+            {
+              "text": "Remove wet clothing, wrap head to toe, insulate them from the ground.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 104
+              }
+            },
+            {
+              "text": "Don't give food or drink if they can't swallow safely.",
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 125
+              }
+            },
+            {
+              "text": "Get medical help by any means; this is an emergency.",
+              "urgent": true,
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 104
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "heat",
+      "title": "Heat illness",
+      "summary": "Too hot: cramps, dizziness, headache, heavy sweating, or confusion.",
+      "keywords": [
+        "heat stroke",
+        "heatstroke",
+        "heat exhaustion",
+        "overheat",
+        "too hot",
+        "heat cramp",
+        "sunstroke"
+      ],
+      "start": "q-confused",
+      "nodes": [
+        {
+          "id": "q-confused",
+          "question": "Are they confused, acting strangely, passed out, or hot and dry to the touch?",
+          "yes": "stroke",
+          "no": "exhaustion"
+        },
+        {
+          "id": "stroke",
+          "title": "Heat stroke: cool them NOW",
+          "steps": [
+            {
+              "text": "This is life-threatening. Start cooling immediately; don't wait.",
+              "urgent": true,
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 190
+              }
+            },
+            {
+              "text": "Move to shade. Soak them with water (a tub of cold water is best) and fan hard.",
+              "urgent": true,
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 190
+              }
+            },
+            {
+              "text": "Put cold, wet cloths on the neck, armpits, and groin.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 189
+              }
+            },
+            {
+              "text": "Watch their breathing. If they stop breathing, start CPR if you know how.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 190
+              }
+            }
+          ]
+        },
+        {
+          "id": "exhaustion",
+          "title": "Heat exhaustion or cramps",
+          "steps": [
+            {
+              "text": "Move to shade or the coolest place available. Have them lie down with legs slightly raised.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 189
+              }
+            },
+            {
+              "text": "Loosen clothing. Use wet cloths and fanning.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 189
+              }
+            },
+            {
+              "text": "Have them sip cool water (or a sports drink or oral rehydration mix).",
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 112
+              }
+            },
+            {
+              "text": "Not better in 30 minutes, or getting worse? Treat as heat stroke.",
+              "urgent": true,
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 189
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dehydration",
+      "title": "Dehydration",
+      "summary": "Thirst, dark urine, dizziness, dry mouth; common with diarrhea or heat.",
+      "keywords": [
+        "dehydrat",
+        "diarrhea",
+        "vomit",
+        "not peeing",
+        "dark urine",
+        "rehydration"
+      ],
+      "start": "q-severe",
+      "nodes": [
+        {
+          "id": "q-severe",
+          "question": "Are they very sleepy, confused, not peeing for 8+ hours, or unable to keep fluids down?",
+          "yes": "severe",
+          "no": "mild"
+        },
+        {
+          "id": "mild",
+          "title": "Rehydrate",
+          "steps": [
+            {
+              "text": "Give small sips often rather than big gulps.",
+              "source": {
+                "manual": "fm-21-10",
+                "page": 12
+              }
+            },
+            {
+              "text": "Oral rehydration mix: 1 liter clean water + 6 level teaspoons sugar + 1/2 level teaspoon salt.",
+              "detail": "Recipe: World Health Organization home oral rehydration solution (not from this manual). Too much salt is harmful, so measure carefully.",
+              "source": {
+                "manual": "fm-21-10",
+                "page": 12
+              }
+            },
+            {
+              "text": "Keep drinking until urine is pale yellow. Rest in shade.",
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 112
+              }
+            },
+            {
+              "text": "Diarrhea: wash hands with soap after the toilet and before food; treat all drinking water.",
+              "source": {
+                "manual": "fm-21-10",
+                "page": 76
+              }
+            }
+          ]
+        },
+        {
+          "id": "severe",
+          "title": "Severe dehydration",
+          "steps": [
+            {
+              "text": "Keep giving small sips of rehydration mix every few minutes, even if they vomit some.",
+              "urgent": true,
+              "source": {
+                "manual": "fm-21-10",
+                "page": 32
+              }
+            },
+            {
+              "text": "Babies and young children worsen fast. Get medical help as soon as possible.",
+              "urgent": true,
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 112
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "infection",
+      "title": "Wound infection warning signs",
+      "summary": "A wound that gets worse instead of better.",
+      "keywords": [
+        "infect",
+        "pus",
+        "red streak",
+        "swollen",
+        "fever",
+        "septic",
+        "wound care"
+      ],
+      "start": "q-signs",
+      "nodes": [
+        {
+          "id": "q-signs",
+          "question": "Is there spreading redness, red streaks, pus, increasing pain or swelling, or fever?",
+          "yes": "infected",
+          "no": "prevent"
+        },
+        {
+          "id": "prevent",
+          "title": "Keep wounds clean",
+          "steps": [
+            {
+              "text": "All wounds are dirty. Rinse with lots of clean (boiled or treated) water.",
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 21
+              }
+            },
+            {
+              "text": "Cover with a clean dressing. Change it daily or when wet or dirty, with clean hands.",
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 21
+              }
+            },
+            {
+              "text": "Check the wound every day for warning signs.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 185
+              }
+            }
+          ]
+        },
+        {
+          "id": "infected",
+          "title": "Possible infection",
+          "steps": [
+            {
+              "text": "Mark the edge of the redness with a pen and note the time, so you can see if it's spreading.",
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 185
+              }
+            },
+            {
+              "text": "Clean and redress the wound twice a day. Keep the area raised and still.",
+              "source": {
+                "manual": "fm-4-25-11",
+                "page": 21
+              }
+            },
+            {
+              "text": "Fever, red streaks, spreading redness, or the person seems very sick: they need antibiotics from a clinician. Get help.",
+              "urgent": true,
+              "source": {
+                "manual": "atp-4-02-11",
+                "page": 185
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

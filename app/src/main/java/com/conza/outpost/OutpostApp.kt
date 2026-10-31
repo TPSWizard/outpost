@@ -16,6 +16,7 @@ import com.conza.outpost.storage.ContentStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import org.maplibre.android.MapLibre
 import java.util.concurrent.TimeUnit
@@ -41,8 +42,21 @@ class AppContainer(private val context: Context) {
     val medical by lazy { MedicalData(context) }
     val drugs by lazy { DrugDatabase(storage) }
     val llm by lazy { LocalLlm(context) }
-    val index by lazy { RetrievalIndex(db, llm, settings, appScope) }
+    val index by lazy { RetrievalIndex(db, llm, settings, appScope).also { it.pdfText = com.conza.outpost.ai.AndroidPdfText(context) } }
+
+    /** Every PDF in the books folders (downloaded manuals + imports), with catalog titles where known. */
+    suspend fun pdfLibrary(): List<Pair<java.io.File, String>> {
+        val titles = db.installed().byKind(com.conza.outpost.catalog.ResourceKind.DOC.name).associate { java.io.File(it.filePath).absolutePath to it.title }
+        return storage.allRoots().map { java.io.File(it, "books") }.filter { it.isDirectory }
+            .flatMap { d -> d.listFiles { f -> f.isFile && f.name.endsWith(".pdf", true) }.orEmpty().toList() }
+            .map { f -> f to (titles[f.absolutePath] ?: f.nameWithoutExtension.replace('_', ' ')) }
+    }
+
+    fun syncPdfIndex() = appScope.launch { runCatching { index.syncPdfs(pdfLibrary()) } }
     val assistant by lazy { Assistant(context, this) }
+    val gridDown = com.conza.outpost.griddown.GridDownRepo(context, db, settings)
+    val nearby by lazy { com.conza.outpost.griddown.NearbyMesh(context, appScope) }
+    val meshtastic by lazy { com.conza.outpost.griddown.MeshtasticLink(context, appScope) }
 }
 
 /** SharedPreferences-backed settings. */
@@ -107,6 +121,69 @@ class Settings(context: Context) {
         get() = prefs.getBoolean("use_sources", true)
         set(v) = prefs.edit().putBoolean("use_sources", v).apply()
 
+    // ---- Grid-down ----
+
+    /** Red-on-black, lowest refresh rate, background work paused, AI unloaded when not in use. */
+    var survivalMode: Boolean
+        get() = prefs.getBoolean("survival_mode", false)
+        set(v) = prefs.edit().putBoolean("survival_mode", v).apply()
+
+    /** Bigger type and touch targets for one-handed use in the dark. */
+    var largeText: Boolean
+        get() = prefs.getBoolean("large_text", false)
+        set(v) = prefs.edit().putBoolean("large_text", v).apply()
+
+    /** Epoch day the outage started, or null when there is no outage. */
+    var outageStartEpochDay: Long?
+        get() = prefs.getLong("outage_start", Long.MIN_VALUE).takeIf { it != Long.MIN_VALUE }
+        set(v) = prefs.edit().apply { if (v == null) remove("outage_start") else putLong("outage_start", v) }.apply()
+
+    /** HOT | TEMPERATE | COLD */
+    var climate: String
+        get() = prefs.getString("climate", "TEMPERATE") ?: "TEMPERATE"
+        set(v) = prefs.edit().putString("climate", v).apply()
+
+    var altitudeMeters: Int
+        get() = prefs.getInt("altitude_m", 0)
+        set(v) = prefs.edit().putInt("altitude_m", v).apply()
+
+    var homeLat: Double?
+        get() = prefs.getString("home_lat", null)?.toDoubleOrNull()
+        set(v) = prefs.edit().putString("home_lat", v?.toString()).apply()
+
+    var homeLon: Double?
+        get() = prefs.getString("home_lon", null)?.toDoubleOrNull()
+        set(v) = prefs.edit().putString("home_lon", v?.toString()).apply()
+
+    /** Battery percent one assistant answer costs, measured by the benchmark (null = not measured). */
+    var aiPercentPerAnswer: Double?
+        get() = prefs.getFloat("ai_pct_answer", -1f).toDouble().takeIf { it >= 0 }
+        set(v) = prefs.edit().putFloat("ai_pct_answer", (v ?: -1.0).toFloat()).apply()
+
+    /** True when [aiPercentPerAnswer] came from the charge counter (false = estimated from speed). */
+    var aiCostMeasured: Boolean
+        get() = prefs.getBoolean("ai_cost_measured", false)
+        set(v) = prefs.edit().putBoolean("ai_cost_measured", v).apply()
+
+    /** "short" (≤ 80 words) or "explain". */
+    var answerMode: String
+        get() = prefs.getString("answer_mode", "short") ?: "short"
+        set(v) = prefs.edit().putString("answer_mode", v).apply()
+
+    /** Power budget inputs, stored as JSON. */
+    var powerBudget: String?
+        get() = prefs.getString("power_budget", null)
+        set(v) = prefs.edit().putString("power_budget", v).apply()
+
+    var bleachPercent: Double
+        get() = prefs.getFloat("bleach_pct", 6f).toDouble()
+        set(v) = prefs.edit().putFloat("bleach_pct", v.toFloat()).apply()
+
+    fun listen(onChange: (String?) -> Unit): android.content.SharedPreferences.OnSharedPreferenceChangeListener =
+        android.content.SharedPreferences.OnSharedPreferenceChangeListener { _, k -> onChange(k) }.also { prefs.registerOnSharedPreferenceChangeListener(it) }
+
+    fun unlisten(l: android.content.SharedPreferences.OnSharedPreferenceChangeListener) = prefs.unregisterOnSharedPreferenceChangeListener(l)
+
     // ---- Benchmark ----
     var lastBenchmark: String?
         get() = prefs.getString("last_benchmark", null)
@@ -124,6 +201,7 @@ class OutpostApp : Application() {
         // No API key or tile server: every tile comes from local .pmtiles files.
         MapLibre.getInstance(this)
         DownloadWorker.ensureChannel(this)
+        com.conza.outpost.griddown.PowerMonitor.schedule(this, container.settings.survivalMode)
     }
 }
 

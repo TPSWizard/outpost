@@ -14,7 +14,8 @@ of Docker containers. Outpost implements each of those features natively inside 
 | Data Tools (CyberChef), IT-Tools | **Toolkit → Data tools**: downloadable offline web apps served from local files |
 | Education (Kolibri) | **Toolkit → Education**: hands off to the official Kolibri Android app |
 | System Benchmark | **Toolkit → Benchmark**: CPU, memory, storage, and tokens/sec |
-| Easy Setup + content manager | **Content** tab: NOMAD's own catalogs plus AI models and tool packs |
+| Easy Setup + content manager | **Toolkit → Content & downloads**: NOMAD's own catalogs plus AI models, tool packs, and field manuals |
+| (new) Grid-down mode | **Today** tab: "Day N of the outage", daily checklists, supplies, power budget, first aid, radio, and phone-to-phone sharing (see [docs/grid-down.md](docs/grid-down.md)) |
 | Supply Depot (Jellyfin, Vaultwarden, …) | Not ported: these are server apps |
 
 ## Highlights
@@ -38,6 +39,27 @@ of Docker containers. Outpost implements each of those features natively inside 
 - **Medical.** `DrugIngestWorker` streams openFDA's 14-part bulk export (~1.8 GB) through `JsonReader` into a
   resumable SQLite build, then swaps the finished database in. Search covers name or "what it treats". The
   interaction check highlights where one drug's label mentions the others.
+
+- **Grid-down (`griddown/`, `ui/griddown/`).** Built for a 90-day outage on one phone with a solar panel.
+  - **Today:** the outage day and phase, a daily checklist (water, food, health, security, communication, morale)
+    tuned to the household, low-supply warnings, and the battery estimate.
+  - **Power:** Survival mode (red-on-black theme, lowest refresh rate, downloads and indexing paused, AI unloaded
+    when idle, map loads on tap), measured drain with Survival mode on vs. off, a solar/power-bank/car budget,
+    the battery cost of an assistant answer measured by the benchmark, and a wakelock/alarm audit. Below 15 % a
+    banner offers the printable "if this phone dies" summary.
+  - **Supplies and household:** days of water, food, fuel, and batteries left at the family's needs (FEMA water,
+    USDA calories, pets), and how long each medication will last, with a pharmacist caveat and a link to its FDA label.
+  - **Calculators and first aid:** EPA bleach dosing, CDC boiling time by altitude, USDA fridge/freezer limits, and
+    yes/no first-aid checklists citing Army manual pages that open the PDF at that page.
+  - **Weather and sky:** barometer trend, plus sunrise, sunset, and moon phase calculated offline.
+  - **Assistant:** knows the household context, searches PDFs page by page (PDFBox), proposes actions you
+    confirm, sends medical and water questions to the checklists first, and has Short and Explain modes.
+  - **Communications:** radio frequencies, a log, and a listening schedule; Nearby Connections sharing between
+    phones (notes, pins, messages, supplies, files); Meshtastic over BLE (experimental).
+  - **Paper and backup:** PDF cards (family plan, medications, quick reference, map with pins), a backup and
+    restore .zip for an SD card or USB drive, and a check that downloads aren't damaged.
+  - **Before the outage:** a checklist of what to download while there's still internet.
+  - **Privacy:** no analytics; everything stays on the phone or SD card.
 
 ## Build
 

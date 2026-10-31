@@ -95,6 +95,70 @@
   ],
   "manuals": [
     {
+      "slug": "grid-down",
+      "name": "Grid-down essentials",
+      "recommended": true,
+      "description": "Public-domain U.S. government guides for a long outage: food preservation, gardening, water supply, and ham radio licensing. Download before the outage.",
+      "resources": [
+        {
+          "id": "usda-home-canning",
+          "version": "2015",
+          "title": "USDA Complete Guide to Home Canning (2015)",
+          "description": "The tested reference for safe canning: jams, pickles, fruit, tomatoes, vegetables, and meat, with processing times by altitude. Public domain (USDA).",
+          "url": "https://archive.org/download/usda-complete-guide-to-home-canning-2015-revision/USDA-Complete-Guide-to-Home-Canning-2015-revision.pdf",
+          "size_mb": 17
+        },
+        {
+          "id": "usda-farm-garden-1922",
+          "version": "1922",
+          "title": "USDA Farmers' Bulletin 937: The Farm Garden in the North",
+          "description": "Growing a family vegetable garden: soil, planting, crops, and storing the harvest. Historical (1922) but practical; public domain.",
+          "url": "https://archive.org/download/CAT87204093/farmbul0937rev1922.pdf",
+          "size_mb": 3
+        },
+        {
+          "id": "usda-garden-plans-1941",
+          "version": "1941",
+          "title": "USDA Plans for the Home Vegetable Garden (1941)",
+          "description": "Garden layouts sized to feed a family. Public domain (USDA).",
+          "url": "https://archive.org/download/plansforhomevege1941unit/plansforhomevege1941unit.pdf",
+          "size_mb": 1
+        },
+        {
+          "id": "usda-farmstead-water-1925",
+          "version": "1925",
+          "title": "USDA Farmers' Bulletin 1448: Farmstead Water Supply",
+          "description": "Wells, springs, cisterns, and rainwater collection without city water. Historical (1925): test water with modern methods. Public domain.",
+          "url": "https://archive.org/download/CAT87203105/farmbul1448.pdf",
+          "size_mb": 3
+        },
+        {
+          "id": "ncvec-technician-pool",
+          "version": "2026-2030",
+          "title": "Ham radio Technician question pool (2026–2030)",
+          "description": "Every question that can appear on the entry-level FCC amateur license exam, with answers. Public domain (NCVEC).",
+          "url": "https://www.ncvec.org/downloads/2026-2030%20Technician%20Pool%20and%20Syllabus%20Public%20Release%20Feb%2019%202026.pdf",
+          "size_mb": 1
+        },
+        {
+          "id": "ncvec-general-pool",
+          "version": "2023-2027",
+          "title": "Ham radio General question pool (2023–2027)",
+          "description": "The next license up: HF privileges for long-distance contacts. Public domain (NCVEC), 6th errata.",
+          "url": "https://www.ncvec.org/downloads/General%20Class%20Pool%20and%20Syllabus%202023-2027%20Public%20Release%20with%206th%20Errata%20Feb%204%202026.pdf",
+          "size_mb": 1
+        },
+        {
+          "id": "ncvec-extra-pool",
+          "version": "2024-2028",
+          "title": "Ham radio Extra question pool (2024–2028)",
+          "description": "The top license class. Public domain (NCVEC), 4th errata.",
+          "url": "https://www.ncvec.org/downloads/2024-2028%20Extra%20Class%20Question%20Pool%20and%20Syllabus%20Public%20Release%20with%204th%20Errata%20Feb%204%202026.pdf",
+          "size_mb": 1
+        }
+      ]
+    },
+    {
       "slug": "fm-survival",
       "name": "Survival & fieldcraft",
       "recommended": true,

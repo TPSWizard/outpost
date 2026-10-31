@@ -31,6 +31,9 @@ data class BenchResult(
     val llmTokensPerSec: Double?,
     val llmModel: String?,
     val score: Int,
+    /** Battery percent per ~200-word answer (measured with the charge counter when possible). */
+    val aiPercentPerAnswer: Double? = null,
+    val aiCostMeasured: Boolean = false,
     val at: Long = System.currentTimeMillis(),
 ) {
     fun toJson() = Json.encodeToString(serializer(), this)
@@ -67,6 +70,8 @@ object Benchmark {
 
         var tps: Double? = null
         var model: String? = null
+        var aiPct: Double? = null
+        var aiMeasured = false
         val models = runCatching { c.assistant.installedChatModels() }.getOrDefault(emptyList())
         val pick = models.firstOrNull { it.resourceId == c.settings.chatModelId } ?: models.minByOrNull { it.sizeBytes }
         if (pick != null && c.llm.available) {
@@ -79,6 +84,25 @@ object Benchmark {
                 ) { true }
                 tps = stats.tokensPerSecond
                 model = pick.title
+
+                // Battery cost of an answer: charge counter before/after a longer generation, unplugged.
+                progress("AI: measuring battery cost…")
+                val before = com.conza.outpost.griddown.PowerMonitor.read(context)
+                val cost = c.llm.generate(listOf("user" to "Explain in detail how to store drinking water safely for a month."), 192, 0.0f) { true }
+                val after = com.conza.outpost.griddown.PowerMonitor.read(context)
+                val answerTokens = 260.0 // ≈ 200 words
+                val cap = before?.capacityUah
+                if (before != null && after != null && !before.charging && !after.charging && cap != null &&
+                    before.chargeCounterUah != null && after.chargeCounterUah != null && cost.tokens > 0) {
+                    val used = (before.chargeCounterUah - after.chargeCounterUah).toDouble()
+                    if (used > 0) { aiPct = used / cap * 100 * answerTokens / cost.tokens; aiMeasured = true }
+                }
+                if (aiPct == null && cost.tokensPerSecond > 0) {
+                    // Estimate: ~5 W while the CPU runs flat out; 17.6 Wh battery (Pixel 8).
+                    val seconds = answerTokens / cost.tokensPerSecond + 3
+                    aiPct = 5.0 * seconds / 3600 / 17.6 * 100
+                }
+                aiPct?.let { c.settings.aiPercentPerAnswer = it; c.settings.aiCostMeasured = aiMeasured }
             }
         }
 
@@ -90,6 +114,7 @@ object Benchmark {
             cpuSingleMBs = single, cpuMultiMBs = multi, memoryGBs = mem,
             storageWriteMBs = w, storageReadMBs = r,
             llmTokensPerSec = tps, llmModel = model, score = score,
+            aiPercentPerAnswer = aiPct, aiCostMeasured = aiMeasured,
         ).also { c.settings.lastBenchmark = it.toJson() }
     }
 

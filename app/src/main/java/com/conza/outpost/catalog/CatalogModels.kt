@@ -87,7 +87,18 @@ enum class ResourceKind(val folder: String, val extension: String) {
     MODEL("models", "gguf"),
     /** Offline web tools (CyberChef, IT-Tools): downloaded as .zip, extracted into a folder. */
     TOOL("tools", "zip"),
+    /** PDF books (field manuals, guides): read in the built-in PDF viewer, listed in the Library. */
+    DOC("books", "pdf"),
 }
+
+@Serializable
+data class ManualCategory(
+    val slug: String,
+    val name: String,
+    val description: String = "",
+    val recommended: Boolean = false,
+    val resources: List<ExtraResource>,
+)
 
 // ---- outpost-extras.json (Outpost's own catalog: AI models + tool packs) ----
 @Serializable
@@ -95,6 +106,7 @@ data class ExtrasSpec(
     @SerialName("spec_version") val specVersion: String,
     val models: List<ExtraResource> = emptyList(),
     val tools: List<ExtraResource> = emptyList(),
+    val manuals: List<ManualCategory> = emptyList(),
 )
 
 @Serializable
@@ -170,9 +182,10 @@ data class Catalog(
     val versions: Map<String, String>,
     val models: List<CatalogSection> = emptyList(),
     val tools: List<CatalogSection> = emptyList(),
+    val manuals: List<CatalogSection> = emptyList(),
 ) {
     fun allItems(): List<CatalogItem> =
-        (maps + library + models + tools).flatMap { s -> s.groups.flatMap { it.items } } + (wikipedia?.items ?: emptyList())
+        (maps + library + models + tools + manuals).flatMap { s -> s.groups.flatMap { it.items } } + (wikipedia?.items ?: emptyList())
 
     fun item(id: String): CatalogItem? = allItems().firstOrNull { it.id == id }
 }

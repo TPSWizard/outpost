@@ -45,7 +45,7 @@ class LibraryViewModel(app: Application) : AndroidViewModel(app) {
             app.container.downloader.observe()
                 .map { m -> m.values.count { it.state == androidx.work.WorkInfo.State.SUCCEEDED } }
                 .distinctUntilChanged()
-                .collect { library.refresh() }
+                .collect { rescan() }
         }
         viewModelScope.launch {
             queryFlow.debounce(220).distinctUntilChanged().collectLatest { q ->
@@ -83,6 +83,9 @@ class LibraryViewModel(app: Application) : AndroidViewModel(app) {
     private val storage = app.container.storage
     private val _pdfs = MutableStateFlow<List<java.io.File>>(emptyList())
     val pdfs: StateFlow<List<java.io.File>> = _pdfs.asStateFlow()
+    /** File name → catalog title, for field manuals downloaded through Content. */
+    private val _pdfTitles = MutableStateFlow<Map<String, String>>(emptyMap())
+    val pdfTitles: StateFlow<Map<String, String>> = _pdfTitles.asStateFlow()
     val importing = MutableStateFlow<String?>(null)
     val message = MutableStateFlow<String?>(null)
 
@@ -90,7 +93,11 @@ class LibraryViewModel(app: Application) : AndroidViewModel(app) {
         _pdfs.value = storage.allRoots().map { java.io.File(it, BOOKS) }.filter { it.isDirectory }
             .flatMap { d -> d.listFiles { f -> f.isFile && f.name.endsWith(".pdf", true) }.orEmpty().toList() }
             .sortedBy { it.name.lowercase() }
+        _pdfTitles.value = app().container.db.installed().byKind(com.conza.outpost.catalog.ResourceKind.DOC.name)
+            .associate { java.io.File(it.filePath).name to it.title }
     }
+
+    private fun app() = getApplication<Application>()
 
     /** Copies a PDF or .zim the user picked into Outpost's storage. ZIMs join the Library; PDFs open in the viewer. */
     fun import(uri: android.net.Uri) = viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
@@ -116,7 +123,11 @@ class LibraryViewModel(app: Application) : AndroidViewModel(app) {
         rescan()
     }
 
-    fun deletePdf(f: java.io.File) { f.delete(); scanPdfs() }
+    fun deletePdf(f: java.io.File) = viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+        val db = app().container.db.installed()
+        db.byKind(com.conza.outpost.catalog.ResourceKind.DOC.name).firstOrNull { it.filePath == f.absolutePath }?.let { db.delete(it.resourceId) }
+        f.delete(); scanPdfs()
+    }
 
     companion object { const val BOOKS = "books" }
 }

@@ -74,6 +74,7 @@ fun LibraryScreen(
     val books by vm.books.collectAsStateWithLifecycle()
     val search by vm.search.collectAsStateWithLifecycle()
     val pdfs by vm.pdfs.collectAsStateWithLifecycle()
+    val pdfTitles by vm.pdfTitles.collectAsStateWithLifecycle()
     val importing by vm.importing.collectAsStateWithLifecycle()
     val message by vm.message.collectAsStateWithLifecycle()
     val snackbar = androidx.compose.runtime.remember { androidx.compose.material3.SnackbarHostState() }
@@ -120,7 +121,7 @@ fun LibraryScreen(
                     )
                     if (search.searching) LinearProgressIndicator(Modifier.fillMaxWidth().padding(horizontal = 12.dp))
                     importing?.let { Text("Importing $it…", Modifier.padding(horizontal = 16.dp), style = MaterialTheme.typography.labelSmall) }
-                    if (search.query.isBlank()) BookList(list, onOpen, pdfs, onOpenPdfFile, vm::deletePdf)
+                    if (search.query.isBlank()) BookList(list, onOpen, pdfs, pdfTitles, onOpenPdfFile, { vm.deletePdf(it) })
                     else SearchResults(search, anyFullText = list.any { it.hasFullText }, onFullText = vm::runFullText, onOpen = onOpen)
                 }
             }
@@ -153,18 +154,19 @@ private fun BookList(
     books: List<Book>,
     onOpen: (String, String?) -> Unit,
     pdfs: List<java.io.File>,
+    pdfTitles: Map<String, String>,
     onOpenPdf: (String) -> Unit,
     onDeletePdf: (java.io.File) -> Unit,
 ) {
     LazyColumn(contentPadding = PaddingValues(12.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
         if (pdfs.isNotEmpty()) {
-            item(key = "pdf-h") { Text("My PDFs", style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary) }
+            item(key = "pdf-h") { Text("Books & field manuals", style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary) }
             items(pdfs, key = { "pdf:" + it.absolutePath }) { f ->
                 Row(Modifier.fillMaxWidth().clickable { onOpenPdf(f.absolutePath) }.padding(vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.AutoMirrored.Filled.MenuBook, null, tint = MaterialTheme.colorScheme.primary)
                     Spacer(Modifier.width(12.dp))
                     Column(Modifier.weight(1f)) {
-                        Text(f.nameWithoutExtension.replace('_', ' '), style = MaterialTheme.typography.bodyLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(pdfTitles[f.name] ?: f.nameWithoutExtension.replace('_', ' '), style = MaterialTheme.typography.bodyLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         Text(formatBytes(f.length()), style = MaterialTheme.typography.labelSmall)
                     }
                     IconButton(onClick = { onDeletePdf(f) }) { Icon(Icons.Filled.Delete, "Delete") }

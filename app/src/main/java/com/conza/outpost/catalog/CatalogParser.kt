@@ -37,6 +37,11 @@ object CatalogParser {
                         extras.tools.map { it.toItem(ResourceKind.TOOL) }),
                 )),
             ),
+            manuals = listOf(
+                CatalogSection("Field manuals", extras.manuals.map { m ->
+                    CatalogGroup("manuals:${m.slug}", m.name, m.description, m.resources.map { it.toItem(ResourceKind.DOC) }, recommended = m.recommended)
+                }),
+            ),
             versions = c.versions + ("extras" to extras.specVersion),
         )
     }

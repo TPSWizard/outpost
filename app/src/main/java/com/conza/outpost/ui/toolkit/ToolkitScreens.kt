@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Notes
+import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.MedicalServices
 import androidx.compose.material.icons.filled.School
@@ -60,6 +61,7 @@ private data class Tile(val title: String, val body: String, val icon: ImageVect
 @Composable
 fun ToolkitScreen(
     onMedical: () -> Unit,
+    onManuals: () -> Unit,
     onNotes: () -> Unit,
     onTools: () -> Unit,
     onLearn: () -> Unit,
@@ -68,6 +70,7 @@ fun ToolkitScreen(
 ) {
     val tiles = listOf(
         Tile("Medical reference", "FDA drug labels, interaction check, conditions, and home & herbal remedies.", Icons.Filled.MedicalServices, onMedical),
+        Tile("Field manuals", "Survival, navigation, casualty care, preparedness, home security, and firearm maintenance.", Icons.AutoMirrored.Filled.MenuBook, onManuals),
         Tile("Notes & documents", "Markdown notes and imported files. The assistant can search them.", Icons.AutoMirrored.Filled.Notes, onNotes),
         Tile("Data tools", "CyberChef and IT-Tools: encoding, encryption, hashing, converters.", Icons.Filled.Build, onTools),
         Tile("Education", "Khan Academy courses through the Kolibri app.", Icons.Filled.School, onLearn),

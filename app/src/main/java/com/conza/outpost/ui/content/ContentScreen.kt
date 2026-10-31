@@ -104,7 +104,7 @@ fun ContentScreen(initialTab: Int = 0, vm: ContentViewModel = viewModel()) {
         Column(Modifier.padding(padding).fillMaxSize()) {
             StorageBar(state.storage)
             PrimaryScrollableTabRow(selectedTabIndex = tab, edgePadding = 8.dp) {
-                listOf("Maps", "Reference", "Wikipedia", "AI models", "Tools").forEachIndexed { i, label ->
+                listOf("Maps", "Reference", "Wikipedia", "AI models", "Tools", "Field manuals").forEachIndexed { i, label ->
                     Tab(selected = tab == i, onClick = { tab = i }, text = { Text(label) })
                 }
             }
@@ -120,7 +120,8 @@ fun ContentScreen(initialTab: Int = 0, vm: ContentViewModel = viewModel()) {
                 1 -> catalog.library
                 2 -> listOfNotNull(catalog.wikipedia?.let { CatalogSection("Wikipedia", listOf(it)) })
                 3 -> catalog.models
-                else -> catalog.tools
+                4 -> catalog.tools
+                else -> catalog.manuals
             }
             LazyColumn(
                 contentPadding = PaddingValues(12.dp),
@@ -136,7 +137,7 @@ fun ContentScreen(initialTab: Int = 0, vm: ContentViewModel = viewModel()) {
                         )
                     }
                     items(section.groups, key = { it.key }) { group ->
-                        GroupCard(group, state, actions, initiallyExpanded = group.pickOne || tab >= 3)
+                        GroupCard(group, state, actions, initiallyExpanded = group.pickOne || tab in 3..4 || group.recommended)
                     }
                 }
             }

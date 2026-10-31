@@ -15,6 +15,7 @@ object FileFormats {
         ResourceKind.ZIM -> readZimMagic(file) == ZIM_MAGIC
         ResourceKind.MODEL -> startsWith(file, "GGUF".toByteArray())
         ResourceKind.TOOL -> startsWith(file, byteArrayOf(0x50, 0x4B, 0x03, 0x04)) // PK\3\4
+        ResourceKind.DOC -> startsWith(file, "%PDF".toByteArray())
     }
 
     private fun startsWith(file: File, magic: ByteArray): Boolean = runCatching {

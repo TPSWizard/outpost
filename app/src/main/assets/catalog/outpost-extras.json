@@ -1,34 +1,309 @@
 {
-  "spec_version": "2026-10-31",
+  "spec_version": "2026-10-31b",
   "models": [
-    {"id": "qwen3-1.7b-instruct", "version": "q4_k_m", "title": "Qwen3 1.7B", "role": "chat", "ram_gb": 4, "recommended": true,
-     "description": "Best balance of speed and quality on most phones. Good at following instructions and summarizing sources.",
-     "url": "https://huggingface.co/unsloth/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_K_M.gguf", "size_mb": 1056},
-    {"id": "qwen2.5-0.5b-instruct", "version": "q4_k_m", "title": "Qwen2.5 0.5B", "role": "chat", "ram_gb": 2,
-     "description": "Tiny and fast. Works on older or low-memory phones; answers are simpler.",
-     "url": "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qwen2.5-0.5b-instruct-q4_k_m.gguf", "size_mb": 469},
-    {"id": "llama-3.2-1b-instruct", "version": "q4_k_m", "title": "Llama 3.2 1B", "role": "chat", "ram_gb": 3,
-     "description": "Meta's small model. Fast, friendly tone, decent general knowledge.",
-     "url": "https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf", "size_mb": 771},
-    {"id": "gemma-3-1b-it", "version": "q4_k_m", "title": "Gemma 3 1B", "role": "chat", "ram_gb": 3,
-     "description": "Google's small model. Good writing quality for its size.",
-     "url": "https://huggingface.co/ggml-org/gemma-3-1b-it-GGUF/resolve/main/gemma-3-1b-it-Q4_K_M.gguf", "size_mb": 769},
-    {"id": "llama-3.2-3b-instruct", "version": "q4_k_m", "title": "Llama 3.2 3B", "role": "chat", "ram_gb": 6,
-     "description": "Noticeably smarter than the 1B models. Needs a recent phone with 6 GB+ RAM.",
-     "url": "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf", "size_mb": 1926},
-    {"id": "qwen3-4b-instruct-2507", "version": "q4_k_m", "title": "Qwen3 4B Instruct", "role": "chat", "ram_gb": 8,
-     "description": "Highest quality that fits on a phone. Flagship phones with 8 GB+ RAM only; slower.",
-     "url": "https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF/resolve/main/Qwen3-4B-Instruct-2507-Q4_K_M.gguf", "size_mb": 2381},
-    {"id": "nomic-embed-text-v1.5", "version": "q4_k_m", "title": "Nomic Embed Text v1.5", "role": "embedding", "ram_gb": 1,
-     "description": "Search model for your notes and documents (the same one Project NOMAD uses). Small; recommended alongside any chat model.",
-     "url": "https://huggingface.co/nomic-ai/nomic-embed-text-v1.5-GGUF/resolve/main/nomic-embed-text-v1.5.Q4_K_M.gguf", "size_mb": 80}
+    {
+      "id": "qwen3-1.7b-instruct",
+      "version": "q4_k_m",
+      "title": "Qwen3 1.7B",
+      "role": "chat",
+      "ram_gb": 4,
+      "recommended": true,
+      "description": "Best balance of speed and quality on most phones. Good at following instructions and summarizing sources.",
+      "url": "https://huggingface.co/unsloth/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_K_M.gguf",
+      "size_mb": 1056
+    },
+    {
+      "id": "qwen2.5-0.5b-instruct",
+      "version": "q4_k_m",
+      "title": "Qwen2.5 0.5B",
+      "role": "chat",
+      "ram_gb": 2,
+      "description": "Tiny and fast. Works on older or low-memory phones; answers are simpler.",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qwen2.5-0.5b-instruct-q4_k_m.gguf",
+      "size_mb": 469
+    },
+    {
+      "id": "llama-3.2-1b-instruct",
+      "version": "q4_k_m",
+      "title": "Llama 3.2 1B",
+      "role": "chat",
+      "ram_gb": 3,
+      "description": "Meta's small model. Fast, friendly tone, decent general knowledge.",
+      "url": "https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf",
+      "size_mb": 771
+    },
+    {
+      "id": "gemma-3-1b-it",
+      "version": "q4_k_m",
+      "title": "Gemma 3 1B",
+      "role": "chat",
+      "ram_gb": 3,
+      "description": "Google's small model. Good writing quality for its size.",
+      "url": "https://huggingface.co/ggml-org/gemma-3-1b-it-GGUF/resolve/main/gemma-3-1b-it-Q4_K_M.gguf",
+      "size_mb": 769
+    },
+    {
+      "id": "llama-3.2-3b-instruct",
+      "version": "q4_k_m",
+      "title": "Llama 3.2 3B",
+      "role": "chat",
+      "ram_gb": 6,
+      "description": "Noticeably smarter than the 1B models. Needs a recent phone with 6 GB+ RAM.",
+      "url": "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf",
+      "size_mb": 1926
+    },
+    {
+      "id": "qwen3-4b-instruct-2507",
+      "version": "q4_k_m",
+      "title": "Qwen3 4B Instruct",
+      "role": "chat",
+      "ram_gb": 8,
+      "description": "Highest quality that fits on a phone. Flagship phones with 8 GB+ RAM only; slower.",
+      "url": "https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF/resolve/main/Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+      "size_mb": 2381
+    },
+    {
+      "id": "nomic-embed-text-v1.5",
+      "version": "q4_k_m",
+      "title": "Nomic Embed Text v1.5",
+      "role": "embedding",
+      "ram_gb": 1,
+      "description": "Search model for your notes and documents (the same one Project NOMAD uses). Small; recommended alongside any chat model.",
+      "url": "https://huggingface.co/nomic-ai/nomic-embed-text-v1.5-GGUF/resolve/main/nomic-embed-text-v1.5.Q4_K_M.gguf",
+      "size_mb": 80
+    }
   ],
   "tools": [
-    {"id": "cyberchef", "version": "10.24.0", "title": "CyberChef", "entry": "CyberChef_v10.24.0.html",
-     "description": "GCHQ's 'cyber Swiss Army knife': encoding, encryption, hashing, compression, data analysis. Apache-2.0.",
-     "url": "https://github.com/gchq/CyberChef/releases/download/v10.24.0/CyberChef_v10.24.0.zip", "size_mb": 72},
-    {"id": "it-tools", "version": "2024.10.22", "title": "IT-Tools", "entry": "index.html",
-     "description": "Dozens of handy utilities: converters, generators, network calculators, formatters. GPL-3.0.",
-     "url": "https://github.com/CorentinTh/it-tools/releases/download/v2024.10.22-7ca5933/it-tools-2024.10.22-7ca5933.zip", "size_mb": 4}
+    {
+      "id": "cyberchef",
+      "version": "10.24.0",
+      "title": "CyberChef",
+      "entry": "CyberChef_v10.24.0.html",
+      "description": "GCHQ's 'cyber Swiss Army knife': encoding, encryption, hashing, compression, data analysis. Apache-2.0.",
+      "url": "https://github.com/gchq/CyberChef/releases/download/v10.24.0/CyberChef_v10.24.0.zip",
+      "size_mb": 72
+    },
+    {
+      "id": "it-tools",
+      "version": "2024.10.22",
+      "title": "IT-Tools",
+      "entry": "index.html",
+      "description": "Dozens of handy utilities: converters, generators, network calculators, formatters. GPL-3.0.",
+      "url": "https://github.com/CorentinTh/it-tools/releases/download/v2024.10.22-7ca5933/it-tools-2024.10.22-7ca5933.zip",
+      "size_mb": 4
+    }
+  ],
+  "manuals": [
+    {
+      "slug": "fm-survival",
+      "name": "Survival & fieldcraft",
+      "recommended": true,
+      "description": "Shelter, water, fire, food, signaling, cold weather, and ropework.",
+      "resources": [
+        {
+          "id": "fm-21-76",
+          "version": "1992",
+          "title": "FM 21-76 Survival",
+          "description": "The classic Army survival manual: shelter, water, fire, food, plants, navigation, and survival medicine.",
+          "url": "https://archive.org/download/Fm21-76SurvivalManual/FM21-76_SurvivalManual.pdf",
+          "size_mb": 3
+        },
+        {
+          "id": "fm-3-05-70",
+          "version": "2002",
+          "title": "FM 3-05.70 Survival",
+          "description": "Updated and expanded successor to FM 21-76, with more on medicine, plants, and climates.",
+          "url": "https://archive.org/download/fm-3-05.70-survival-2002/FM%203-05.70%20Survival%20%202002.pdf",
+          "size_mb": 21
+        },
+        {
+          "id": "fm-21-76-1",
+          "version": "1999",
+          "title": "FM 21-76-1 Survival, Evasion & Recovery",
+          "description": "Pocket multiservice guide to staying alive and getting found or getting home.",
+          "url": "https://archive.org/download/Fm21-76-1/Fm21-76-1.pdf",
+          "size_mb": 12
+        },
+        {
+          "id": "tc-21-3",
+          "version": "1986",
+          "title": "TC 21-3 Cold-Weather Survival",
+          "description": "Soldier's handbook for individual operations and survival in cold-weather areas.",
+          "url": "https://archive.org/download/milmanual-tc-21-3---soldiers-handbook-for-individual-operations-and-su/tc_21-3_-_soldiers_handbook_for_individual_operations_and_survival_in_cold-weather_areas_.pdf",
+          "size_mb": 1
+        },
+        {
+          "id": "tc-3-97-61",
+          "version": "2025-11",
+          "title": "TC 3-97.61 Military Mountaineering",
+          "description": "Knots, anchors, rope systems, climbing, and moving safely in mountain terrain.",
+          "url": "https://archive.org/download/military-mountaineering-tc-3-97.61-november-2025/Military%20Mountaineering%20TC%203-97.61%20%28November%202025%29.pdf",
+          "size_mb": 34
+        },
+        {
+          "id": "fm-5-125",
+          "version": "2001",
+          "title": "FM 5-125 Rigging Techniques",
+          "description": "Rope, knots, lashings, block and tackle, and moving heavy loads by hand.",
+          "url": "https://archive.org/download/RiggingTechniquesProceduresAndApplicationsFM51252001/Rigging%20Techniques%2C%20Procedures%2C%20And%20Applications%20%28FM%205-125%29%282001%29.pdf",
+          "size_mb": 4
+        },
+        {
+          "id": "fm-21-60",
+          "version": "1987",
+          "title": "FM 21-60 Visual Signals",
+          "description": "Hand-and-arm, flag, light, and ground-to-air signals.",
+          "url": "https://archive.org/download/milmanual-fm-21-60-visual-signals/fm_21-60_visual_signals.pdf",
+          "size_mb": 1
+        }
+      ]
+    },
+    {
+      "slug": "fm-navigation",
+      "name": "Navigation",
+      "description": "Finding your way with a map and compass, no GPS required.",
+      "resources": [
+        {
+          "id": "fm-3-25-26",
+          "version": "2001",
+          "title": "FM 3-25.26 Map Reading & Land Navigation",
+          "description": "Map symbols, grid coordinates, compass use, terrain association, and night navigation.",
+          "url": "https://archive.org/download/milmanual-fm-3-25.26-map-reading-and-land-navigation/fm_3-25.26_map_reading_and_land_navigation.pdf",
+          "size_mb": 24
+        }
+      ]
+    },
+    {
+      "slug": "fm-medical",
+      "name": "Medical & casualty care",
+      "description": "Bleeding control, first aid, casualty care, and staying healthy in the field.",
+      "resources": [
+        {
+          "id": "atp-4-02-11",
+          "version": "2026-03",
+          "title": "ATP 4-02.11 Tactical Combat Casualty Care & First Aid",
+          "description": "Current Army doctrine for treating injuries: tourniquets, airway, bleeding, shock, and evacuation.",
+          "url": "https://archive.org/download/army-techniques-publication-for-casualty-response-tactical-combat-casualty-care-/Army%20Techniques%20Publication%20for%20Casualty%20Response%2C%20Tactical%20Combat%20Casualty%20Care%20and%20First%20Aid%20-%20ATP%204-02.11%20%28March%202026%29.pdf",
+          "size_mb": 13
+        },
+        {
+          "id": "fm-4-25-11",
+          "version": "2002",
+          "title": "FM 4-25.11 First Aid",
+          "description": "Step-by-step first aid for wounds, burns, fractures, heat and cold injuries, and bites.",
+          "url": "https://archive.org/download/FM4-25.11/FM4-25.11.pdf",
+          "size_mb": 3
+        },
+        {
+          "id": "is-0871",
+          "version": "2002",
+          "title": "Combat Lifesaver Course (IS0871)",
+          "description": "Self-study course for non-medics who give advanced first aid.",
+          "url": "https://archive.org/download/IS0871CombatLifesaverCourse/IS0871CombatLifesaverCourse.pdf",
+          "size_mb": 5
+        },
+        {
+          "id": "fm-21-10",
+          "version": "2000",
+          "title": "FM 21-10 Field Hygiene & Sanitation",
+          "description": "Water disinfection, waste disposal, food safety, and disease prevention without utilities.",
+          "url": "https://archive.org/download/FM21-10_2000/FM21-10_2000.pdf",
+          "size_mb": 3
+        }
+      ]
+    },
+    {
+      "slug": "fm-disaster",
+      "name": "Disaster, nuclear & chemical preparedness",
+      "description": "Protecting your family from disasters, fallout, and chemical or biological hazards.",
+      "resources": [
+        {
+          "id": "fema-are-you-ready",
+          "version": "2004",
+          "title": "FEMA: Are You Ready?",
+          "description": "FEMA's in-depth guide to citizen preparedness: plans, kits, and every major hazard.",
+          "url": "https://archive.org/download/FemaEmergencyHandbook-areYouReady/FemaEmergencyHandbook-areYouReady.pdf",
+          "size_mb": 22
+        },
+        {
+          "id": "nwss",
+          "version": "1987",
+          "title": "Nuclear War Survival Skills",
+          "description": "Oak Ridge National Laboratory's guide to fallout shelters, ventilation, water, food, and a homemade fallout meter.",
+          "url": "https://archive.org/download/NuclearWarSurvivalSkills_201405/nwss.pdf",
+          "size_mb": 20
+        },
+        {
+          "id": "mcwp-3-37-2",
+          "version": "1998",
+          "title": "MCWP 3-37.2 NBC Protection",
+          "description": "Protection from nuclear, biological, and chemical hazards: masks, shelter, and decontamination.",
+          "url": "https://archive.org/download/milmanual-mcwp-3-37.2-nuclear-biological-and-chemical-nbc-protection/mcwp_3-37.2_nuclear_biological_and_chemical_nbc_protection.pdf",
+          "size_mb": 6
+        }
+      ]
+    },
+    {
+      "slug": "fm-security",
+      "name": "Home security & self-defense",
+      "description": "Securing a home or property and defending yourself unarmed.",
+      "resources": [
+        {
+          "id": "fm-3-19-30",
+          "version": "2001",
+          "title": "FM 3-19.30 Physical Security",
+          "description": "Locks, lighting, barriers, alarms, and security planning for protecting a site.",
+          "url": "https://archive.org/download/milmanual-fm-3-19.30-physical-security/fm_3-19.30_physical_security.pdf",
+          "size_mb": 3
+        },
+        {
+          "id": "fm-3-25-150",
+          "version": "2002",
+          "title": "FM 3-25.150 Combatives",
+          "description": "The Army's hand-to-hand self-defense manual: positions, escapes, and takedowns.",
+          "url": "https://archive.org/download/milmanual-fm-3-25.150-combatives/fm_3-25.150_combatives.pdf",
+          "size_mb": 24
+        }
+      ]
+    },
+    {
+      "slug": "fm-firearms",
+      "name": "Firearms: maintenance, safety & marksmanship",
+      "description": "Operating, cleaning, and accurately firing rifles and pistols. The M16/M4 manuals apply closely to the AR-15.",
+      "resources": [
+        {
+          "id": "tm-9-1005-319-10",
+          "version": "2010",
+          "title": "TM 9-1005-319-10 M16/M4 Operator's Manual",
+          "description": "Field-stripping, cleaning, lubrication, reassembly, functions check, and fixing stoppages for M16A2–A4 and M4 carbines.",
+          "url": "https://archive.org/download/operators-manual-for-rifle-5.56-mm/TM_9-1005-319-10.pdf",
+          "size_mb": 3
+        },
+        {
+          "id": "fm-3-22-9",
+          "version": "2003",
+          "title": "FM 3-22.9 Rifle Marksmanship",
+          "description": "Fundamentals of rifle marksmanship, zeroing, and range safety for the M16/M4 family.",
+          "url": "https://archive.org/download/milmanual-fm-3-22.9-rifle-marksmanship-m16a1-m16a2-3-m16a4-and-m4-carb/fm_3-22.9_rifle_marksmanship_m16a1_m16a2-3_m16a4_and_m4_carbine.pdf",
+          "size_mb": 22
+        },
+        {
+          "id": "tm-9-1005-317-10",
+          "version": "1985",
+          "title": "TM 9-1005-317-10 M9 Pistol Operator's Manual",
+          "description": "Operation, disassembly, cleaning, and troubleshooting of the M9 (Beretta 92) 9mm pistol.",
+          "url": "https://archive.org/download/milmanual-tm-9-1005-317-10---operators-manual-m9-9mm-handgun/tm_9-1005-317-10_-_operators_manual_m9_9mm_handgun.pdf",
+          "size_mb": 1
+        },
+        {
+          "id": "tc-3-23-35",
+          "version": "2017",
+          "title": "TC 3-23.35 Pistol",
+          "description": "Safe handling, fundamentals, and marksmanship with service pistols.",
+          "url": "https://archive.org/download/tc-3-23.35-pistol-2017/TC%203-23.35%20Pistol%20%202017.pdf",
+          "size_mb": 10
+        }
+      ]
+    }
   ]
 }

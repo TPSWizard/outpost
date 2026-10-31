@@ -174,6 +174,7 @@ private fun OutpostNavHost(nav: NavHostController, modifier: Modifier) {
         composable(Tab.Toolkit.route) {
             ToolkitScreen(
                 onMedical = { nav.navigate("medical") },
+                onManuals = { nav.navigate("content?tab=5") },
                 onNotes = { nav.navigate("notes") },
                 onTools = { nav.navigate("tools") },
                 onLearn = { nav.navigate("learn") },

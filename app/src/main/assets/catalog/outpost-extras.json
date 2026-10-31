@@ -1,0 +1,34 @@
+{
+  "spec_version": "2026-10-31",
+  "models": [
+    {"id": "qwen3-1.7b-instruct", "version": "q4_k_m", "title": "Qwen3 1.7B", "role": "chat", "ram_gb": 4, "recommended": true,
+     "description": "Best balance of speed and quality on most phones. Good at following instructions and summarizing sources.",
+     "url": "https://huggingface.co/unsloth/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_K_M.gguf", "size_mb": 1056},
+    {"id": "qwen2.5-0.5b-instruct", "version": "q4_k_m", "title": "Qwen2.5 0.5B", "role": "chat", "ram_gb": 2,
+     "description": "Tiny and fast. Works on older or low-memory phones; answers are simpler.",
+     "url": "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qwen2.5-0.5b-instruct-q4_k_m.gguf", "size_mb": 469},
+    {"id": "llama-3.2-1b-instruct", "version": "q4_k_m", "title": "Llama 3.2 1B", "role": "chat", "ram_gb": 3,
+     "description": "Meta's small model. Fast, friendly tone, decent general knowledge.",
+     "url": "https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf", "size_mb": 771},
+    {"id": "gemma-3-1b-it", "version": "q4_k_m", "title": "Gemma 3 1B", "role": "chat", "ram_gb": 3,
+     "description": "Google's small model. Good writing quality for its size.",
+     "url": "https://huggingface.co/ggml-org/gemma-3-1b-it-GGUF/resolve/main/gemma-3-1b-it-Q4_K_M.gguf", "size_mb": 769},
+    {"id": "llama-3.2-3b-instruct", "version": "q4_k_m", "title": "Llama 3.2 3B", "role": "chat", "ram_gb": 6,
+     "description": "Noticeably smarter than the 1B models. Needs a recent phone with 6 GB+ RAM.",
+     "url": "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf", "size_mb": 1926},
+    {"id": "qwen3-4b-instruct-2507", "version": "q4_k_m", "title": "Qwen3 4B Instruct", "role": "chat", "ram_gb": 8,
+     "description": "Highest quality that fits on a phone. Flagship phones with 8 GB+ RAM only; slower.",
+     "url": "https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF/resolve/main/Qwen3-4B-Instruct-2507-Q4_K_M.gguf", "size_mb": 2381},
+    {"id": "nomic-embed-text-v1.5", "version": "q4_k_m", "title": "Nomic Embed Text v1.5", "role": "embedding", "ram_gb": 1,
+     "description": "Search model for your notes and documents (the same one Project NOMAD uses). Small; recommended alongside any chat model.",
+     "url": "https://huggingface.co/nomic-ai/nomic-embed-text-v1.5-GGUF/resolve/main/nomic-embed-text-v1.5.Q4_K_M.gguf", "size_mb": 80}
+  ],
+  "tools": [
+    {"id": "cyberchef", "version": "10.24.0", "title": "CyberChef", "entry": "CyberChef_v10.24.0.html",
+     "description": "GCHQ's 'cyber Swiss Army knife': encoding, encryption, hashing, compression, data analysis. Apache-2.0.",
+     "url": "https://github.com/gchq/CyberChef/releases/download/v10.24.0/CyberChef_v10.24.0.zip", "size_mb": 72},
+    {"id": "it-tools", "version": "2024.10.22", "title": "IT-Tools", "entry": "index.html",
+     "description": "Dozens of handy utilities: converters, generators, network calculators, formatters. GPL-3.0.",
+     "url": "https://github.com/CorentinTh/it-tools/releases/download/v2024.10.22-7ca5933/it-tools-2024.10.22-7ca5933.zip", "size_mb": 4}
+  ]
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <cache-path name="pdf" path="pdf/" />
+    <!-- Imported books live in app-specific external storage (any volume). -->
+    <external-files-path name="books" path="books/" />
+</paths>

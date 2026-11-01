@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withContext
 import org.kiwix.libzim.Archive
 import org.kiwix.libzim.Entry
@@ -66,7 +67,12 @@ class ZimLibrary(
 
     /** Books on disk; re-emits when catalog installs change or [refresh] is called. */
     fun observeBooks(): Flow<List<Book>> =
-        combine(dao.observeByKind(ResourceKind.ZIM.name), rescan) { rows, _ ->
+        combine(
+            // Start with "no titles" so the list never waits on the database; titles fill in when it answers.
+            dao.observeByKind(ResourceKind.ZIM.name).onStart { emit(emptyList()) },
+            rescan,
+            com.conza.outpost.download.ContentEvents.changes,
+        ) { rows, _, _ ->
             val catalogTitles = rows.associate { File(it.filePath).name to it.title }
             scan(catalogTitles)
         }.flowOn(Dispatchers.IO)
@@ -87,7 +93,12 @@ class ZimLibrary(
         archives.keys.filter { it !in present }.forEach { id -> close(id) }
         return files.map { f ->
             val key = "${f.absolutePath}:${f.lastModified()}:${f.length()}"
-            bookCache.getOrPut(key) { load(f, catalogTitles[f.name]) }
+            // Failures aren't cached: a file that couldn't be opened a moment ago (still being moved
+            // into place, storage busy) gets another try on the next scan instead of staying broken.
+            bookCache[key]?.takeIf { it.error == null && (it.title != it.file.nameWithoutExtension || catalogTitles[f.name] == null) }
+                ?: load(f, catalogTitles[f.name]).also { b ->
+                    if (b.error == null) bookCache[key] = b else close(b.id)
+                }
         }.sortedBy { it.title.lowercase() }
     }
 

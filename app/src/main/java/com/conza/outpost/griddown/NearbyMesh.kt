@@ -151,6 +151,7 @@ class NearbyMesh(private val context: Context, private val scope: CoroutineScope
         while (dest.exists()) dest = File(dir, "${name.substringBeforeLast('.')}-${n++}.${name.substringAfterLast('.', "bin")}")
         android.os.ParcelFileDescriptor.AutoCloseInputStream(pfd).use { input -> dest.outputStream().use { input.copyTo(it) } }
         _status.value = "Received ${dest.name}"
+        com.conza.outpost.download.ContentEvents.changed()
         if (name.endsWith(".pdf", true)) context.container.syncPdfIndex()
     }
 

@@ -100,18 +100,20 @@ class LibraryViewModel(app: Application) : AndroidViewModel(app) {
         }
         importing.value = null
         message.value = result.fold({ "Added $name to your Library." }, { "Couldn't import $name: ${it.message}" })
-        rescan()
+        com.conza.outpost.download.ContentEvents.changed()
     }
 
     fun deletePdf(f: java.io.File) = viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
         val db = app().container.db.installed()
         db.byKind(com.conza.outpost.catalog.ResourceKind.DOC.name).firstOrNull { it.filePath == f.absolutePath }?.let { db.delete(it.resourceId) }
-        f.delete(); scanPdfs()
+        f.delete(); com.conza.outpost.download.ContentEvents.changed()
     }
 
     // Runs last so every property above is initialized before background work can touch it.
     init {
         scanPdfs()
+        // Books and PDFs refresh the moment content changes anywhere in the app.
+        viewModelScope.launch { com.conza.outpost.download.ContentEvents.changes.collect { scanPdfs() } }
         // Pick up libraries the moment a download finishes (and files copied in by hand on resume).
         viewModelScope.launch {
             app.container.downloader.observe()

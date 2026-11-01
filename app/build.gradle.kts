@@ -14,8 +14,8 @@ android {
         applicationId = "com.conza.outpost"
         minSdk = 24
         targetSdk = 36
-        versionCode = 9
-        versionName = "1.2.1"
+        versionCode = 10
+        versionName = "1.2.2"
     }
 
     // One universal APK (emulators, any device) plus a slim arm64 APK for modern phones.

@@ -107,6 +107,7 @@ class DownloadWorker(
         if (previous != null && previous.filePath != installed.absolutePath) {
             File(previous.filePath).deleteRecursively()
         }
+        ContentEvents.changed()
         Result.success()
     }
 

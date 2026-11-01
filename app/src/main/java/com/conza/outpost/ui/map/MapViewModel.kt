@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import java.io.File
 
@@ -30,8 +31,10 @@ class MapViewModel(app: Application) : AndroidViewModel(app) {
         app.assets.open("map/base-style.json").bufferedReader().use { it.readText() }
     }
 
-    val state: StateFlow<MapUiState> = app.container.db.installed()
-        .observeByKind(ResourceKind.MAP.name)
+    val state: StateFlow<MapUiState> = kotlinx.coroutines.flow.combine(
+        app.container.db.installed().observeByKind(ResourceKind.MAP.name).onStart { emit(emptyList()) },
+        com.conza.outpost.download.ContentEvents.changes,
+    ) { rows, _ -> rows }
         .map { rows ->
             // Catalog installs plus any .pmtiles copied into the maps folder by hand (e.g. from NOMAD).
             val titles = rows.associate { File(it.filePath).name to it.title }

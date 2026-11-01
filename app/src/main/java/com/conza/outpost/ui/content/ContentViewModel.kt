@@ -108,6 +108,7 @@ class ContentViewModel(app: Application) : AndroidViewModel(app) {
             f.deleteRecursively()
         }
         c.db.installed().delete(item.id)
+        com.conza.outpost.download.ContentEvents.changed()
         storage.value = readStorage()
     }
 

@@ -38,27 +38,6 @@ class LibraryViewModel(app: Application) : AndroidViewModel(app) {
     private val queryFlow = MutableStateFlow("")
     private var fullTextJob: Job? = null
 
-    init {
-        scanPdfs()
-        // Pick up libraries the moment a download finishes (and files copied in by hand on resume).
-        viewModelScope.launch {
-            app.container.downloader.observe()
-                .map { m -> m.values.count { it.state == androidx.work.WorkInfo.State.SUCCEEDED } }
-                .distinctUntilChanged()
-                .collect { rescan() }
-        }
-        viewModelScope.launch {
-            queryFlow.debounce(220).distinctUntilChanged().collectLatest { q ->
-                if (q.isBlank()) {
-                    _search.value = SearchState(query = q)
-                    return@collectLatest
-                }
-                _search.value = _search.value.copy(searching = true)
-                val hits = library.suggest(books.value.orEmpty(), q)
-                _search.value = _search.value.copy(titleHits = hits, searching = false)
-            }
-        }
-    }
 
     fun onQuery(q: String) {
         fullTextJob?.cancel()
@@ -128,6 +107,29 @@ class LibraryViewModel(app: Application) : AndroidViewModel(app) {
         val db = app().container.db.installed()
         db.byKind(com.conza.outpost.catalog.ResourceKind.DOC.name).firstOrNull { it.filePath == f.absolutePath }?.let { db.delete(it.resourceId) }
         f.delete(); scanPdfs()
+    }
+
+    // Runs last so every property above is initialized before background work can touch it.
+    init {
+        scanPdfs()
+        // Pick up libraries the moment a download finishes (and files copied in by hand on resume).
+        viewModelScope.launch {
+            app.container.downloader.observe()
+                .map { m -> m.values.count { it.state == androidx.work.WorkInfo.State.SUCCEEDED } }
+                .distinctUntilChanged()
+                .collect { rescan() }
+        }
+        viewModelScope.launch {
+            queryFlow.debounce(220).distinctUntilChanged().collectLatest { q ->
+                if (q.isBlank()) {
+                    _search.value = SearchState(query = q)
+                    return@collectLatest
+                }
+                _search.value = _search.value.copy(searching = true)
+                val hits = library.suggest(books.value.orEmpty(), q)
+                _search.value = _search.value.copy(titleHits = hits, searching = false)
+            }
+        }
     }
 
     companion object { const val BOOKS = "books" }

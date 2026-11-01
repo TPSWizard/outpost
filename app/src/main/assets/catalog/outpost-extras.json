@@ -68,7 +68,7 @@
       "title": "Nomic Embed Text v1.5",
       "role": "embedding",
       "ram_gb": 1,
-      "description": "Search model for your notes and documents (the same one Project NOMAD uses). Small; recommended alongside any chat model.",
+      "description": "Search model for your notes and documents. Small; recommended alongside any chat model.",
       "url": "https://huggingface.co/nomic-ai/nomic-embed-text-v1.5-GGUF/resolve/main/nomic-embed-text-v1.5.Q4_K_M.gguf",
       "size_mb": 80
     }

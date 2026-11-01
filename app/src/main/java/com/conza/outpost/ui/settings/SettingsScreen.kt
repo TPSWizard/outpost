@@ -97,7 +97,7 @@ fun SettingsScreen(onBack: () -> Unit) {
                     }
                 }
             }
-            Text("Files use Project NOMAD's names, so you can copy .zim and .pmtiles files from a NOMAD server into the zim/ and maps/ folders here.",
+            Text("You can copy .zim and .pmtiles files from a computer straight into the zim/ and maps/ folders here.",
                 style = MaterialTheme.typography.labelSmall)
 
             Heading("Assistant")
@@ -160,7 +160,7 @@ fun SettingsScreen(onBack: () -> Unit) {
             }
 
             Heading("About")
-            Text("Outpost brings Project NOMAD's offline knowledge server to a phone: offline Wikipedia and reference libraries, " +
+            Text("Outpost puts an offline knowledge kit on your phone: offline Wikipedia and reference libraries, " +
                 "maps, a medical reference, notes, tools, and an AI assistant, all without a connection.", style = MaterialTheme.typography.bodySmall)
             Text(
                 "Credits: content catalogs, regional maps, and medical datasets from Project NOMAD by Crosstalk Solutions (Apache-2.0 / MIT). " +

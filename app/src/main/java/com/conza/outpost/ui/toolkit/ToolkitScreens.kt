@@ -114,7 +114,7 @@ fun LearnScreen(onBack: () -> Unit) {
         Column(Modifier.padding(pad).padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text("Kolibri", style = MaterialTheme.typography.headlineSmall)
             Text(
-                "Project NOMAD's education platform is Kolibri by Learning Equality: Khan Academy videos and exercises, " +
+                "Kolibri by Learning Equality is a free offline education platform: Khan Academy videos and exercises, " +
                     "CK-12, and more, with progress tracking, all offline. Kolibri has its own Android app that downloads " +
                     "and plays channels without a connection.",
             )

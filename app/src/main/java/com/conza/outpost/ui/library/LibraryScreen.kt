@@ -141,7 +141,7 @@ private fun EmptyLibrary(onBrowseContent: () -> Unit) {
         Text("No offline libraries yet", style = MaterialTheme.typography.headlineSmall)
         Text(
             "Download Wikipedia, medical references, or survival guides from Content → Library. " +
-                "You can also copy .zim files from a NOMAD server into the zim folder shown on the About tab.",
+                "You can also copy .zim files from a computer into the zim folder shown in Settings.",
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(vertical = 12.dp),
         )

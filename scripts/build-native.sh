@@ -4,7 +4,8 @@
 #
 # Requirements: Android NDK r27+ and CMake 3.22+ (both installable with sdkmanager).
 # Usage: ANDROID_HOME=/path/to/sdk scripts/build-native.sh [/path/to/llama.cpp]
-# Without a llama.cpp path, CMake fetches the pinned commit from GitHub.
+# Without a llama.cpp path, CMake fetches the pinned commit from GitHub. The arm64-v8a configure
+# also fetches Arm's KleidiAI tarball (GGML_CPU_KLEIDIAI in app/src/main/cpp/CMakeLists.txt).
 set -euo pipefail
 SDK=${ANDROID_HOME:?set ANDROID_HOME}
 NDK=${ANDROID_NDK:-$(ls -d "$SDK"/ndk/* | sort -V | tail -1)}

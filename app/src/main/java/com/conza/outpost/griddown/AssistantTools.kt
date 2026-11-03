@@ -58,6 +58,19 @@ object AssistantTools {
 
     private val ACTION_LINE = Regex("""(?m)^\s*ACTION\s*:?\s*(\{.*\})\s*$""")
 
+    private val ACTION_WORDS = Regex(
+        "\\b(add|record|save|log|track|remember|stock|bought|calculat\\w*|how much|dose|drops|bleach|purif\\w*|" +
+            "disinfect\\w*|checklist|list|pack|go.?bag|kit|mark|pin|waypoint|location|spot|cache|stash)\\b",
+        RegexOption.IGNORE_CASE,
+    )
+
+    /**
+     * Whether [question] might be asking for an action (record a supply, compute a bleach dose, make a
+     * checklist, pin a place). [TOOL_PROMPT] is ~200 tokens the phone has to read before every answer,
+     * so it only goes in when it could matter; a false positive costs a little time, a miss costs the action.
+     */
+    fun wantsAction(question: String): Boolean = ACTION_WORDS.containsMatchIn(question)
+
     /** Splits a reply into display text and proposed actions. Malformed actions are dropped. */
     fun parse(reply: String): Pair<String, List<ProposedAction>> {
         val actions = ACTION_LINE.findAll(reply).mapNotNull { m -> runCatching { toAction(lenient.parseToJsonElement(m.groupValues[1]).jsonObject) }.getOrNull() }.toList()

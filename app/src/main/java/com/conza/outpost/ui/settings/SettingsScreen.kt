@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.conza.outpost.ai.NativeLlm
 import com.conza.outpost.ai.RemoteLlm
 import com.conza.outpost.container
 import com.conza.outpost.data.InstalledResource
@@ -109,6 +110,14 @@ fun SettingsScreen(onBack: () -> Unit) {
                 if (llmOk == false) {
                     Text(c.llm.unavailableReason.orEmpty(), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
                     OutlinedButton(onClick = { c.llm.resetCrashState(); test = "Restart Outpost to try on-device AI again." }) { Text("Retry on-device AI") }
+                }
+                if (llmOk == true && NativeLlm.safeMode) {
+                    // Safe mode is sticky: one crash during start-up and every later start uses the baseline
+                    // CPU code, which is several times slower. Make that visible instead of leaving it to the fine print.
+                    Text("On-device AI is in safe mode after an earlier crash, so answers are slower than this phone can manage. " +
+                        "Retry to use the full-speed engine from the next start.",
+                        color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+                    OutlinedButton(onClick = { c.llm.resetCrashState(); test = "Restart Outpost to leave safe mode." }) { Text("Leave safe mode") }
                 }
                 if (models.isEmpty()) Text("No chat models installed yet. Get one from Content → AI models.", style = MaterialTheme.typography.bodySmall)
                 models.forEach { m ->

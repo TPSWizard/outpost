@@ -34,6 +34,10 @@ class RetrievalIndex(
 ) {
     private val dao = db.retrieval()
     private val mutex = Mutex()
+
+    /** A passage as the ranker needs it: its terms, and its vector once embedded. Built once per chunk, not per question. */
+    private class Prepared(val terms: List<String>, val vector: FloatArray?, val model: String?)
+    private val prepared = HashMap<Long, Prepared>()
     private var embedJob: Job? = null
     private val _status = MutableStateFlow(IndexStatus())
     val status: StateFlow<IndexStatus> = _status
@@ -141,7 +145,21 @@ class RetrievalIndex(
     suspend fun search(query: String, k: Int = 4): List<RetrievedPassage> {
         val chunks = dao.allChunks()
         if (chunks.isEmpty()) return emptyList()
-        val keyword = TextTools.rank(query, chunks.map { "${it.sourceTitle}\n${it.text}" }).toMap()
+        val docs = synchronized(prepared) {
+            val docs = chunks.map { c ->
+                val have = prepared[c.id]
+                // Reuse unless the row gained a vector (or one for another model) since it was prepared.
+                if (have != null && (have.vector != null || c.embedding == null) && have.model == c.embeddingModel) have
+                else Prepared(
+                    TextTools.terms("${c.sourceTitle}\n${c.text}"),
+                    c.embedding?.let(TextTools::toFloats),
+                    c.embeddingModel,
+                ).also { prepared[c.id] = it }
+            }
+            if (prepared.size > chunks.size) prepared.keys.retainAll(chunks.mapTo(HashSet()) { it.id })
+            docs
+        }
+        val keyword = TextTools.rankTerms(query, docs.map { it.terms }).toMap()
         val maxKw = keyword.values.maxOrNull()?.takeIf { it > 0 } ?: 1.0
 
         val model = embeddingModel()
@@ -151,8 +169,9 @@ class RetrievalIndex(
 
         val scored = chunks.mapIndexed { i, c ->
             val kw = (keyword[i] ?: 0.0) / maxKw
-            val sem = if (qv != null && c.embedding != null && c.embeddingModel == model?.name)
-                TextTools.cosine(qv, TextTools.toFloats(c.embedding)).toDouble() else null
+            val vec = docs[i].vector
+            val sem = if (qv != null && vec != null && c.embeddingModel == model?.name)
+                TextTools.cosine(qv, vec).toDouble() else null
             // Hybrid: semantic similarity dominates when available; keywords break ties and catch exact terms.
             val score = if (sem != null) 0.7 * sem + 0.3 * kw else kw
             RetrievedPassage(c, score)

@@ -30,7 +30,15 @@ if(ANDROID)
 endif()
 set(GGML_OPENMP OFF CACHE BOOL "" FORCE)
 set(GGML_LLAMAFILE OFF CACHE BOOL "" FORCE)
-set(GGML_CPU_KLEIDIAI OFF CACHE BOOL "" FORCE)
+# Arm's KleidiAI int4/int8 matmul kernels (dotprod, i8mm, SME) for the arm64 phone build. They
+# accelerate Q4_0 weights on every phone since ~2018; Q4_K needs SME2, which only the newest
+# chips have, which is why the catalog ships Q4_0 chat models. The source tarball is fetched by
+# llama.cpp's own CMake, so this needs network access at configure time like the llama.cpp fetch.
+if(ANDROID AND ANDROID_ABI STREQUAL "arm64-v8a")
+    set(GGML_CPU_KLEIDIAI ON CACHE BOOL "" FORCE)
+else()
+    set(GGML_CPU_KLEIDIAI OFF CACHE BOOL "" FORCE)
+endif()
 set(LLAMA_BUILD_COMMON ON CACHE BOOL "" FORCE)
 set(LLAMA_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(LLAMA_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)

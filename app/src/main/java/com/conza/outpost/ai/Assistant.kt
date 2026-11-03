@@ -122,10 +122,13 @@ class Assistant(private val context: Context, private val c: AppContainer) {
         if (readiness is Readiness.NeedsModel) error("No AI model installed. Download one from Content → AI models, or connect to a server in Settings.")
         if (readiness is Readiness.Unsupported) error(readiness.reason)
 
+        val short = s.answerMode != "explain"
+        val (maxPassages, passageChars) = passageBudget(short)
+
         // 1. Retrieve.
         val passages = if (s.useSources) {
             _generation.value = Generation(sid, answerId, "Searching your library and notes…")
-            retrieve(question)
+            retrieve(question, maxPassages)
         } else emptyList()
 
         // 2. Load model (first use only).
@@ -152,9 +155,9 @@ class Assistant(private val context: Context, private val c: AppContainer) {
             job?.isActive != false
         }
 
-        val short = s.answerMode != "explain"
         val maxTokens = if (short) 200 else 768
-        val system = systemPrompt(short, runCatching { c.gridDown.contextBlock() }.getOrNull())
+        val system = systemPrompt(short, runCatching { c.gridDown.contextBlock() }.getOrNull(),
+            tools = com.conza.outpost.griddown.AssistantTools.wantsAction(question))
         // Kept out of the system prompt so the cached prompt prefix stays the same between questions.
         val routed = com.conza.outpost.griddown.AnswerPolicy.route(question, runCatching { c.gridDown.firstAid }.getOrNull())
         val prompt = if (routed.isEmpty()) question else question + "\n\n(A verified checklist or calculator for this is shown to me above your answer. " +
@@ -164,7 +167,7 @@ class Assistant(private val context: Context, private val c: AppContainer) {
         var stats: GenerationStats? = null
         while (stats == null) {
             val used = passages.take(keep)
-            val messages = buildMessages(system, history.takeLast(historyTurns), prompt, used)
+            val messages = buildMessages(system, history.takeLast(historyTurns), prompt, used, passageChars)
             out.clear()
             try {
                 stats = when (readiness) {
@@ -233,15 +236,22 @@ class Assistant(private val context: Context, private val c: AppContainer) {
     /** Set by the Assistant screen; lets Survival mode free the model's memory when nobody is looking. */
     @Volatile var assistantVisible = false
 
-    fun systemPrompt(short: Boolean, context: String?): String = buildString {
+    /**
+     * The system prompt. [tools] adds the ACTION instructions; they are left out for plain questions
+     * because every token here is re-read by the phone on each answer (the KV cache only covers a
+     * prefix that is identical to the previous turn's).
+     */
+    fun systemPrompt(short: Boolean, context: String?, tools: Boolean = true): String = buildString {
         append(SYSTEM_PROMPT)
         append(if (short) " Answer in at most 80 words: the key steps or facts only." else " Explain fully, with reasons, in clear steps.")
         append(" Never invent drug doses; refer to the label or a pharmacist.")
         if (context != null) append("\n\n").append(context)
-        append("\n\n").append(com.conza.outpost.griddown.AssistantTools.TOOL_PROMPT)
+        if (tools) append("\n\n").append(com.conza.outpost.griddown.AssistantTools.TOOL_PROMPT)
     }
 
-    private fun buildMessages(system: String, history: List<ChatMessage>, question: String, passages: List<Passage>): List<Pair<String, String>> {
+    private fun buildMessages(
+        system: String, history: List<ChatMessage>, question: String, passages: List<Passage>, passageChars: Int = PASSAGE_CHARS_LONG,
+    ): List<Pair<String, String>> {
         val msgs = mutableListOf("system" to system)
         history.filter { it.content.isNotBlank() && !it.content.startsWith("⚠️") }.forEach { msgs += it.role to it.content }
         val user = if (passages.isEmpty()) question else buildString {
@@ -250,7 +260,7 @@ class Assistant(private val context: Context, private val c: AppContainer) {
                 append("[${i + 1}] ${p.source.title}")
                 if (p.source.type == PdfPassages.TYPE) append(", ${p.source.subtitle}")
                 if (p.source.subtitle.isNotBlank() && p.source.type != PdfPassages.TYPE) append(" (${p.source.subtitle})")
-                append("\n").append(p.text.take(1200)).append("\n\n")
+                append("\n").append(p.text.take(passageChars)).append("\n\n")
             }
             append("Question: ").append(question)
         }
@@ -259,6 +269,17 @@ class Assistant(private val context: Context, private val c: AppContainer) {
     }
 
     companion object {
+        const val PASSAGE_CHARS_SHORT = 700
+        const val PASSAGE_CHARS_LONG = 1000
+
+        /**
+         * How many retrieved passages go into the prompt and how long each may be. Prompt processing
+         * on a phone runs at tens of tokens per second, so four 1,200-character passages (~1,200 tokens)
+         * were most of the wait before the first word; a short answer rarely needs more than two.
+         */
+        fun passageBudget(short: Boolean): Pair<Int, Int> =
+            if (short) 2 to PASSAGE_CHARS_SHORT else 4 to PASSAGE_CHARS_LONG
+
         const val SYSTEM_PROMPT =
             "You are Outpost, an offline assistant running entirely on the user's phone with no internet access. " +
                 "Answer clearly and concisely. When sources are provided, base your answer on them and cite them inline " +

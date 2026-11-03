@@ -82,10 +82,13 @@ object TextTools {
     fun keywordQuery(question: String, max: Int = 6): String = terms(question).distinct().take(max).joinToString(" ")
 
     /** BM25-style score of each passage against the query, highest first. */
-    fun rank(query: String, passages: List<String>): List<Pair<Int, Double>> {
+    fun rank(query: String, passages: List<String>): List<Pair<Int, Double>> =
+        rankTerms(query, passages.map { terms(it) })
+
+    /** [rank] for passages already split with [terms], so a stored index isn't re-tokenized per question. */
+    fun rankTerms(query: String, docs: List<List<String>>): List<Pair<Int, Double>> {
         val q = terms(query).distinct()
-        if (q.isEmpty() || passages.isEmpty()) return passages.indices.map { it to 0.0 }
-        val docs = passages.map { terms(it) }
+        if (q.isEmpty() || docs.isEmpty()) return docs.indices.map { it to 0.0 }
         val avg = docs.map { it.size }.average().coerceAtLeast(1.0)
         val df = q.associateWith { t -> docs.count { t in it } }
         val n = docs.size

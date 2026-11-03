@@ -1,10 +1,12 @@
 package com.conza.outpost
 
+import com.conza.outpost.ai.Assistant
 import com.conza.outpost.ai.Source
 import com.conza.outpost.ai.Sources
 import com.conza.outpost.ai.TextTools
 import com.conza.outpost.catalog.CatalogParser
 import com.conza.outpost.catalog.ResourceKind
+import com.conza.outpost.griddown.AssistantTools
 import com.conza.outpost.medical.DrugDatabase
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -47,6 +49,35 @@ class AssistantLogicTest {
         assertEquals(1, best)
     }
 
+    @Test fun rankOverStoredTermsMatchesRankOverText() {
+        val passages = listOf(
+            "Boil water for one minute to make it safe to drink.",
+            "A tourniquet goes two to three inches above the wound, never on a joint.",
+            "",
+        )
+        val query = "how long to boil water"
+        assertEquals(TextTools.rank(query, passages), TextTools.rankTerms(query, passages.map { TextTools.terms(it) }))
+        assertEquals(passages.indices.map { it to 0.0 }, TextTools.rankTerms("the of and", passages.map { TextTools.terms(it) }))
+    }
+
+    @Test fun toolPromptOnlyForQuestionsThatCouldNeedAnAction() {
+        for (q in listOf("Add 24 bottles of water to my supplies", "How much bleach for 20 liters of cloudy water?",
+            "Make a checklist for the go bag", "Mark this spot as the creek", "log that we have 3 days of fuel")) {
+            assertTrue(q, AssistantTools.wantsAction(q))
+        }
+        for (q in listOf("How do I treat a second degree burn?", "What are the signs of hypothermia?",
+            "Explain how a tourniquet works", "Which wild plants are safe to eat in Florida?")) {
+            assertFalse(q, AssistantTools.wantsAction(q))
+        }
+    }
+
+    @Test fun shortAnswersGetASmallerPassageBudget() {
+        val (shortCount, shortChars) = Assistant.passageBudget(short = true)
+        val (longCount, longChars) = Assistant.passageBudget(short = false)
+        assertTrue(shortCount < longCount && shortChars < longChars)
+        assertTrue(longChars <= 1000) // four passages at this size are about 1,000 prompt tokens
+    }
+
     @Test fun keywordQueryDropsFiller() {
         assertEquals("treat second degree burn", TextTools.keywordQuery("How do I treat a second degree burn?"))
     }
@@ -87,6 +118,10 @@ class AssistantLogicTest {
         assertTrue(models.size >= 5)
         assertTrue(models.all { it.kind == ResourceKind.MODEL && it.fileName.endsWith(".gguf") })
         assertTrue(models.any { it.extra["role"] == "embedding" })
+        // Chat models ship as Q4_0: the weight format the Arm int8 matrix kernels (KleidiAI, repack) accelerate on phones.
+        val chat = models.filter { it.extra["role"] == "chat" }
+        assertTrue(chat.size >= 5)
+        assertTrue(chat.all { it.version == "q4_0" && it.url.contains("q4_0", ignoreCase = true) })
         val tools = c.tools.flatMap { s -> s.groups.flatMap { it.items } }
         assertTrue(tools.any { it.id == "cyberchef" && it.extra["entry"]!!.endsWith(".html") })
         val manuals = c.manuals.flatMap { s -> s.groups.flatMap { it.items } }

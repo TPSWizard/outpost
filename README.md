@@ -32,7 +32,17 @@ of Docker containers. Outpost implements each of those features natively inside 
   - `outpost_llm.cpp` is a small JNI bridge to llama.cpp. It applies each model's own chat template (Jinja), streams
     tokens to Kotlin, reuses the KV cache across turns, and computes embeddings.
   - The CPU backends are built in every instruction-set variant (`GGML_CPU_ALL_VARIANTS`), so one APK picks the
-    fastest one at runtime on old and new phones alike.
+    fastest one at runtime on old and new phones alike. The arm64 build also links Arm's KleidiAI kernels, which
+    is why the catalog's chat models are Q4_0: that is the weight format those kernels (and llama.cpp's own ARM
+    repacking) accelerate on any phone with dotprod/i8mm; Q4_K only gains on SME2 chips.
+  - The model runs on the fast cores only. `outpost_llm.cpp` reads each core's top clock from cpufreq, keeps the
+    cluster(s) within 80% of the fastest, and pins a ggml threadpool to them: ggml syncs threads at every op, so one
+    thread on an efficiency core would hold the whole model to that core's pace.
+  - Prompt size is budgeted (`Assistant.passageBudget`): two 700-character passages for short answers, four
+    1,000-character ones for Explain mode, and the ACTION instructions only when the question could need one.
+    Prompt processing on a phone runs at tens of tokens per second, so these are most of the time to first word.
+  - If on-device AI once crashed while starting, the engine stays in safe mode (baseline CPU code, several times
+    slower) until Settings → Leave safe mode; Settings says so.
   - Retrieval: Kiwix full-text search finds articles, the best passage of each is chosen with BM25, and notes and
     documents are searched by hybrid semantic (nomic-embed-text, the model NOMAD uses) and keyword ranking.
   - Answers cite numbered sources that open the article, note, or document.
@@ -77,6 +87,10 @@ Gradle build needs no NDK. To rebuild them (NDK r27+, CMake 3.22+):
 ANDROID_HOME=/path/to/sdk scripts/build-native.sh            # fetches the pinned llama.cpp commit
 ANDROID_HOME=/path/to/sdk scripts/build-native.sh ~/llama.cpp  # or use a local checkout
 ```
+
+The arm64 configure step also downloads the KleidiAI source tarball (llama.cpp's CMake does it; see
+`app/src/main/cpp/CMakeLists.txt`). The prebuilt libraries in `jniLibs/` must be rebuilt after any change to
+`outpost_llm.cpp` or that CMake file; a Gradle build alone will not pick those changes up.
 
 `tools/llm-harness/` runs the same JNI bridge on a desktop JVM for testing without a phone.
 

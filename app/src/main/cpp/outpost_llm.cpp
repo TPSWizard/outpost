@@ -24,10 +24,17 @@
 
 #include <algorithm>
 #include <atomic>
+#include <cerrno>
 #include <cmath>
+#include <cstdio>
+#include <fstream>
 #include <string>
 #include <unistd.h>
+#include <utility>
 #include <vector>
+#if defined(__linux__)
+#include <sched.h>
+#endif
 
 #include "chat.h"
 #include "common.h"
@@ -47,14 +54,22 @@ namespace {
 
 constexpr int BATCH = 512;
 
+// Which CPU cores run the model, and how many threads (see plan_threads).
+struct ThreadPlan {
+    int n_threads = 0;
+    std::vector<int> cores; // CPUs to run on; empty leaves the scheduler free to choose
+};
+
 struct Engine {
     llama_model *model = nullptr;
     llama_context *ctx = nullptr;
+    ggml_threadpool_t pool = nullptr;
     common_chat_templates_ptr templates;
     std::vector<llama_token> cached; // tokens currently in the KV cache (seq 0)
     bool embedding = false;
     int n_ctx = 0;
     std::atomic<bool> stop{false};
+    ThreadPlan plan;
 };
 
 void log_cb(ggml_log_level level, const char *text, void *) {
@@ -64,11 +79,94 @@ void log_cb(ggml_log_level level, const char *text, void *) {
     __android_log_print(prio, TAG, "%s", text);
 }
 
-int pick_threads(int requested) {
-    if (requested > 0) return requested;
-    long cores = sysconf(_SC_NPROCESSORS_ONLN);
-    // Leave headroom for the UI; big.LITTLE phones rarely gain past 4-6 threads.
-    return (int) std::max(2L, std::min(6L, cores - 2));
+// ---- Thread placement ----
+// Phones mix fast and slow cores, and ggml synchronises its threads at every op, so one thread
+// on a little core holds the whole model to that core's pace. Each core's top clock from cpufreq
+// tells the clusters apart: cores within 80% of the fastest count as fast (prime and performance
+// cores pass, efficiency cores at 55-70% don't), and only those run the model. Without cpufreq
+// (emulators, the JVM harness) or on a uniform CPU, fall back to a plain count.
+long read_max_khz(int cpu) {
+    char path[96];
+    snprintf(path, sizeof path, "/sys/devices/system/cpu/cpu%d/cpufreq/cpuinfo_max_freq", cpu);
+    std::ifstream f(path);
+    long khz = 0;
+    return (f >> khz) ? khz : 0;
+}
+
+ThreadPlan plan_threads(int requested) {
+    ThreadPlan plan;
+    long total = sysconf(_SC_NPROCESSORS_CONF);
+    if (total < 1) total = 1;
+    std::vector<std::pair<long, int>> freq; // (kHz, cpu)
+    for (int cpu = 0; cpu < total && cpu < GGML_MAX_N_THREADS; cpu++) {
+        long khz = read_max_khz(cpu);
+        if (khz > 0) freq.emplace_back(khz, cpu);
+    }
+    if ((long) freq.size() == total) {
+        std::sort(freq.rbegin(), freq.rend()); // fastest first
+        const long top = freq.front().first;
+        for (auto &fc : freq) if (fc.first * 10 >= top * 8) plan.cores.push_back(fc.second);
+        if ((long) plan.cores.size() == total) {
+            plan.cores.clear(); // one cluster: nothing to separate
+        } else {
+            while (plan.cores.size() < 2 && plan.cores.size() < freq.size()) plan.cores.push_back(freq[plan.cores.size()].second);
+            plan.n_threads = (int) std::max<size_t>(2, std::min<size_t>(6, plan.cores.size()));
+        }
+    }
+    // Uniform or unknown layout: leave headroom for the UI.
+    if (plan.n_threads == 0) plan.n_threads = (int) std::max(2L, std::min(6L, total - 2));
+    if (requested > 0) plan.n_threads = requested;
+    return plan;
+}
+
+// Pins the calling thread to the plan's cores. ggml applies the same mask to its own workers;
+// this covers the thread that drives them (Kotlin's single-thread dispatcher), which may be a
+// different OS thread from one call to the next.
+void apply_affinity(const ThreadPlan &plan) {
+#if defined(__linux__)
+    if (plan.cores.empty()) return;
+    cpu_set_t set;
+    CPU_ZERO(&set);
+    for (int c : plan.cores) if (c < CPU_SETSIZE) CPU_SET(c, &set);
+    if (sched_setaffinity(0, sizeof set, &set) != 0) LOGW("could not pin to the fast cores (errno %d)", errno);
+#else
+    (void) plan;
+#endif
+}
+
+std::string describe(const ThreadPlan &plan) {
+    std::string s = std::to_string(plan.n_threads) + " threads";
+    if (!plan.cores.empty()) {
+        s += " on cpu";
+        for (size_t i = 0; i < plan.cores.size(); i++) s += (i ? "," : " ") + std::to_string(plan.cores[i]);
+    }
+    return s;
+}
+
+// The CPU backend is a dynamically loaded library (GGML_BACKEND_DL), so its threadpool
+// functions are reached through the backend registry rather than linked directly.
+using threadpool_new_fn = ggml_threadpool_t (*)(struct ggml_threadpool_params *);
+using threadpool_free_fn = void (*)(ggml_threadpool_t);
+
+template <typename F> F cpu_proc(const char *name) {
+    ggml_backend_dev_t dev = ggml_backend_dev_by_type(GGML_BACKEND_DEVICE_TYPE_CPU);
+    ggml_backend_reg_t reg = dev ? ggml_backend_dev_backend_reg(dev) : nullptr;
+    return reg ? (F) ggml_backend_reg_get_proc_address(reg, name) : nullptr;
+}
+
+ggml_threadpool_t make_threadpool(const ThreadPlan &plan) {
+    auto create = cpu_proc<threadpool_new_fn>("ggml_threadpool_new");
+    if (!create) { LOGW("CPU backend has no threadpool; using ggml's default threads"); return nullptr; }
+    struct ggml_threadpool_params tpp = ggml_threadpool_params_default(plan.n_threads);
+    for (int c : plan.cores) if (c < GGML_MAX_N_THREADS) tpp.cpumask[c] = true;
+    tpp.strict_cpu = false; // any fast core, not one core per thread
+    return create(&tpp);
+}
+
+void free_threadpool(ggml_threadpool_t pool) {
+    if (!pool) return;
+    auto destroy = cpu_proc<threadpool_free_fn>("ggml_threadpool_free");
+    if (destroy) destroy(pool);
 }
 
 std::string jstr(JNIEnv *env, jstring s) {
@@ -218,7 +316,8 @@ Java_com_conza_outpost_ai_NativeLlm_nativeLoad(JNIEnv *env, jclass, jstring jpat
     int ctx = nCtx > 0 ? nCtx : 4096;
     if (trained > 0) ctx = std::min(ctx, trained);
     cp.n_ctx = ctx;
-    cp.n_threads = cp.n_threads_batch = pick_threads(nThreads);
+    const ThreadPlan plan = plan_threads(nThreads);
+    cp.n_threads = cp.n_threads_batch = plan.n_threads;
     if (embedding) {
         cp.embeddings = true;
         cp.n_batch = cp.n_ubatch = ctx; // non-causal encoders need the whole input in one ubatch
@@ -233,8 +332,12 @@ Java_com_conza_outpost_ai_NativeLlm_nativeLoad(JNIEnv *env, jclass, jstring jpat
     e->ctx = lctx;
     e->embedding = embedding;
     e->n_ctx = ctx;
+    e->plan = plan;
+    apply_affinity(plan); // the workers inherit this thread's mask as well as ggml's own cpumask
+    e->pool = make_threadpool(plan);
+    if (e->pool) llama_attach_threadpool(lctx, e->pool, e->pool);
     if (!embedding) e->templates = common_chat_templates_init(model, "");
-    LOGI("loaded %s (ctx=%d, threads=%d, embedding=%d)", path.c_str(), ctx, cp.n_threads, (int) embedding);
+    LOGI("loaded %s (ctx=%d, %s, embedding=%d)", path.c_str(), ctx, describe(plan).c_str(), (int) embedding);
     return reinterpret_cast<jlong>(e);
 }
 
@@ -243,7 +346,9 @@ Java_com_conza_outpost_ai_NativeLlm_nativeFree(JNIEnv *, jclass, jlong handle) {
     auto *e = reinterpret_cast<Engine *>(handle);
     if (!e) return;
     e->templates.reset();
+    if (e->ctx && e->pool) llama_detach_threadpool(e->ctx);
     if (e->ctx) llama_free(e->ctx);
+    free_threadpool(e->pool);
     if (e->model) llama_model_free(e->model);
     delete e;
 }
@@ -280,6 +385,7 @@ Java_com_conza_outpost_ai_NativeLlm_nativeGenerate(JNIEnv *env, jclass, jlong ha
     auto *e = reinterpret_cast<Engine *>(handle);
     if (!e || e->embedding) return -1;
     e->stop = false;
+    apply_affinity(e->plan);
 
     jclass cbClass = env->GetObjectClass(callback);
     jmethodID onToken = env->GetMethodID(cbClass, "onToken", "(Ljava/lang/String;)Z");
@@ -376,6 +482,7 @@ JNIEXPORT jfloatArray JNICALL
 Java_com_conza_outpost_ai_NativeLlm_nativeEmbed(JNIEnv *env, jclass, jlong handle, jstring jtext) {
     auto *e = reinterpret_cast<Engine *>(handle);
     if (!e || !e->embedding) return nullptr;
+    apply_affinity(e->plan);
     std::vector<llama_token> tokens = common_tokenize(e->ctx, jstr(env, jtext), true, false);
     if (tokens.empty()) return nullptr;
     if ((int) tokens.size() > e->n_ctx) tokens.resize(e->n_ctx);

@@ -35,9 +35,11 @@ of Docker containers. Outpost implements each of those features natively inside 
     fastest one at runtime on old and new phones alike. The arm64 build also links Arm's KleidiAI kernels, which
     is why the catalog's chat models are Q4_0: that is the weight format those kernels (and llama.cpp's own ARM
     repacking) accelerate on any phone with dotprod/i8mm; Q4_K only gains on SME2 chips.
-  - The model runs on the fast cores only. `outpost_llm.cpp` reads each core's top clock from cpufreq, keeps the
-    cluster(s) within 80% of the fastest, and pins a ggml threadpool to them: ggml syncs threads at every op, so one
-    thread on an efficiency core would hold the whole model to that core's pace.
+  - The model runs on the fast cores only (`core_plan.h`): ggml syncs threads at every op, so one thread on an
+    efficiency core would hold the whole model to that core's pace. Cores are told apart by the scheduler's
+    `cpu_capacity`, else by their MIDR part numbers (A55, A510, Kryo Silver are left out), else by top clock
+    alone; a ggml threadpool is pinned to the winners. The clock rule alone misfires on mid-range chips whose
+    little cores clock within 80% of the big ones (Helio G99, Snapdragon 695), which is why it comes last.
   - Prompt size is budgeted (`Assistant.passageBudget`): two 700-character passages for short answers, four
     1,000-character ones for Explain mode, and the ACTION instructions only when the question could need one.
     Prompt processing on a phone runs at tens of tokens per second, so these are most of the time to first word.

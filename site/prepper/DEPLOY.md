@@ -9,10 +9,10 @@ go in an **R2 bucket** and the Worker streams them. R2 egress is free.
 
 ```bash
 npx wrangler r2 bucket create conzahub-downloads
-npx wrangler r2 object put conzahub-downloads/prepper/outpost-1.3.0-phone-arm64.apk \
-  --file outpost-1.3.0-phone-arm64.apk --content-type application/vnd.android.package-archive --remote
-npx wrangler r2 object put conzahub-downloads/prepper/outpost-1.3.0-universal.apk \
-  --file outpost-1.3.0-universal.apk --content-type application/vnd.android.package-archive --remote
+npx wrangler r2 object put conzahub-downloads/prepper/outpost-1.3.1-phone-arm64.apk \
+  --file outpost-1.3.1-phone-arm64.apk --content-type application/vnd.android.package-archive --remote
+npx wrangler r2 object put conzahub-downloads/prepper/outpost-1.3.1-universal.apk \
+  --file outpost-1.3.1-universal.apk --content-type application/vnd.android.package-archive --remote
 ```
 
 ## 2. Bind the bucket (wrangler.jsonc / wrangler.toml)
@@ -30,7 +30,7 @@ Add this before your existing routing:
 ```js
 const url = new URL(request.url);
 if (url.pathname.startsWith("/prepper/") && url.pathname.endsWith(".apk")) {
-  const key = url.pathname.slice(1); // "prepper/outpost-1.3.0-phone-arm64.apk"
+  const key = url.pathname.slice(1); // "prepper/outpost-1.3.1-phone-arm64.apk"
   const obj = await env.DOWNLOADS.get(key, { range: request.headers, onlyIf: request.headers });
   if (!obj) return new Response("Not found", { status: 404 });
   const headers = new Headers();
@@ -55,7 +55,7 @@ Range support lets phones resume an interrupted download.
 ## 4. Releasing an update
 
 Upload the new APKs with the new version in the name, then update the three places in `index.html` that say
-`1.3.0`: the two download links, the version line, and the SHA-256 table (`sha256sum *.apk`).
+`1.3.1`: the two download links, the version line, and the SHA-256 table (`sha256sum *.apk`).
 
 ## Before you share the link publicly
 

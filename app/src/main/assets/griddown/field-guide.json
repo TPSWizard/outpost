@@ -35,6 +35,7 @@
       "summary": "First decide whether contamination is biological or chemical.",
       "steps": [
         "Use sealed bottled water when available. Check local water advisories before using tap water.",
+        "Use a different source if water came from a toilet bowl or contains sewage.",
         "If water may contain fuel, toxic chemicals, or radioactive material, use a different source: boiling and disinfection will not make it safe.",
         "For water that may contain germs, let cloudy water settle or filter it through a clean cloth, then bring clear water to a rolling boil for 1 minute, or 3 minutes above 6,500 feet.",
         "Cool and store treated water in clean, covered containers."
@@ -48,6 +49,10 @@
         {
           "title": "CDC — Drinking Water Advisories",
           "url": "https://www.cdc.gov/water-emergency/about/drinking-water-advisories-an-overview.html"
+        },
+        {
+          "title": "CDC — How to Find Clean Water in an Emergency",
+          "url": "https://www.cdc.gov/water-emergency/about/how-to-find-clean-water-in-an-emergency.html"
         }
       ],
       "useWhen": "Drinking-water safety is uncertain",
@@ -283,6 +288,58 @@
         "clean water"
       ],
       "getHelpWhen": "Contact public health for sewage backup or contaminated drinking water."
+    },
+    {
+      "id": "toilet-sewer",
+      "section": "Home",
+      "title": "Flushing toilets and preventing sewage backups",
+      "summary": "Check whether wastewater can drain before flushing. Budget water by your toilet's rated flush volume.",
+      "useWhen": "Water or power is out, drains are backing up, or you are planning household sanitation",
+      "equipment": [
+        "toilet model or gallons-per-flush rating",
+        "stored water for flushing",
+        "portable toilet or lined bucket with a tight lid",
+        "heavy-duty bags and handwashing supplies"
+      ],
+      "steps": [
+        "Stop using toilets, sinks, showers, and appliances that drain into the sewer if sewage is backing up, the sewer is out, or the backwater valve is closed. Keep people and pets away from sewage. Stay out of standing water near electrical equipment.",
+        "If only the water supply is out and the sewer or septic system is working, refill a standard gravity toilet's tank to its usual fill line and use the handle. Follow utility advisories and keep flushing water separate from drinking water.",
+        "Check the toilet's gallons-per-flush rating. Many U.S. toilets use 1.28 gal (4.8 L) or 1.6 gal (6.1 L) per flush. Older models can use much more. Measure how much water your tank takes to refill under normal conditions. At 1.6 gal per flush, five household flushes a day for three days use 24 gal (about 91 L).",
+        "If a sewage pump loses power or alarms, or a septic drain field floods, hold off on using the affected drains and get guidance from the utility or septic service.",
+        "If drains are unavailable, use a portable toilet or a sturdy lined bucket with a tight lid. Keep sealed waste bags away from food, water, children, and animals. Follow local public health instructions for disposal. Wash hands with soap and safe water."
+      ],
+      "caution": "Leave sewer lines clear. A blockage can move a backup to another fixture. Ask a licensed plumber whether a backwater valve suits your home and how to maintain it.",
+      "getHelpWhen": "For a backup, contact your local sewer utility or building manager and a plumber. For a private septic system, contact a septic service or local health department.",
+      "sources": [
+        {
+          "title": "EPA — Flush volumes by toilet type",
+          "url": "https://www.epa.gov/watersense/how-watersense-calculator-works"
+        },
+        {
+          "title": "Tualatin Valley Water District — Water outages and toilet tanks",
+          "url": "https://www.tvwd.org/m/faq?cat=24"
+        },
+        {
+          "title": "Government of Canada — Backwater valves",
+          "url": "https://www.canada.ca/en/services/policing/emergencies/preparedness/get-prepared/hazards-emergencies/floods/flood-risk/prevent-flood-damage/backwater-valves.html"
+        },
+        {
+          "title": "City of Toronto — What to do when a backwater valve closes",
+          "url": "https://www.toronto.ca/services-payments/water-environment/managing-rain-melted-snow/basement-flooding/basement-flooding-protection-subsidy-program/?accordion=eligible-work"
+        },
+        {
+          "title": "EPA — Septic systems after a flood",
+          "url": "https://www.epa.gov/ground-water-and-drinking-water/septic-systems-what-do-after-flood"
+        },
+        {
+          "title": "City of Port St. Lucie — Sewer pumps during power outages",
+          "url": "https://www.cityofpsl.com/Government/Your-City-Government/Departments/Utility-Systems/Utility-Education/Storm-Preparation-Recovery"
+        },
+        {
+          "title": "Seattle Emergency Management — Emergency sanitation supplies",
+          "url": "https://www.seattle.gov/emergency-management/prepare/prepare-yourself"
+        }
+      ]
     },
     {
       "id": "grid-down",

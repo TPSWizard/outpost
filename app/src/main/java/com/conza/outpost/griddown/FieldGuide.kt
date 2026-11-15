@@ -26,14 +26,17 @@ data class FieldGuideFile(val version: String, val notice: String, val cards: Li
 
 object FieldGuide {
     private val json = Json { ignoreUnknownKeys = true }
+    private val plumbing = Regex("""\b(toilets?|sewers?|sewage|septic (tank|system|pump)|drain\s*field|backwater valves?|grinder pumps?)\b""")
+    private val drinking = Regex("""\b(drink|drinkable|drank|swallowed)\b""")
 
     fun parse(text: String): FieldGuideFile = json.decodeFromString(FieldGuideFile.serializer(), text)
 
     /** These urgent questions use a reviewed card instead of unconstrained model output. */
     fun safetyCardId(question: String): String? {
         val q = question.lowercase()
+        val plumbingQuestion = plumbing.containsMatchIn(q) && !drinking.containsMatchIn(q)
         return when {
-            Regex("\\b(water|well|creek|stream)\\b").containsMatchIn(q) &&
+            !plumbingQuestion && Regex("\\b(water|well|creek|stream)\\b").containsMatchIn(q) &&
                 Regex("\\b(drink|safe|treat|boil|filter|purif|disinfect|contaminat|bleach)" ).containsMatchIn(q) -> "water-safety"
             Regex("\\b(fallout|nuclear blast|radiation emergency|radioactive)\\b").containsMatchIn(q) -> "fallout"
             Regex("\\b(chemical release|toxic gas|gas leak|hazmat|chemical emergency)\\b").containsMatchIn(q) -> "chemical-release"
@@ -46,6 +49,7 @@ object FieldGuide {
             Regex("\\b(lightning|thunderstorm)\\b").containsMatchIn(q) -> "weather-exposure"
             Regex("\\b(generator|carbon monoxide|camp stove indoors)\\b").containsMatchIn(q) -> "fire-safety"
             Regex("\\b(bleeding|severe burn|broken bone|fracture|hypothermia|heat stroke|choking|cpr)\\b").containsMatchIn(q) -> "first-aid"
+            plumbingQuestion -> "toilet-sewer"
             else -> null
         }
     }

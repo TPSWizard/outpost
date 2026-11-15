@@ -48,6 +48,10 @@ class GridDownTest {
             "There is a chemical release outside" to "chemical-release",
             "Someone has hypothermia" to "first-aid",
             "Someone is breaking into our home" to "violent-threat",
+            "Can I safely flush the toilet if the water is off?" to "toilet-sewer",
+            "Should I clog up sewers so nothing backs up into the house?" to "toilet-sewer",
+            "Is the water in the toilet bowl safe to drink?" to "water-safety",
+            "There is an active shooter and I am hiding near a toilet" to "violent-threat",
         )
         cases.forEach { (question, cardId) ->
             assertEquals(question, cardId, FieldGuide.safetyCardId(question))
@@ -306,6 +310,8 @@ class GridDownTest {
         val f = FirstAid.parse(File("src/main/assets/griddown/firstaid.json").readText())
         assertTrue(AnswerPolicy.route("how much bleach to purify 5 gallons", f).contains(AnswerPolicy.Route.WaterTreatment))
         assertFalse(AnswerPolicy.route("can I boil water near a chemical spill?", f).contains(AnswerPolicy.Route.WaterTreatment))
+        assertTrue(AnswerPolicy.route("Can I flush the toilet with non-potable water if the septic system is working?", f).isEmpty())
+        assertFalse(AnswerPolicy.route("Is the water in the toilet bowl safe to drink?", f).contains(AnswerPolicy.Route.WaterTreatment))
         assertTrue(AnswerPolicy.route("is the food in my freezer still safe?", f).contains(AnswerPolicy.Route.FoodSafety))
         assertEquals(AnswerPolicy.Route.FirstAidTopic("hypothermia", "Hypothermia (too cold)"), AnswerPolicy.route("he's shivering and confused, hypothermia?", f).first())
         assertTrue(AnswerPolicy.route("tell me a story", f).isEmpty())

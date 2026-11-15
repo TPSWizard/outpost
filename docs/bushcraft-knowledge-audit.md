@@ -16,7 +16,8 @@ adds a compact recommended three-manual pack, corrects the basemap wording,
 labels scanned PDFs that cannot supply searchable text, adds public analytic
 reading and a local decision notebook, and routes urgent safety questions to
 reviewed cards. The optional downloads remain choices; the files are **not**
-bundled. No new APK has been built or tested on a phone in this environment.
+bundled. Android CI built debug APKs, but no release APK has been built or
+tested on a phone in this environment.
 See [offline-ai-audit.md](offline-ai-audit.md) for the assistant pipeline and
 remaining device verification.
 

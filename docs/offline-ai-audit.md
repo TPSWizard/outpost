@@ -3,7 +3,8 @@
 Date: 2026-11-15. This audit covers the Android source in this working tree.
 The last APK directly inspected for the earlier baseline was v1.2.2. Repository
 main subsequently advanced to source v1.3.1, which this branch incorporates.
-These changes have **not** been built or deployed as an APK. No phone, Android
+Android CI assembled debug APKs and passed unit tests on this branch. These
+changes have **not** been released or deployed as an APK. No phone, Android
 SDK, or Gradle distribution was available locally for a real latency/battery
 measurement.
 
@@ -77,6 +78,10 @@ RAM, CPU, available storage, thermal limits, and battery state.
    the phone.
 
 ## Verification still required before release
+
+The [merged-source CI run](https://github.com/TPSWizard/outpost/actions/runs/43734169985)
+passed `:app:testDebugUnitTest` and `:app:assembleDebug`. Its debug APKs are
+test artifacts, not signed public updates.
 
 - Build and run an APK on a real Android phone with the selected GGUF, in
   airplane mode. Confirm first-token latency, answer relevance, RAM use,

@@ -192,6 +192,8 @@ private fun OutpostNavHost(nav: NavHostController, modifier: Modifier) {
             "note" -> s.refId?.let { nav.navigate("note/$it") }
             "doc" -> s.refId?.let { nav.navigate("document/$it") }
             "pdf" -> s.path?.let { nav.navigate("pdffile?path=${Uri.encode(it)}&page=${s.refId ?: 1}") }
+            "text" -> s.path?.let { nav.navigate("textfile?path=${Uri.encode(it)}") }
+            "fieldguide" -> s.path?.let { nav.navigate("fieldguide?card=${Uri.encode(it)}") }
         }
     }
 
@@ -206,6 +208,7 @@ private fun OutpostNavHost(nav: NavHostController, modifier: Modifier) {
         mesh = { nav.navigate("mesh") },
         print = { nav.navigate("print") },
         beforeOutage = { nav.navigate("before") },
+        fieldGuide = { nav.navigate("fieldguide") },
         back = { nav.popBackStack() },
         drugSearch = { nav.navigate("medical?q=${Uri.encode(it)}") },
     )
@@ -213,6 +216,17 @@ private fun OutpostNavHost(nav: NavHostController, modifier: Modifier) {
 
     NavHost(nav, startDestination = "today", modifier = modifier) {
         composable("today") { com.conza.outpost.ui.griddown.TodayScreen(gridNav) }
+        composable("fieldguide?card={card}", arguments = listOf(navArgument("card") { type = NavType.StringType; nullable = true; defaultValue = null })) { e -> com.conza.outpost.ui.griddown.FieldGuideScreen(
+            onBack = gridNav.back,
+            onFirstAid = gridNav.firstAid,
+            onFoodSafety = { nav.navigate("calculators?tab=1") },
+            onDecisionNotebook = { nav.navigate("evidence") },
+            initialCardId = e.arguments?.getString("card"),
+        ) }
+        composable("evidence") { com.conza.outpost.ui.griddown.EvidenceNotebookScreen(
+            onBack = gridNav.back,
+            onOpenNote = { nav.navigate("note/$it") },
+        ) }
         composable("household") { com.conza.outpost.ui.griddown.HouseholdScreen(onBack = gridNav.back) }
         composable("supplies") { com.conza.outpost.ui.griddown.SuppliesScreen(onBack = gridNav.back, onDrugSearch = gridNav.drugSearch) }
         composable("calculators?tab={tab}", arguments = listOf(navArgument("tab") { type = NavType.IntType; defaultValue = 0 })) { e ->
@@ -235,6 +249,8 @@ private fun OutpostNavHost(nav: NavHostController, modifier: Modifier) {
                 manuals = { nav.navigate("content?tab=5") }, medical = { nav.navigate("medical") }, household = gridNav.household,
                 supplies = gridNav.supplies, print = gridNav.print, backup = { nav.navigate("backup") }, mesh = gridNav.mesh,
                 radio = gridNav.radio, benchmark = { nav.navigate("benchmark") }, settings = { nav.navigate("settings") },
+                fieldGuide = gridNav.fieldGuide,
+                assistant = { nav.goTab(Tab.Assistant.route) },
             ))
         }
         composable("power") { com.conza.outpost.ui.griddown.PowerScreen(onBack = gridNav.back, onBenchmark = { nav.navigate("benchmark") }) }
@@ -243,6 +259,7 @@ private fun OutpostNavHost(nav: NavHostController, modifier: Modifier) {
                 onOpen = { b, p -> nav.openArticle(b, p) },
                 onBrowseContent = { nav.navigate("content?tab=1") },
                 onOpenPdfFile = { nav.navigate("pdffile?path=${Uri.encode(it)}") },
+                onOpenTextFile = { nav.navigate("textfile?path=${Uri.encode(it)}") },
                 initialQuery = e.arguments?.getString("q"),
             )
         }
@@ -254,6 +271,9 @@ private fun OutpostNavHost(nav: NavHostController, modifier: Modifier) {
             navArgument("page") { type = NavType.IntType; defaultValue = 1 },
         )) { e ->
             PdfScreen(null, e.arguments?.getString("path").orEmpty(), onBack = { nav.popBackStack() }, initialPage = e.arguments?.getInt("page") ?: 1)
+        }
+        composable("textfile?path={path}", arguments = listOf(navArgument("path") { type = NavType.StringType; defaultValue = "" })) { e ->
+            com.conza.outpost.ui.library.TextReaderScreen(e.arguments?.getString("path").orEmpty(), onBack = { nav.popBackStack() })
         }
         composable(
             "reader/{bookId}?path={path}",
@@ -286,6 +306,8 @@ private fun OutpostNavHost(nav: NavHostController, modifier: Modifier) {
                 onManuals = { nav.navigate("content?tab=5") },
                 onContent = { nav.navigate("content?tab=0") },
                 onBeforeOutage = { nav.navigate("before") },
+                onFieldGuide = gridNav.fieldGuide,
+                onDecisionNotebook = { nav.navigate("evidence") },
                 onBackup = { nav.navigate("backup") },
                 onNotes = { nav.navigate("notes") },
                 onTools = { nav.navigate("tools") },

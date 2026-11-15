@@ -7,6 +7,7 @@ import com.conza.outpost.data.ChatMessage
 import com.conza.outpost.data.ChatSession
 import com.conza.outpost.data.InstalledResource
 import com.conza.outpost.library.ZimContent
+import com.conza.outpost.griddown.FieldGuide
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +23,7 @@ import java.io.File
 /** Where a passage in an answer came from; tapping it opens the article, note, or document. */
 @Serializable
 data class Source(
-    val type: String, // "zim" | "note" | "doc" | "pdf" (path = file, refId = page)
+    val type: String, // "zim" | "note" | "doc" | "pdf" | "text" | "fieldguide" (path = card id)
     val title: String,
     val subtitle: String = "",
     val bookId: String? = null,
@@ -59,6 +60,7 @@ data class Generation(
  * build a cited prompt; stream the answer from the on-device model or a remote server.
  */
 class Assistant(private val context: Context, private val c: AppContainer) {
+    private val guide by lazy { context.assets.open("griddown/field-guide.json").bufferedReader().use { FieldGuide.parse(it.readText()) } }
     private val remote = RemoteLlm(c.http)
     private val chats = c.db.chats()
     private val _generation = MutableStateFlow<Generation?>(null)
@@ -117,6 +119,21 @@ class Assistant(private val context: Context, private val c: AppContainer) {
     }
 
     private suspend fun answer(sid: Long, answerId: Long, history: List<ChatMessage>, question: String) {
+        // A reviewed card is safer than a small model improvising during an urgent situation.
+        FieldGuide.safetyCardId(question)?.let { cardId ->
+            guide.cards.firstOrNull { it.id == cardId }?.let { card ->
+                val answer = buildString {
+                    append(card.title).append(" [1]\n")
+                    card.steps.forEach { append("• ").append(it).append('\n') }
+                    append("Important: ").append(card.caution)
+                    append("\nOpen the cited field card for sources and limits. Follow current local emergency instructions.")
+                }
+                chats.updateMessage(answerId, answer, Sources.encode(listOf(Source("fieldguide", card.title, "Bundled offline card", path = card.id))))
+                chats.updateSession(sid, chats.session(sid)?.title ?: "Chat")
+                _generation.value = Generation(sid, answerId, "Done", text = answer)
+                return
+            }
+        }
         val s = c.settings
         val readiness = readiness()
         if (readiness is Readiness.NeedsModel) error("No AI model installed. Download one from Content → AI models, or connect to a server in Settings.")
@@ -128,7 +145,7 @@ class Assistant(private val context: Context, private val c: AppContainer) {
         // 1. Retrieve.
         val passages = if (s.useSources) {
             _generation.value = Generation(sid, answerId, "Searching your library and notes…")
-            retrieve(question, maxPassages)
+            retrieve(question, maxPassages, fast = short)
         } else emptyList()
 
         // 2. Load model (first use only).
@@ -155,13 +172,13 @@ class Assistant(private val context: Context, private val c: AppContainer) {
             job?.isActive != false
         }
 
-        val maxTokens = if (short) 200 else 768
+        val maxTokens = if (short) 144 else 768
         val system = systemPrompt(short, runCatching { c.gridDown.contextBlock() }.getOrNull(),
             tools = com.conza.outpost.griddown.AssistantTools.wantsAction(question))
         // Kept out of the system prompt so the cached prompt prefix stays the same between questions.
         val routed = com.conza.outpost.griddown.AnswerPolicy.route(question, runCatching { c.gridDown.firstAid }.getOrNull())
-        val prompt = if (routed.isEmpty()) question else question + "\n\n(A verified checklist or calculator for this is shown to me above your answer. " +
-            "Agree with it, point me to it for steps and doses, and never give different numbers.)"
+        val prompt = if (routed.isEmpty()) question else question + "\n\n(A verified checklist or calculator is available above. " +
+            "Answer directly from the supplied passages when possible; use the verified tool for exact steps or doses.)"
         var historyTurns = if (short) 4 else 6
         var keep = passages.size
         var stats: GenerationStats? = null
@@ -196,16 +213,34 @@ class Assistant(private val context: Context, private val c: AppContainer) {
     data class Passage(val source: Source, val text: String, val score: Double)
 
     /** Library (ZIM full-text) + notes/documents, merged and ranked against the question. */
-    suspend fun retrieve(question: String, max: Int = 4): List<Passage> {
+    suspend fun retrieve(question: String, max: Int = 4, fast: Boolean = false): List<Passage> {
         val q = TextTools.keywordQuery(question).ifBlank { question }
+        val bundled = BundledKnowledge.find(guide, question, if (fast) 1 else 2).map { (card, score) ->
+            Passage(Source("fieldguide", card.title, "Bundled offline card", path = card.id), BundledKnowledge.text(card), score)
+        }
         val found = mutableListOf<Passage>()
 
-        // Offline library: Xapian full-text search where available, else title matches.
+        // Local text and PDF passages first. Quick answers often have enough evidence here,
+        // avoiding a full-text pass over every downloaded ZIM before the model starts.
         runCatching {
+            for (r in c.index.search(question, 4, semantic = !fast)) {
+                val src = when (r.chunk.sourceType) {
+                    PdfPassages.TYPE -> PdfPassages.source(r.chunk)
+                    TextPassages.TYPE -> TextPassages.source(r.chunk)
+                    else -> Source(r.chunk.sourceType, r.chunk.sourceTitle, if (r.chunk.sourceType == "note") "Note" else "Document", refId = r.chunk.sourceId)
+                }
+                // Put notes on the same scale as library passages so neither swamps the other.
+                found += Passage(src, r.chunk.text, TextTools.rank(question, listOf(r.chunk.text)).first().second + r.score * 5)
+            }
+        }
+
+        // Search Kiwix when local passages are insufficient, or for a more detailed answer.
+        val distinctLocalSources = found.map { it.source.title + it.source.bookId + it.source.refId }.distinct().size
+        if (!fast || bundled.size + distinctLocalSources < max) runCatching {
             val books = c.library.observeBooks().first().filter { it.error == null }
-            var hits = c.library.fullText(books, q, perBook = 3)
+            var hits = c.library.fullText(books, q, perBook = if (fast) 2 else 3)
             if (hits.isEmpty()) hits = c.library.suggest(books, q, perBook = 2)
-            for (h in hits.take(8)) {
+            for (h in hits.take(if (fast) 4 else 8)) {
                 val content = c.library.content(h.bookId, h.path) as? ZimContent.Bytes ?: continue
                 if (!content.mime.contains("html")) continue
                 val text = TextTools.htmlToText(String(content.data, Charsets.UTF_8))
@@ -215,22 +250,12 @@ class Assistant(private val context: Context, private val c: AppContainer) {
             }
         }
 
-        // Notes and imported documents.
-        runCatching {
-            for (r in c.index.search(question, 4)) {
-                val src = if (r.chunk.sourceType == PdfPassages.TYPE) PdfPassages.source(r.chunk)
-                    else Source(r.chunk.sourceType, r.chunk.sourceTitle, if (r.chunk.sourceType == "note") "Note" else "Document", refId = r.chunk.sourceId)
-                // Put notes on the same scale as library passages so neither swamps the other.
-                found += Passage(src, r.chunk.text, TextTools.rank(question, listOf(r.chunk.text)).first().second + r.score * 5)
-            }
-        }
-
         // One passage per article, best first.
-        return found.groupBy { it.source.title + it.source.bookId + it.source.refId }
+        val ranked = found.groupBy { it.source.title + it.source.bookId + it.source.refId }
             .map { (_, ps) -> ps.maxBy { it.score } }
             .sortedByDescending { it.score }
             .filter { it.score > 0.0 }
-            .take(max)
+        return bundled.take(max) + ranked.take((max - bundled.size).coerceAtLeast(0))
     }
 
     /** Set by the Assistant screen; lets Survival mode free the model's memory when nobody is looking. */
@@ -281,10 +306,12 @@ class Assistant(private val context: Context, private val c: AppContainer) {
             if (short) 2 to PASSAGE_CHARS_SHORT else 4 to PASSAGE_CHARS_LONG
 
         const val SYSTEM_PROMPT =
-            "You are Outpost, an offline assistant running entirely on the user's phone with no internet access. " +
-                "Answer clearly and concisely. When sources are provided, base your answer on them and cite them inline " +
-                "like [1] or [2]. If the sources don't contain the answer, say so briefly, then answer from general knowledge. " +
-                "For medical, safety, or emergency questions, give practical steps and say when professional help is needed. " +
+            "You are Outpost, a practical assistant for offline and emergency use. " +
+                "Answer the question directly and concisely; do not merely list places to look. When sources are provided, use their relevant facts and cite them inline " +
+                "like [1] or [2]. Do not invent citations. For an ordinary question with no relevant source, answer from model knowledge and label it unverified. " +
+                "If a source only partly answers, explain the supported part and the uncertainty. " +
+                "For medical, safety, or emergency questions, do not improvise risky procedures or specific doses from general knowledge; " +
+                "direct the user to verified checklists, current local instructions, or professional help. " +
                 "Use plain text; short bullet lists are fine."
     }
 }

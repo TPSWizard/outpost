@@ -54,6 +54,8 @@ data class BeforeNav(
     val maps: () -> Unit, val reference: () -> Unit, val models: () -> Unit, val manuals: () -> Unit,
     val medical: () -> Unit, val household: () -> Unit, val supplies: () -> Unit, val print: () -> Unit,
     val backup: () -> Unit, val mesh: () -> Unit, val radio: () -> Unit, val benchmark: () -> Unit, val settings: () -> Unit,
+    val fieldGuide: () -> Unit,
+    val assistant: () -> Unit,
 )
 
 /** The things that only work while there's still internet, plus setup that makes the offline tools useful. */
@@ -64,15 +66,29 @@ fun BeforeOutageScreen(onBack: () -> Unit, nav: BeforeNav) {
         val inst = c.db.installed()
         val maps = inst.byKind(ResourceKind.MAP.name).size
         val zims = inst.byKind(ResourceKind.ZIM.name)
-        val models = inst.byKind(ResourceKind.MODEL.name)
+        val models = c.assistant.installedChatModels()
         val docs = inst.byKind(ResourceKind.DOC.name).map { it.resourceId }.toSet()
+        val installedDocs = inst.byKind(ResourceKind.DOC.name).associateBy { it.resourceId }
+        val catalog = c.catalog.catalog.value ?: c.catalog.load()
+        val packIds = setOf("fm-21-76", "fm-3-25-26", "fm-21-10")
+        val fieldPack = catalog.manuals.flatMap { it.groups }.flatMap { it.items }.filter { it.id in packIds }.distinctBy { it.id }
+        val searchable = c.db.retrieval().searchablePdfs().toSet()
+        val downloaded = fieldPack.count { installedDocs[it.id]?.filePath?.let { path -> java.io.File(path).isFile } == true }
+        val usable = fieldPack.count { installedDocs[it.id]?.filePath?.let { path ->
+            com.conza.outpost.storage.FileFormats.looksValid(ResourceKind.DOC, java.io.File(path)) } == true }
+        val indexed = fieldPack.count { installedDocs[it.id]?.filePath?.let { path -> path in searchable } == true }
         val snap = c.gridDown.snapshot()
         val plan = c.db.household().plan()
         val casualty = listOf("atp-4-02-11", "fm-4-25-11", "fm-21-10")
         val essentials = listOf("usda-home-canning", "ncvec-technician-pool")
         value = listOf(
-            PrepStep("Offline maps", "Your region plus about 100 miles around it. Pins, rally points, and the printed map card use it." +
+            PrepStep("Offline field guide", "Review the bundled water, shelter, lost-person, outage, and civilian emergency cards. Available even before downloads.",
+                false, true, "Open", nav.fieldGuide),
+            PrepStep("Offline maps", "Your region plus about 100 miles around it. These basemaps have no terrain contours; carry a paper topo map for terrain travel." +
                 if (maps > 0) " ($maps installed)" else "", true, maps > 0, "Maps", nav.maps),
+            PrepStep("Field basics pack", "${fieldPack.size} listed · $downloaded downloaded · $indexed text-indexed · $usable usable offline. " +
+                "About ${fieldPack.sumOf { it.sizeMb }} MB total. Includes survival, navigation, and hygiene manuals; check current guidance too.",
+                true, fieldPack.size == packIds.size && usable == fieldPack.size, "Manuals", nav.manuals),
             PrepStep("Offline libraries (Kiwix)", "Recommended: a medical library (WikiMed or MedlinePlus), Wikipedia (no pictures to save space), " +
                 "and in Reference: Water Treatment (zimgit-water), Post Disaster (zimgit-post-disaster), Food Preparation, Knots, Medicine (zimgit-medicine), " +
                 "iFixit repair guides, Gardening and Home Improvement (DIY) Stack Exchange, and the CD3WD appropriate-technology library." + if (zims.isNotEmpty()) " (${zims.size} installed)" else "",
@@ -82,15 +98,17 @@ fun BeforeOutageScreen(onBack: () -> Unit, nav: BeforeNav) {
             PrepStep("Grid-down essentials", "USDA home canning guide, ham radio license study pools, and the other public-domain guides in Field manuals → Grid-down essentials.",
                 true, essentials.any { it in docs }, "Manuals", nav.manuals),
             PrepStep("Drug label database", "FDA labels for every medication your household uses (Medical → Drugs → Download).", true, c.drugs.installed, "Medical", nav.medical),
-            PrepStep("AI model", "Qwen3 1.7B (or Llama 3.2 3B on a Pixel 8) plus the Nomic search model. Then run the Benchmark unplugged to measure battery per answer.",
-                true, models.isNotEmpty(), "AI models", nav.models),
+            PrepStep("On-phone AI model", "Download one chat model while connected. The search model is optional; quick answers use text search. Keep the backend set to On this phone.",
+                true, models.isNotEmpty() && c.settings.aiBackend == "local", "AI models", nav.models),
+            PrepStep("Airplane-mode rehearsal", "Turn on airplane mode, open Assistant, ask a question, and open a downloaded source. This proves the model and knowledge files are on this phone.",
+                false, null, "Assistant", nav.assistant),
             PrepStep("Measure AI battery cost", "Benchmark, unplugged, with a model installed.", false, c.settings.aiCostMeasured, "Benchmark", nav.benchmark),
             PrepStep("Household", "People with birth years, pets, medications (with doses on hand), climate, altitude, home location.",
                 false, snap.members.isNotEmpty() && c.settings.homeLat != null, "Household", nav.household),
             PrepStep("Contacts and rally points", "An out-of-area contact and two meeting places.", false, plan.any { it.type == "rally" }, "Household", nav.household),
             PrepStep("Count your supplies", "Water, food (with calories), fuel, batteries, medicines. Days remaining appear on Today.", false, snap.items.isNotEmpty(), "Supplies", nav.supplies),
             PrepStep("Print the cards", "Family plan, medication schedule, water & first-aid quick reference, neighborhood map.", false, null, "Print", nav.print),
-            PrepStep("Back up to an SD card or USB drive", "Keep a copy off the phone.", false, null, "Backup", nav.backup),
+            PrepStep("Back up to an SD card or USB drive", "Back up notes and plans; copy downloaded maps, books, and models separately.", false, null, "Backup", nav.backup),
             PrepStep("Test phone-to-phone sharing", "Open Share nearby on two family phones and send a pin.", false, null, "Share", nav.mesh),
             PrepStep("Program your radios", "Agree on a channel plan and check-in times with family and neighbors.", false, null, "Radio", nav.radio),
             PrepStep("Store content on the SD card", "Settings → Storage. Keeps phone memory free for the AI model.", false, null, "Settings", nav.settings),
@@ -101,7 +119,7 @@ fun BeforeOutageScreen(onBack: () -> Unit, nav: BeforeNav) {
         LazyColumn(Modifier.padding(pad), contentPadding = PaddingValues(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             item {
                 Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)) {
-                    Text("After setup, nothing in Outpost needs the internet. Items marked \"needs internet\" download content now so it's on the phone later.",
+                    Text("The bundled guide and installed local content work offline. Download reference files and an on-device AI model while connected; external links and a remote AI server still need a network.",
                         Modifier.padding(12.dp), style = MaterialTheme.typography.bodyMedium)
                 }
             }

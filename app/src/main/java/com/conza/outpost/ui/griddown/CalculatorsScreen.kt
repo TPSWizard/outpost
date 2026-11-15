@@ -66,6 +66,7 @@ private fun ResultCard(content: @Composable () -> Unit) {
 @Composable
 fun WaterCalc() {
     val c = LocalContext.current.container
+    var germRiskOnly by remember { mutableStateOf(false) }
     var amount by remember { mutableStateOf("1") }
     var gallons by remember { mutableStateOf(true) }
     var pct by remember { mutableStateOf(fmt(c.settings.bleachPercent, 2)) }
@@ -73,6 +74,16 @@ fun WaterCalc() {
     val liters = amount.toDoubleOrNull()?.let { if (gallons) it * Needs.GALLON_L else it }
     val dose = runCatching { WaterDisinfection.bleachDose(liters ?: 0.0, pct.toDoubleOrNull() ?: 0.0, cloudy) }
 
+    Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)) {
+        Column(Modifier.padding(12.dp)) {
+            Text("Check the source first", fontWeight = FontWeight.SemiBold)
+            Text("Boiling and bleach kill germs but cannot make water with fuel, toxic chemicals, or radioactive contamination safe. Use sealed water or another source and follow local advisories.")
+        }
+    }
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Checkbox(germRiskOnly, { germRiskOnly = it })
+        Text("I have no reason to suspect chemical or radioactive contamination")
+    }
     Text("Bleach (EPA emergency method)", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
         NumberField("Water", amount, { amount = it }, Modifier.weight(1f))
@@ -81,7 +92,7 @@ fun WaterCalc() {
     }
     NumberField("Bleach strength (on the label)", pct, { pct = it; it.toDoubleOrNull()?.let { p -> if (p in 4.0..10.0) c.settings.bleachPercent = p } }, Modifier.fillMaxWidth(), suffix = "%")
     Row(verticalAlignment = Alignment.CenterVertically) { Checkbox(cloudy, { cloudy = it }); Text("Water is cloudy, colored, or very cold") }
-    dose.onSuccess { d ->
+    if (germRiskOnly) dose.onSuccess { d ->
         ResultCard {
             Text("Add ${d.friendly}", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
             Text("= %.2f mL of %s%% bleach. Wait %d minutes.".format(d.milliliters, pct, d.waitMinutes))
@@ -93,7 +104,7 @@ fun WaterCalc() {
     var alt by remember { mutableStateOf(c.settings.altitudeMeters.toString()) }
     NumberField("Altitude", alt, { alt = it }, Modifier.fillMaxWidth(), decimal = false, suffix = "m")
     val mins = WaterDisinfection.boilMinutes(alt.toDoubleOrNull() ?: 0.0)
-    ResultCard {
+    if (germRiskOnly) ResultCard {
         Text("Rolling boil for $mins minute${if (mins > 1) "s" else ""}", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
         Text("CDC: 1 minute; 3 minutes above 2,000 m (6,500 ft). Let it cool covered. Boiling kills germs but doesn't remove chemicals.")
     }

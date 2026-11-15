@@ -94,6 +94,7 @@ fun AssistantScreen(
     val gen by vm.generation.collectAsStateWithLifecycle()
     val readiness by vm.readiness.collectAsStateWithLifecycle()
     val models by vm.models.collectAsStateWithLifecycle()
+    val offlineReferences by vm.offlineReferences.collectAsStateWithLifecycle()
     val useSources by vm.useSources.collectAsStateWithLifecycle()
     val index by vm.indexStatus.collectAsStateWithLifecycle()
     val crashNote by vm.crashNote.collectAsStateWithLifecycle()
@@ -117,8 +118,9 @@ fun AssistantScreen(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
                                 when (val r = readiness) {
-                                    is Readiness.Local -> "${r.modelTitle} · on this phone"
-                                    is Readiness.Remote -> "${r.model} · ${r.url.removePrefix("http://").removePrefix("https://")}"
+                                    is Readiness.Local -> "${r.modelTitle} · on this phone" +
+                                        (if (com.conza.outpost.ai.NativeLlm.safeMode) " · safe mode (slower)" else "")
+                                    is Readiness.Remote -> "${r.model} · network server · ${r.url.removePrefix("http://").removePrefix("https://")}"
                                     else -> "No model"
                                 },
                                 style = MaterialTheme.typography.labelSmall,
@@ -153,12 +155,17 @@ fun AssistantScreen(
             when (val r = readiness) {
                 Readiness.NeedsModel -> SetupCard(
                     "Pick a model to get started",
-                    "The assistant runs entirely on this phone. Download a model once (0.5–2.5 GB) and it works with no signal. " +
-                        "Qwen3 1.7B is a good first choice. Or connect to an Ollama server on your network.",
+                    "Bundled safety cards can answer focused emergency questions without a model. For general questions, download a model once (0.5–2.5 GB). " +
+                        "Qwen3 1.7B is a good first choice. You can also connect to an Ollama server on your network.",
                     onGetModels, onSettings,
                 )
-                is Readiness.Unsupported -> SetupCard("On-device AI isn't available", r.reason + " You can still connect to an Ollama or LM Studio server on your network.", null, onSettings)
+                is Readiness.Unsupported -> SetupCard("On-device AI isn't available", r.reason + " Bundled safety cards still answer focused emergency questions. A server on your network is also available through Settings.", null, onSettings)
                 else -> Unit
+            }
+            if (readiness is Readiness.Local) {
+                Text("On-device model available · bundled field cards · $offlineReferences downloaded manual/library files. Test in airplane mode before relying on it.",
+                    modifier = Modifier.padding(horizontal = 16.dp), style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
 
             LazyColumn(Modifier.weight(1f).fillMaxWidth(), state = list, contentPadding = PaddingValues(12.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -188,17 +195,23 @@ fun AssistantScreen(
                 Spacer(Modifier.weight(1f))
                 gen?.tokensPerSecond?.let { Text("%.1f tok/s".format(it), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
             }
+            Text("Short uses the bundled guide and fast text search. Explain searches more deeply and may take longer.",
+                modifier = Modifier.padding(horizontal = 16.dp), style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant)
             Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.Bottom) {
                 OutlinedTextField(
                     value = input, onValueChange = { input = it },
                     modifier = Modifier.weight(1f),
                     placeholder = { Text("Ask anything…") },
                     maxLines = 5,
-                    enabled = readiness is Readiness.Local || readiness is Readiness.Remote,
+                    enabled = true,
                 )
                 Spacer(Modifier.width(8.dp))
                 if (busy) FilledIconButton(onClick = vm::stop) { Icon(Icons.Filled.Stop, "Stop") }
-                else FilledIconButton(onClick = { vm.send(input); input = "" }, enabled = input.isNotBlank()) { Icon(Icons.AutoMirrored.Filled.Send, "Send") }
+                else FilledIconButton(onClick = { vm.send(input); input = "" }, enabled = input.isNotBlank() &&
+                    (readiness is Readiness.Local || readiness is Readiness.Remote || com.conza.outpost.griddown.FieldGuide.safetyCardId(input) != null)) {
+                    Icon(Icons.AutoMirrored.Filled.Send, "Send")
+                }
             }
         }
     }

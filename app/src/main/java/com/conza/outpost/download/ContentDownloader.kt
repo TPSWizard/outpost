@@ -40,6 +40,7 @@ class ContentDownloader(context: Context) {
                     DownloadWorker.KEY_KIND to item.kind.name,
                     DownloadWorker.KEY_FILE to item.fileName,
                     DownloadWorker.KEY_EXPECTED_BYTES to item.sizeMb * 1024 * 1024,
+                    DownloadWorker.KEY_SHA256 to (item.extra["sha256"] ?: ""),
                 )
             )
             .setConstraints(

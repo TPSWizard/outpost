@@ -56,7 +56,7 @@ class LibraryViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    fun rescan() { library.refresh(); scanPdfs() }
+    fun rescan() { library.refresh(); scanBooks() }
 
     // ---- Imported books: your own PDFs and ZIM files ----
     private val storage = app.container.storage
@@ -65,21 +65,41 @@ class LibraryViewModel(app: Application) : AndroidViewModel(app) {
     /** File name → catalog title, for field manuals downloaded through Content. */
     private val _pdfTitles = MutableStateFlow<Map<String, String>>(emptyMap())
     val pdfTitles: StateFlow<Map<String, String>> = _pdfTitles.asStateFlow()
+    /** null = not yet indexed, false = image-only/no extractable text, true = searchable text. */
+    private val _pdfSearchable = MutableStateFlow<Map<String, Boolean?>>(emptyMap())
+    val pdfSearchable: StateFlow<Map<String, Boolean?>> = _pdfSearchable.asStateFlow()
+    private val _texts = MutableStateFlow<List<java.io.File>>(emptyList())
+    val texts: StateFlow<List<java.io.File>> = _texts.asStateFlow()
+    private val _textTitles = MutableStateFlow<Map<String, String>>(emptyMap())
+    val textTitles: StateFlow<Map<String, String>> = _textTitles.asStateFlow()
     val importing = MutableStateFlow<String?>(null)
     val message = MutableStateFlow<String?>(null)
 
-    fun scanPdfs() = viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+    fun scanBooks() = viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
         _pdfs.value = storage.allRoots().map { java.io.File(it, BOOKS) }.filter { it.isDirectory }
             .flatMap { d -> d.listFiles { f -> f.isFile && f.name.endsWith(".pdf", true) }.orEmpty().toList() }
             .sortedBy { it.name.lowercase() }
         _pdfTitles.value = app().container.db.installed().byKind(com.conza.outpost.catalog.ResourceKind.DOC.name)
             .associate { java.io.File(it.filePath).name to it.title }
+        val readings = app().container.textLibrary()
+        _texts.value = readings.map { it.first }.sortedBy { it.name.lowercase() }
+        _textTitles.value = readings.associate { it.first.absolutePath to it.second }
         app().container.syncPdfIndex()
+        app().container.syncTextIndex()
+        refreshPdfSearchStatus()
+    }
+
+    private suspend fun refreshPdfSearchStatus() {
+        val dao = app().container.db.retrieval()
+        val indexed = dao.indexedPdfs().toSet()
+        val searchable = dao.searchablePdfs().toSet()
+        _pdfSearchable.value = _pdfs.value.associate { it.absolutePath to
+            (if (it.absolutePath in indexed) it.absolutePath in searchable else null) }
     }
 
     private fun app() = getApplication<Application>()
 
-    /** Copies a PDF or .zim the user picked into Outpost's storage. ZIMs join the Library; PDFs open in the viewer. */
+    /** Copies a PDF, text file or ZIM the user picked into Outpost's storage. */
     fun import(uri: android.net.Uri) = viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
         val ctx = getApplication<Application>()
         val name = ctx.contentResolver.query(uri, arrayOf(android.provider.OpenableColumns.DISPLAY_NAME), null, null, null)
@@ -87,7 +107,8 @@ class LibraryViewModel(app: Application) : AndroidViewModel(app) {
         val dest = when {
             name.endsWith(".zim", true) -> java.io.File(storage.dir(com.conza.outpost.catalog.ResourceKind.ZIM), name)
             name.endsWith(".pdf", true) -> java.io.File(storage.namedDir(BOOKS), name)
-            else -> { message.value = "Outpost can import .pdf and .zim files. \"$name\" isn't one of those."; return@launch }
+            name.endsWith(".txt", true) -> java.io.File(storage.namedDir(BOOKS), name)
+            else -> { message.value = "Outpost can import .pdf, .txt and .zim files. \"$name\" isn't one of those."; return@launch }
         }
         importing.value = name
         val result = runCatching {
@@ -95,6 +116,9 @@ class LibraryViewModel(app: Application) : AndroidViewModel(app) {
             ctx.contentResolver.openInputStream(uri)!!.use { input -> tmp.outputStream().use { input.copyTo(it, 1 shl 16) } }
             if (dest.name.endsWith(".zim", true) && !com.conza.outpost.storage.FileFormats.looksValid(com.conza.outpost.catalog.ResourceKind.ZIM, tmp)) {
                 tmp.delete(); error("that file isn't a valid ZIM")
+            }
+            if (dest.name.endsWith(".txt", true) && !com.conza.outpost.storage.FileFormats.looksValid(com.conza.outpost.catalog.ResourceKind.TEXT, tmp)) {
+                tmp.delete(); error("that file isn't valid UTF-8 text")
             }
             dest.delete(); tmp.renameTo(dest)
         }
@@ -109,11 +133,22 @@ class LibraryViewModel(app: Application) : AndroidViewModel(app) {
         f.delete(); com.conza.outpost.download.ContentEvents.changed()
     }
 
+    fun deleteText(f: java.io.File) = viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+        val db = app().container.db.installed()
+        db.byKind(com.conza.outpost.catalog.ResourceKind.TEXT.name).firstOrNull { it.filePath == f.absolutePath }?.let { db.delete(it.resourceId) }
+        f.delete(); com.conza.outpost.download.ContentEvents.changed()
+    }
+
     // Runs last so every property above is initialized before background work can touch it.
     init {
-        scanPdfs()
+        scanBooks()
+        viewModelScope.launch {
+            app.container.index.pdfStatus.collect { status ->
+                if (status == null) refreshPdfSearchStatus()
+            }
+        }
         // Books and PDFs refresh the moment content changes anywhere in the app.
-        viewModelScope.launch { com.conza.outpost.download.ContentEvents.changes.collect { scanPdfs() } }
+        viewModelScope.launch { com.conza.outpost.download.ContentEvents.changes.collect { scanBooks() } }
         // Pick up libraries the moment a download finishes (and files copied in by hand on resume).
         viewModelScope.launch {
             app.container.downloader.observe()

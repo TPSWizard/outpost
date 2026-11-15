@@ -50,6 +50,18 @@ class CoreLogicTest {
         assertEquals(comprehensive.size, comprehensive.toSet().size)
     }
 
+    @Test fun survivalTextTiersExcludeOptionalVideos() {
+        val groups = catalog().library.first { it.title == "Survival & Preparedness" }.groups
+        val essential = groups.first { it.key == "zim:survival-essential" }.items
+        val standard = groups.first { it.key == "zim:survival-standard" }.items
+        val videos = groups.first { it.key == "zim:survival-video" }.items
+        assertEquals(144L, essential.sumOf { it.sizeMb })
+        assertTrue(standard.map { it.id }.containsAll(essential.map { it.id }))
+        assertTrue(standard.none { "/videos/" in it.url })
+        assertTrue(videos.size >= 2 && videos.all { "/videos/" in it.url })
+        assertTrue(catalog().maps.single().groups.flatMap { it.items }.all { "No terrain contours" in it.description })
+    }
+
     @Test fun fileNamesMatchNomadConvention() {
         val hawaii = catalog().maps.single().groups.flatMap { it.items }.first { it.id == "hawaii" }
         assertTrue(hawaii.fileName.matches(Regex("hawaii_\\d{4}-\\d{2}\\.pmtiles")))

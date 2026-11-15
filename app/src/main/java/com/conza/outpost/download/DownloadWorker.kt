@@ -47,6 +47,7 @@ class DownloadWorker(
         val kind = ResourceKind.valueOf(inputData.getString(KEY_KIND) ?: return@withContext Result.failure())
         val fileName = inputData.getString(KEY_FILE) ?: return@withContext Result.failure()
         val expectedBytes = inputData.getLong(KEY_EXPECTED_BYTES, 0L)
+        val expectedHash = inputData.getString(KEY_SHA256).orEmpty()
 
         val storage = app.container.storage
         val target = storage.fileFor(kind, fileName)
@@ -67,6 +68,11 @@ class DownloadWorker(
             else Result.failure(workDataOf(KEY_ERROR to (e.message ?: "Network error")))
         }
 
+        if (expectedHash.isNotBlank() && (!part.isFile || !DownloadIntegrity.validHash(expectedHash) ||
+            !DownloadIntegrity.sha256(part).equals(expectedHash, ignoreCase = true))) {
+            part.delete()
+            return@withContext Result.failure(workDataOf(KEY_ERROR to "SHA-256 mismatch; download discarded"))
+        }
         if (!FileFormats.looksValid(kind, part)) {
             part.delete()
             return@withContext Result.failure(workDataOf(KEY_ERROR to "Downloaded file is not a valid ${kind.extension}"))
@@ -108,6 +114,8 @@ class DownloadWorker(
             File(previous.filePath).deleteRecursively()
         }
         ContentEvents.changed()
+        if (kind == ResourceKind.TEXT) app.container.syncTextIndex()
+        if (kind == ResourceKind.DOC) app.container.syncPdfIndex()
         Result.success()
     }
 
@@ -188,6 +196,7 @@ class DownloadWorker(
         const val KEY_KIND = "kind"
         const val KEY_FILE = "file"
         const val KEY_EXPECTED_BYTES = "expected"
+        const val KEY_SHA256 = "sha256"
         const val KEY_BYTES = "bytes"
         const val KEY_TOTAL = "total"
         const val KEY_ERROR = "error"

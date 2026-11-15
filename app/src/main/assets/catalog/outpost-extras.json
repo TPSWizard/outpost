@@ -1,5 +1,5 @@
 {
-  "spec_version": "2026-11-03",
+  "spec_version": "2026-11-15",
   "models": [
     {
       "id": "qwen3-1.7b-instruct",
@@ -91,6 +91,18 @@
       "description": "Dozens of handy utilities: converters, generators, network calculators, formatters. GPL-3.0.",
       "url": "https://github.com/CorentinTh/it-tools/releases/download/v2024.10.22-7ca5933/it-tools-2024.10.22-7ca5933.zip",
       "size_mb": 4
+    }
+  ],
+  "readings": [
+    {
+      "id": "art-of-war-giles",
+      "version": "2026-10",
+      "title": "The Art of War — Lionel Giles translation",
+      "description": "Historical strategy with annotations. Read for preparation, logistics, terrain awareness, and avoiding needless conflict; not modern emergency guidance.",
+      "url": "https://www.gutenberg.org/cache/epub/132/pg132.txt",
+      "publisher": "Project Gutenberg",
+      "rights": "Public domain in the USA; see Gutenberg license and local law elsewhere",
+      "size_mb": 1
     }
   ],
   "manuals": [
@@ -304,6 +316,71 @@
           "description": "Protection from nuclear, biological, and chemical hazards: masks, shelter, and decontamination.",
           "url": "https://archive.org/download/milmanual-mcwp-3-37.2-nuclear-biological-and-chemical-nbc-protection/mcwp_3-37.2_nuclear_biological_and_chemical_nbc_protection.pdf",
           "size_mb": 6
+        }
+      ]
+    },
+    {
+      "slug": "civilian-safety",
+      "name": "Civilian emergency safety",
+      "recommended": true,
+      "description": "Short official guides for shelter, severe violence, and fallout. The bundled field cards remain available without downloads.",
+      "resources": [
+        {
+          "id": "fema-nuclear-hazard-sheet",
+          "version": "2024-03",
+          "title": "FEMA: Nuclear Explosion Hazard Sheet",
+          "description": "Get inside, stay inside, stay tuned; shelter and decontamination basics. Follow current local instructions.",
+          "url": "https://www.ready.gov/sites/default/files/2024-03/ready.gov_nuclear-explosion-hazard-info-sheet.pdf",
+          "publisher": "FEMA",
+          "rights": "U.S. federal government publication",
+          "size_mb": 1
+        },
+        {
+          "id": "fema-active-shooter-sheet",
+          "version": "2024-07",
+          "title": "FEMA: Active Shooter Hazard Sheet",
+          "description": "Civilian evacuation, hiding, and reporting guidance for an immediate violent threat.",
+          "url": "https://www.ready.gov/sites/default/files/2024-07/ready.gov_active-shooter-info-sheet.pdf",
+          "publisher": "FEMA",
+          "rights": "U.S. federal government publication",
+          "size_mb": 1
+        }
+      ]
+    },
+    {
+      "slug": "decision-making",
+      "name": "Decision-making under uncertainty",
+      "description": "Public CIA and ODNI analytic methods for checking assumptions, source quality, alternatives, and confidence. Not operational intelligence instructions.",
+      "resources": [
+        {
+          "id": "cia-tradecraft-primer",
+          "version": "2009",
+          "title": "CIA: A Tradecraft Primer",
+          "description": "Structured analytic techniques: key assumptions, information quality, competing explanations, and indicators. Public release.",
+          "url": "https://www.cia.gov/resources/csi/static/Tradecraft-Primer-apr09.pdf",
+          "publisher": "CIA Center for the Study of Intelligence",
+          "rights": "U.S. federal government publication",
+          "size_mb": 1
+        },
+        {
+          "id": "odni-analytic-standards",
+          "version": "2022-12",
+          "title": "ODNI: Analytic Standards (ICD 203)",
+          "description": "Standards for objective analysis, source evaluation, uncertainty, and explaining judgments. Public release.",
+          "url": "https://www.odni.gov/files/documents/ICD/ICD-203_TA_Analytic_Standards_21_Dec_2022.pdf",
+          "publisher": "Office of the Director of National Intelligence",
+          "rights": "U.S. federal government publication",
+          "size_mb": 1
+        },
+        {
+          "id": "cia-psychology-analysis",
+          "version": "1999",
+          "title": "CIA: Psychology of Intelligence Analysis",
+          "description": "Richards Heuer's public book on perception, cognitive bias, and reasoning with incomplete evidence.",
+          "url": "https://www.cia.gov/resources/csi/static/Pyschology-of-Intelligence-Analysis.pdf",
+          "publisher": "CIA Center for the Study of Intelligence",
+          "rights": "Noncommercial educational copying permitted; commercial copying prohibited in PDF notice",
+          "size_mb": 2
         }
       ]
     },

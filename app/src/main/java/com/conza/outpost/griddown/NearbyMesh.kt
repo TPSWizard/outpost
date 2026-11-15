@@ -134,7 +134,7 @@ class NearbyMesh(private val context: Context, private val scope: CoroutineScope
         }
     }
 
-    /** Files arrive into the books folder (PDFs) or a "shared" folder for anything else. */
+    /** Reading files arrive in books; other files use the shared folder. */
     private fun saveFile(p: Payload, endpoint: String, name: String) {
         val pfd = p.asFile()?.asParcelFileDescriptor() ?: return
         if (name == "sync.json") { // a large sync bundle, not a file to keep
@@ -143,6 +143,7 @@ class NearbyMesh(private val context: Context, private val scope: CoroutineScope
         val storage = context.container.storage
         val dir = when {
             name.endsWith(".pdf", true) -> storage.namedDir("books")
+            name.endsWith(".txt", true) -> storage.namedDir("books")
             name.endsWith(".pmtiles", true) -> storage.dir(com.conza.outpost.catalog.ResourceKind.MAP)
             name.endsWith(".zim", true) -> storage.dir(com.conza.outpost.catalog.ResourceKind.ZIM)
             else -> storage.namedDir("shared")
@@ -153,6 +154,7 @@ class NearbyMesh(private val context: Context, private val scope: CoroutineScope
         _status.value = "Received ${dest.name}"
         com.conza.outpost.download.ContentEvents.changed()
         if (name.endsWith(".pdf", true)) context.container.syncPdfIndex()
+        if (name.endsWith(".txt", true)) context.container.syncTextIndex()
     }
 
     suspend fun applyIncoming() {

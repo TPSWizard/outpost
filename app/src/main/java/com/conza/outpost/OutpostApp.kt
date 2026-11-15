@@ -53,6 +53,15 @@ class AppContainer(private val context: Context) {
     }
 
     fun syncPdfIndex() = appScope.launch { runCatching { index.syncPdfs(pdfLibrary()) } }
+    suspend fun textLibrary(): List<Pair<java.io.File, String>> {
+        val titles = db.installed().byKind(com.conza.outpost.catalog.ResourceKind.TEXT.name)
+            .associate { java.io.File(it.filePath).absolutePath to it.title }
+        return storage.allRoots().map { java.io.File(it, "books") }.filter { it.isDirectory }
+            .flatMap { dir -> dir.listFiles { f -> f.isFile && f.name.endsWith(".txt", true) }.orEmpty().toList() }
+            .map { file -> file to (titles[file.absolutePath] ?: file.nameWithoutExtension.replace('_', ' ')) }
+    }
+
+    fun syncTextIndex() = appScope.launch { runCatching { index.syncTexts(textLibrary()) } }
     val assistant by lazy { Assistant(context, this) }
     val gridDown = com.conza.outpost.griddown.GridDownRepo(context, db, settings)
     val nearby by lazy { com.conza.outpost.griddown.NearbyMesh(context, appScope) }

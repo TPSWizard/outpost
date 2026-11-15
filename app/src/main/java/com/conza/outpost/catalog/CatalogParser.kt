@@ -38,9 +38,20 @@ object CatalogParser {
                 )),
             ),
             manuals = listOf(
-                CatalogSection("Field manuals", extras.manuals.map { m ->
+                CatalogSection("Field manuals", listOf(CatalogGroup(
+                    "manuals:field-basics", "Field basics · survival, navigation, hygiene",
+                    "Compact pre-trip pack of three historical manuals. Check current local rules and public-health guidance alongside them.",
+                    extras.manuals.flatMap { it.resources }
+                        .filter { it.id in setOf("fm-21-76", "fm-3-25-26", "fm-21-10") }
+                        .map { it.toItem(ResourceKind.DOC) },
+                    recommended = true,
+                )) + extras.manuals.map { m ->
                     CatalogGroup("manuals:${m.slug}", m.name, m.description, m.resources.map { it.toItem(ResourceKind.DOC) }, recommended = m.recommended)
-                }),
+                } + listOf(CatalogGroup(
+                    "readings:history", "Historical reading",
+                    "Historical works for context and decision-making. Not current emergency instructions.",
+                    extras.readings.map { it.toItem(ResourceKind.TEXT) },
+                ))),
             ),
             versions = c.versions + ("extras" to extras.specVersion),
         )
@@ -53,8 +64,10 @@ object CatalogParser {
                 CatalogGroup(
                     key = "map:${c.slug}",
                     title = c.name,
-                    description = c.description,
-                    items = c.resources.mapNotNull { it.toItem(ResourceKind.MAP) },
+                    description = c.description + " These are offline basemaps, not contour or elevation maps.",
+                    items = c.resources.mapNotNull { it.toItem(ResourceKind.MAP)?.copy(
+                        description = "Offline regional basemap for ${it.title}. No terrain contours or elevation data; carry a topographic map for terrain navigation."
+                    ) },
                 )
             },
         )
@@ -66,11 +79,22 @@ object CatalogParser {
                     CatalogGroup(
                         key = "zim:${tier.slug}",
                         title = "${cat.name} · ${tier.name}",
-                        description = tier.description,
-                        items = resolveTier(cat, tier),
+                        description = if (cat.slug == "survival") when (tier.slug) {
+                            "survival-essential" -> "Water, food preparation, and knots. Compact text-first references; videos are optional below."
+                            "survival-standard" -> "Official disaster planning, outdoor skills, and radio references. Includes Essential; videos are optional below."
+                            "survival-comprehensive" -> "Post-disaster recovery, off-grid technology, and historical reading. Includes Standard; videos are optional below."
+                            else -> "Text-first references; videos are optional below."
+                        } else tier.description,
+                        items = resolveTier(cat, tier).filterNot { cat.slug == "survival" && it.url.contains("/videos/") },
                         recommended = tier.recommended,
                     )
-                },
+                } + if (cat.slug == "survival") listOf(CatalogGroup(
+                    key = "zim:survival-video",
+                    title = "Survival & Preparedness · Optional videos",
+                    description = "Large video libraries; download only if you have the storage and need them. Not included in the text tiers.",
+                    items = cat.tiers.flatMap { it.resources }.filter { it.url?.contains("/videos/") == true }
+                        .distinctBy { it.id }.mapNotNull { it.toItem(ResourceKind.ZIM) },
+                )) else emptyList(),
             )
         }
 

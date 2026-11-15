@@ -9,6 +9,7 @@ import com.conza.outpost.griddown.ActionState
 import com.conza.outpost.griddown.Checklists
 import com.conza.outpost.griddown.Climate
 import com.conza.outpost.griddown.FirstAid
+import com.conza.outpost.griddown.FieldGuide
 import com.conza.outpost.griddown.FoodSafety
 import com.conza.outpost.griddown.Needs
 import com.conza.outpost.griddown.Outage
@@ -30,6 +31,30 @@ import java.time.LocalDate
 
 class GridDownTest {
     private val year = 2026
+
+    @Test fun bundledFieldGuideIsCompleteAndSafetyQuestionsUseCards() {
+        val guide = FieldGuide.parse(File("src/main/assets/griddown/field-guide.json").readText())
+        assertTrue(FieldGuide.validate(guide).joinToString(), FieldGuide.validate(guide).isEmpty())
+        assertTrue(guide.cards.size >= 20)
+        val cases = mapOf(
+            "I'm lost in the woods" to "lost-outdoors",
+            "Can I boil water near a chemical spill?" to "water-safety",
+            "Can I boil radioactive water?" to "water-safety",
+            "Lightning on the ridge" to "weather-exposure",
+            "Is this wild mushroom safe?" to "wild-food",
+            "Can I do low-acid canning without power?" to "food-storage",
+            "A drone looks dangerous outside our house" to "unsafe-drone",
+            "What do I do after nuclear fallout?" to "fallout",
+            "There is a chemical release outside" to "chemical-release",
+            "Someone has hypothermia" to "first-aid",
+            "Someone is breaking into our home" to "violent-threat",
+        )
+        cases.forEach { (question, cardId) ->
+            assertEquals(question, cardId, FieldGuide.safetyCardId(question))
+            assertNotNull(guide.cards.firstOrNull { it.id == cardId })
+        }
+        assertNull(FieldGuide.safetyCardId("How do I fix my bike chain?"))
+    }
     private val adult = HouseholdMember(name = "A", birthYear = 1985)
     private val adult2 = HouseholdMember(name = "B", birthYear = 1987)
     private val kid = HouseholdMember(name = "C", birthYear = 2016) // 10
@@ -280,6 +305,7 @@ class GridDownTest {
     @Test fun answerPolicyRoutes() {
         val f = FirstAid.parse(File("src/main/assets/griddown/firstaid.json").readText())
         assertTrue(AnswerPolicy.route("how much bleach to purify 5 gallons", f).contains(AnswerPolicy.Route.WaterTreatment))
+        assertFalse(AnswerPolicy.route("can I boil water near a chemical spill?", f).contains(AnswerPolicy.Route.WaterTreatment))
         assertTrue(AnswerPolicy.route("is the food in my freezer still safe?", f).contains(AnswerPolicy.Route.FoodSafety))
         assertEquals(AnswerPolicy.Route.FirstAidTopic("hypothermia", "Hypothermia (too cold)"), AnswerPolicy.route("he's shivering and confused, hypothermia?", f).first())
         assertTrue(AnswerPolicy.route("tell me a story", f).isEmpty())

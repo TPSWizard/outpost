@@ -1,0 +1,63 @@
+name: Outpost Preview APK
+
+on:
+  push:
+    branches: ['codex/outpost-preview']
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Test and assemble Preview
+        run: ./gradlew :app:testPreviewUnitTest :app:assemblePreview --no-daemon
+      - name: Verify the phone APK
+        shell: bash
+        run: |
+          apk="$RUNNER_TEMP/Outpost-Preview-arm64.apk"
+          cp app/build/outputs/apk/preview/app-arm64-v8a-preview.apk "$apk"
+          build_tools="$ANDROID_HOME/build-tools/36.0.0"
+          "$build_tools/apksigner" verify --verbose "$apk"
+          "$build_tools/aapt" dump badging "$apk" > "$RUNNER_TEMP/outpost-preview-badging.txt"
+          grep -Fx "application-label:'Outpost Preview'" "$RUNNER_TEMP/outpost-preview-badging.txt"
+          grep -Fx "native-code: 'arm64-v8a'" "$RUNNER_TEMP/outpost-preview-badging.txt"
+
+          apkanalyzer manifest print "$apk" > "$RUNNER_TEMP/outpost-preview-manifest.xml"
+          python3 - "$RUNNER_TEMP/outpost-preview-manifest.xml" <<'PY'
+          import sys
+          import xml.etree.ElementTree as ET
+
+          manifest = ET.parse(sys.argv[1]).getroot()
+          package_name = "com.conza.outpost.preview"
+          android = "{http://schemas.android.com/apk/res/android}"
+          assert manifest.attrib["package"] == package_name, manifest.attrib
+          assert android + "sharedUserId" not in manifest.attrib, manifest.attrib
+          authorities = [provider.attrib[android + "authorities"] for provider in manifest.findall("./application/provider")]
+          assert package_name + ".files" in authorities, authorities
+          assert all(authority.startswith(package_name + ".") for authority in authorities), authorities
+          print(f"Verified package {package_name} and provider authorities: {', '.join(authorities)}")
+          PY
+
+          unzip -Z1 "$apk" > "$RUNNER_TEMP/outpost-preview-files.txt"
+          grep -Fx 'lib/arm64-v8a/liboutpost_llm.so' "$RUNNER_TEMP/outpost-preview-files.txt"
+          grep -Fx 'lib/arm64-v8a/libllama.so' "$RUNNER_TEMP/outpost-preview-files.txt"
+          grep -Fx 'assets/griddown/field-guide.json' "$RUNNER_TEMP/outpost-preview-files.txt"
+          sha256sum "$apk"
+      - name: Upload the installable APK
+        uses: actions/upload-artifact@v7
+        with:
+          path: ${{ runner.temp }}/Outpost-Preview-arm64.apk
+          archive: false
+          if-no-files-found: error

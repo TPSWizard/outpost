@@ -36,6 +36,13 @@ android {
             // Sideload-friendly: signed with the debug key until you add a real keystore.
             signingConfig = signingConfigs.getByName("debug")
         }
+        create("preview") {
+            initWith(getByName("release"))
+            applicationIdSuffix = ".preview"
+            versionNameSuffix = "-preview"
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += "release"
+        }
     }
 
     compileOptions {

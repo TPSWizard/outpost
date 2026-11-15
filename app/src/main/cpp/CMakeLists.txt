@@ -60,4 +60,6 @@ else()
     find_package(JNI REQUIRED)
     target_include_directories(outpost_llm PRIVATE ${JNI_INCLUDE_DIRS})
     target_link_libraries(outpost_llm llama llama-common)
+    # Core selection against synthetic phone layouts: ./core_plan_test
+    add_executable(core_plan_test core_plan_test.cpp)
 endif()

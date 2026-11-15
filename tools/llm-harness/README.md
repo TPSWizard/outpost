@@ -12,3 +12,10 @@ javac -d out Main.java com/conza/outpost/ai/*.java && java -cp out Main
 
 It checks: streaming generation, KV-cache reuse on a follow-up turn, stopping from the
 callback, the "prompt too long" code (-2), and embedding similarity.
+
+The host build also produces `core_plan_test`, which checks the fast-core selection in
+`app/src/main/cpp/core_plan.h` against synthetic phone layouts (no model or JNI needed):
+
+```bash
+./host/core_plan_test
+```

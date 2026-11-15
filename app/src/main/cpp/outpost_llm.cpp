@@ -27,6 +27,7 @@
 #include <cerrno>
 #include <cmath>
 #include <cstdio>
+#include <cstdlib>
 #include <fstream>
 #include <string>
 #include <unistd.h>
@@ -37,6 +38,7 @@
 #endif
 
 #include "chat.h"
+#include "core_plan.h"
 #include "common.h"
 #include "llama.h"
 #include "sampling.h"
@@ -58,6 +60,7 @@ constexpr int BATCH = 512;
 struct ThreadPlan {
     int n_threads = 0;
     std::vector<int> cores; // CPUs to run on; empty leaves the scheduler free to choose
+    const char *source = "none"; // which signal told the cores apart (for the log)
 };
 
 struct Engine {
@@ -81,37 +84,86 @@ void log_cb(ggml_log_level level, const char *text, void *) {
 
 // ---- Thread placement ----
 // Phones mix fast and slow cores, and ggml synchronises its threads at every op, so one thread
-// on a little core holds the whole model to that core's pace. Each core's top clock from cpufreq
-// tells the clusters apart: cores within 80% of the fastest count as fast (prime and performance
-// cores pass, efficiency cores at 55-70% don't), and only those run the model. Without cpufreq
-// (emulators, the JVM harness) or on a uniform CPU, fall back to a plain count.
-long read_max_khz(int cpu) {
-    char path[96];
-    snprintf(path, sizeof path, "/sys/devices/system/cpu/cpu%d/cpufreq/cpuinfo_max_freq", cpu);
+// on a little core holds the whole model to that core's pace. core_plan.h picks the fast cores
+// from the scheduler's cpu_capacity, else the cores' MIDR part numbers, else cpufreq alone (the
+// old 80%-of-top-clock rule, which misfires on mid-range chips whose little cores clock close to
+// the big ones). Without any of those (emulators, the JVM harness) or on a uniform CPU, fall
+// back to a plain count.
+long read_long(const char *path) {
     std::ifstream f(path);
-    long khz = 0;
-    return (f >> khz) ? khz : 0;
+    long v = 0;
+    return (f >> v) ? v : 0;
+}
+
+long read_cpu_long(int cpu, const char *leaf) {
+    char path[128];
+    snprintf(path, sizeof path, "/sys/devices/system/cpu/cpu%d/%s", cpu, leaf);
+    return read_long(path);
+}
+
+uint32_t read_cpu_midr(int cpu) {
+    char path[128];
+    snprintf(path, sizeof path, "/sys/devices/system/cpu/cpu%d/regs/identification/midr_el1", cpu);
+    std::ifstream f(path);
+    unsigned long long v = 0;
+    return (f >> std::hex >> v) ? (uint32_t) v : 0;
+}
+
+// Older kernels lack the midr_el1 sysfs file; /proc/cpuinfo carries the same fields per core.
+void fill_midr_from_cpuinfo(std::vector<outpost::CoreInfo> &cores) {
+    std::ifstream f("/proc/cpuinfo");
+    if (!f) return;
+    std::string line;
+    int cpu = -1;
+    uint32_t impl = 0, part = 0;
+    auto flush = [&]() {
+        if (cpu < 0 || !impl || !part) return;
+        for (auto &c : cores) if (c.cpu == cpu && c.midr == 0) c.midr = (impl << 24) | (part << 4);
+    };
+    while (std::getline(f, line)) {
+        auto colon = line.find(':');
+        if (colon == std::string::npos) continue;
+        std::string key = line.substr(0, colon), val = line.substr(colon + 1);
+        key.erase(key.find_last_not_of(" \t") + 1);
+        if (key == "processor") { flush(); cpu = (int) strtol(val.c_str(), nullptr, 10); impl = part = 0; }
+        else if (key == "CPU implementer") impl = (uint32_t) strtoul(val.c_str(), nullptr, 0);
+        else if (key == "CPU part") part = (uint32_t) strtoul(val.c_str(), nullptr, 0);
+    }
+    flush();
+}
+
+std::vector<outpost::CoreInfo> probe_cores() {
+    long total = sysconf(_SC_NPROCESSORS_CONF);
+    if (total < 1) total = 1;
+    std::vector<outpost::CoreInfo> cores;
+    for (int cpu = 0; cpu < total && cpu < GGML_MAX_N_THREADS; cpu++) {
+        outpost::CoreInfo c;
+        c.cpu = cpu;
+        c.capacity = read_cpu_long(cpu, "cpu_capacity");
+        c.max_khz = read_cpu_long(cpu, "cpufreq/cpuinfo_max_freq");
+        c.midr = read_cpu_midr(cpu);
+        cores.push_back(c);
+    }
+    if (std::any_of(cores.begin(), cores.end(), [](const outpost::CoreInfo &c) { return c.midr == 0; }))
+        fill_midr_from_cpuinfo(cores);
+    return cores;
 }
 
 ThreadPlan plan_threads(int requested) {
     ThreadPlan plan;
-    long total = sysconf(_SC_NPROCESSORS_CONF);
-    if (total < 1) total = 1;
-    std::vector<std::pair<long, int>> freq; // (kHz, cpu)
-    for (int cpu = 0; cpu < total && cpu < GGML_MAX_N_THREADS; cpu++) {
-        long khz = read_max_khz(cpu);
-        if (khz > 0) freq.emplace_back(khz, cpu);
-    }
-    if ((long) freq.size() == total) {
-        std::sort(freq.rbegin(), freq.rend()); // fastest first
-        const long top = freq.front().first;
-        for (auto &fc : freq) if (fc.first * 10 >= top * 8) plan.cores.push_back(fc.second);
-        if ((long) plan.cores.size() == total) {
-            plan.cores.clear(); // one cluster: nothing to separate
-        } else {
-            while (plan.cores.size() < 2 && plan.cores.size() < freq.size()) plan.cores.push_back(freq[plan.cores.size()].second);
-            plan.n_threads = (int) std::max<size_t>(2, std::min<size_t>(6, plan.cores.size()));
+    std::vector<outpost::CoreInfo> cores = probe_cores();
+    const long total = (long) cores.size();
+    outpost::CoreChoice choice = outpost::choose_fast_cores(cores);
+    if (!choice.fast.empty()) {
+        plan.cores = choice.fast;
+        plan.source = outpost::core_source_name(choice.source);
+        // Two threads at least: a lone prime core takes the next-best core along.
+        if (plan.cores.size() < 2) {
+            for (const auto &c : cores) {
+                if (std::find(plan.cores.begin(), plan.cores.end(), c.cpu) == plan.cores.end()) { plan.cores.push_back(c.cpu); break; }
+            }
         }
+        plan.n_threads = (int) std::max<size_t>(2, std::min<size_t>(6, plan.cores.size()));
     }
     // Uniform or unknown layout: leave headroom for the UI.
     if (plan.n_threads == 0) plan.n_threads = (int) std::max(2L, std::min(6L, total - 2));
@@ -139,6 +191,7 @@ std::string describe(const ThreadPlan &plan) {
     if (!plan.cores.empty()) {
         s += " on cpu";
         for (size_t i = 0; i < plan.cores.size(); i++) s += (i ? "," : " ") + std::to_string(plan.cores[i]);
+        s += std::string(" (by ") + plan.source + ")";
     }
     return s;
 }

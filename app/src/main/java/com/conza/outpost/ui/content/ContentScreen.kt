@@ -104,7 +104,7 @@ fun ContentScreen(initialTab: Int = 0, vm: ContentViewModel = viewModel()) {
         Column(Modifier.padding(padding).fillMaxSize()) {
             StorageBar(state.storage)
             PrimaryScrollableTabRow(selectedTabIndex = tab, edgePadding = 8.dp) {
-                listOf("Maps", "Reference", "Wikipedia", "AI models", "Tools", "Field manuals").forEachIndexed { i, label ->
+                listOf("Maps", "Reference", "Wikipedia", "AI models", "Tools", "Manuals & reading").forEachIndexed { i, label ->
                     Tab(selected = tab == i, onClick = { tab = i }, text = { Text(label) })
                 }
             }
@@ -233,6 +233,7 @@ private fun GroupCard(group: CatalogGroup, state: ContentUiState, actions: ItemA
 
 @Composable
 private fun ItemRow(item: CatalogItem, status: ItemStatus, actions: ItemActions) {
+    var details by rememberSaveable(item.id) { mutableStateOf(false) }
     Column(Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
@@ -272,6 +273,15 @@ private fun ItemRow(item: CatalogItem, status: ItemStatus, actions: ItemActions)
             }
             ItemStatus.Queued -> LinearProgressIndicator(Modifier.fillMaxWidth().padding(top = 4.dp))
             else -> Unit
+        }
+        TextButton(onClick = { details = !details }) { Text(if (details) "Hide details" else "Details") }
+        if (details) {
+            if (item.description.isNotBlank()) Text(item.description, style = MaterialTheme.typography.bodySmall)
+            item.extra["publisher"]?.let { Text("Publisher: $it", style = MaterialTheme.typography.labelMedium) }
+            item.extra["rights"]?.let { Text("Rights: $it", style = MaterialTheme.typography.labelMedium) }
+            Text("Source: ${item.url}", style = MaterialTheme.typography.labelSmall)
+            Text(if (item.extra["sha256"] != null) "SHA-256 checked after download" else "File type checked; no SHA-256 supplied by catalog",
+                style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -23,6 +24,8 @@ import com.conza.outpost.data.Note
 import com.conza.outpost.griddown.AssistantTools
 import com.conza.outpost.griddown.ProposedAction
 import com.conza.outpost.griddown.WaterDisinfection
+import com.conza.outpost.catalog.ResourceKind
+import java.io.File
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AssistantViewModel(app: Application) : AndroidViewModel(app) {
@@ -44,6 +47,9 @@ class AssistantViewModel(app: Application) : AndroidViewModel(app) {
     val models: StateFlow<List<InstalledResource>> = _models
     val useSources = MutableStateFlow(settings.useSources)
     val indexStatus = c.index.status
+    val offlineReferences: StateFlow<Int> = c.db.installed().observeAll()
+        .map { rows -> rows.count { it.kind in setOf(ResourceKind.DOC.name, ResourceKind.TEXT.name, ResourceKind.ZIM.name) && File(it.filePath).exists() } }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), 0)
     val crashNote = MutableStateFlow(c.llm.consumeCrashNote())
 
     val answerMode = MutableStateFlow(settings.answerMode)
@@ -53,6 +59,7 @@ class AssistantViewModel(app: Application) : AndroidViewModel(app) {
     init {
         refresh()
         c.syncPdfIndex()
+        c.syncTextIndex()
         // Resume the most recent chat.
         viewModelScope.launch { if (sessionId.value == null) sessionId.value = c.db.chats().observeSessions().first().firstOrNull()?.id }
     }
@@ -83,6 +90,8 @@ class AssistantViewModel(app: Application) : AndroidViewModel(app) {
     /** The Assistant screen is visible (true) or was left (false). Survival mode frees the model's memory on leave. */
     fun setVisible(v: Boolean) {
         assistant.assistantVisible = v
+        c.index.setInteractive(v)
+        if (!v) { c.syncPdfIndex(); c.syncTextIndex() }
         if (!v && settings.survivalMode && !assistant.busy) c.appScope.launch { runCatching { c.llm.unloadAll() } }
     }
 

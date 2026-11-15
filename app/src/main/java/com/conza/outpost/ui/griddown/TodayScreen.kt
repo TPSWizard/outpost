@@ -70,6 +70,7 @@ data class GridNav(
     val mesh: () -> Unit,
     val print: () -> Unit,
     val beforeOutage: () -> Unit,
+    val fieldGuide: () -> Unit,
     val back: () -> Unit,
     val drugSearch: (String) -> Unit,
 )
@@ -212,6 +213,7 @@ fun TodayScreen(nav: GridNav) {
             item(key = "tools-h") { SectionTitle("Tools") }
             item(key = "tools") {
                 val tiles = listOf(
+                    Triple("Offline field guide", Icons.AutoMirrored.Filled.FactCheck, nav.fieldGuide),
                     Triple("First aid", Icons.Filled.Healing, nav.firstAid),
                     Triple("Supplies", Icons.Filled.Inventory2, nav.supplies),
                     Triple("Water & food", Icons.Filled.Calculate, nav.calculators),

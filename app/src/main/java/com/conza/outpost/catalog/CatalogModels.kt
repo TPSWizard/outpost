@@ -89,6 +89,8 @@ enum class ResourceKind(val folder: String, val extension: String) {
     TOOL("tools", "zip"),
     /** PDF books (field manuals, guides): read in the built-in PDF viewer, listed in the Library. */
     DOC("books", "pdf"),
+    /** UTF-8 books: read in Library and indexed for offline assistant search. */
+    TEXT("books", "txt"),
 }
 
 @Serializable
@@ -107,6 +109,7 @@ data class ExtrasSpec(
     val models: List<ExtraResource> = emptyList(),
     val tools: List<ExtraResource> = emptyList(),
     val manuals: List<ManualCategory> = emptyList(),
+    val readings: List<ExtraResource> = emptyList(),
 )
 
 @Serializable
@@ -121,6 +124,9 @@ data class ExtraResource(
     @SerialName("ram_gb") val ramGb: Int? = null,
     val recommended: Boolean = false,
     val entry: String? = null,
+    val publisher: String? = null,
+    val rights: String? = null,
+    val sha256: String? = null,
 ) {
     fun toItem(kind: ResourceKind) = CatalogItem(
         id = id, version = version, title = title, description = description, url = url, sizeMb = sizeMb, kind = kind,
@@ -128,6 +134,9 @@ data class ExtraResource(
             role?.let { put("role", it) }
             ramGb?.let { put("ram_gb", it.toString()) }
             entry?.let { put("entry", it) }
+            publisher?.let { put("publisher", it) }
+            rights?.let { put("rights", it) }
+            sha256?.let { put("sha256", it) }
             if (recommended) put("recommended", "true")
         },
     )

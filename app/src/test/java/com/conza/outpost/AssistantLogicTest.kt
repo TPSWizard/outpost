@@ -1,11 +1,15 @@
 package com.conza.outpost
 
 import com.conza.outpost.ai.Assistant
+import com.conza.outpost.ai.BundledKnowledge
 import com.conza.outpost.ai.Source
 import com.conza.outpost.ai.Sources
 import com.conza.outpost.ai.TextTools
+import com.conza.outpost.ai.TextPassages
 import com.conza.outpost.catalog.CatalogParser
 import com.conza.outpost.catalog.ResourceKind
+import com.conza.outpost.download.DownloadIntegrity
+import com.conza.outpost.griddown.FieldGuide
 import com.conza.outpost.griddown.AssistantTools
 import com.conza.outpost.medical.DrugDatabase
 import org.junit.Assert.assertEquals
@@ -16,6 +20,14 @@ import org.junit.Test
 import java.io.File
 
 class AssistantLogicTest {
+    @Test fun bundledGuideProvidesAnswerPassages() {
+        val guide = FieldGuide.parse(File("src/main/assets/griddown/field-guide.json").readText())
+        val matches = BundledKnowledge.find(guide, "How do I handle a power outage at home?", 2)
+        assertTrue(matches.any { it.first.id == "grid-down" })
+        assertTrue(BundledKnowledge.text(matches.first().first).contains("Get help:"))
+        assertTrue(BundledKnowledge.find(guide, "fix bike chain", 2).isEmpty())
+    }
+
     @Test fun htmlToTextDropsScriptsTagsAndEntities() {
         val html = """<html><head><title>x</title><style>p{}</style></head><body>
             <script>alert(1)</script><h1>Burns</h1><p>Cool the burn &amp; cover it.<sup>[3]</sup></p>
@@ -124,11 +136,38 @@ class AssistantLogicTest {
         assertTrue(chat.all { it.version == "q4_0" && it.url.contains("q4_0", ignoreCase = true) })
         val tools = c.tools.flatMap { s -> s.groups.flatMap { it.items } }
         assertTrue(tools.any { it.id == "cyberchef" && it.extra["entry"]!!.endsWith(".html") })
-        val manuals = c.manuals.flatMap { s -> s.groups.flatMap { it.items } }
+        val manualGroups = c.manuals.flatMap { s -> s.groups.flatMap { it.items } }
+        // The field basics pack intentionally links to the same catalog resources as their topic groups.
+        assertTrue(manualGroups.groupBy { it.id }.values.all { entries -> entries.map { it.version to it.url }.distinct().size == 1 })
+        val manuals = manualGroups.filter { it.kind == ResourceKind.DOC }.distinctBy { it.id }
         assertTrue(manuals.size >= 20)
-        assertTrue(manuals.all { it.kind == ResourceKind.DOC && it.fileName.endsWith(".pdf") && (it.url.startsWith("https://archive.org/download/") || it.url.startsWith("https://www.ncvec.org/downloads/")) })
+        assertTrue(manuals.all { it.kind == ResourceKind.DOC && it.fileName.endsWith(".pdf") && it.url.startsWith("https://") })
+        assertTrue(manuals.any { it.id == "cia-tradecraft-primer" && it.extra["publisher"] != null })
+        val readings = manualGroups.filter { it.kind == ResourceKind.TEXT }
+        assertEquals(1, readings.size)
+        assertEquals("art-of-war-giles", readings.single().id)
+        assertTrue(readings.single().fileName.endsWith(".txt"))
+        assertTrue(readings.single().extra["rights"]!!.contains("Public domain"))
         // Model and tool ids must be unique: they key installs and downloads.
-        val ids = (models + tools + manuals).map { it.id }
+        val ids = (models + tools + manuals + readings).map { it.id }
         assertEquals(ids.size, ids.toSet().size)
+    }
+
+    @Test fun plainTextReadingProducesOpenablePassages() {
+        val passages = TextPassages.chunks("/books/reading.txt", "Reading", "A short section about planning.\n\nA second section about water.")
+        assertTrue(passages.isNotEmpty())
+        assertTrue(passages.any { it.text.contains("water") })
+        assertEquals("text", TextPassages.source(passages.first()).type)
+        assertEquals("/books/reading.txt", TextPassages.source(passages.first()).path)
+    }
+
+    @Test fun optionalHashChecksFullFileBytes() {
+        val f = File.createTempFile("outpost-hash", ".txt")
+        try {
+            f.writeText("abc")
+            assertEquals("ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad", DownloadIntegrity.sha256(f))
+            assertTrue(DownloadIntegrity.validHash(DownloadIntegrity.sha256(f)))
+            assertFalse(DownloadIntegrity.validHash("deadbeef"))
+        } finally { f.delete() }
     }
 }

@@ -1,0 +1,641 @@
+{
+  "version": "2026-11-15",
+  "notice": "Offline quick reference. Follow current local emergency instructions when available. These cards cannot identify a hazard, diagnose illness, or replace hands-on training.",
+  "cards": [
+    {
+      "id": "prepare-household",
+      "section": "Plan",
+      "title": "Household plan before a crisis",
+      "summary": "Agree on safe places, two ways out, and a way to reconnect.",
+      "steps": [
+        "Choose an indoor shelter location away from windows and a separate outdoor meeting place.",
+        "Write down contacts, medical needs, medications, accessibility needs, and a contact outside the area.",
+        "Keep water, shelf-stable food, lighting, a radio, charged power, first-aid supplies, and paper copies of key information.",
+        "Practice the plan with everyone, including children and people who need assistance."
+      ],
+      "caution": "A safe room for one hazard may be unsafe for another. Fire, flooding, structural damage, and official evacuation orders change the plan.",
+      "sources": [
+        {
+          "title": "FEMA — Make a Plan",
+          "url": "https://www.ready.gov/plan"
+        }
+      ],
+      "useWhen": "Before a disruption or warning",
+      "equipment": [
+        "paper contacts",
+        "radio",
+        "go bag"
+      ],
+      "getHelpWhen": "Call local emergency services for immediate danger or urgent medical needs."
+    },
+    {
+      "id": "water-safety",
+      "section": "Water & food",
+      "title": "Make emergency water safer",
+      "summary": "First decide whether contamination is biological or chemical.",
+      "steps": [
+        "Use sealed bottled water when available. Check local water advisories before using tap water.",
+        "Use a different source if water came from a toilet bowl or contains sewage.",
+        "If water may contain fuel, toxic chemicals, or radioactive material, use a different source: boiling and disinfection will not make it safe.",
+        "For water that may contain germs, let cloudy water settle or filter it through a clean cloth, then bring clear water to a rolling boil for 1 minute, or 3 minutes above 6,500 feet.",
+        "Cool and store treated water in clean, covered containers."
+      ],
+      "caution": "A smell or appearance cannot prove water is safe. Follow a do-not-drink or do-not-use advisory exactly.",
+      "sources": [
+        {
+          "title": "CDC — How to Make Water Safe in an Emergency",
+          "url": "https://www.cdc.gov/water-emergency/about/"
+        },
+        {
+          "title": "CDC — Drinking Water Advisories",
+          "url": "https://www.cdc.gov/water-emergency/about/drinking-water-advisories-an-overview.html"
+        },
+        {
+          "title": "CDC — How to Find Clean Water in an Emergency",
+          "url": "https://www.cdc.gov/water-emergency/about/how-to-find-clean-water-in-an-emergency.html"
+        }
+      ],
+      "useWhen": "Drinking-water safety is uncertain",
+      "equipment": [
+        "sealed water",
+        "clean container",
+        "pot and heat if safe"
+      ],
+      "getHelpWhen": "Contact the water utility or health department for suspected chemical contamination or unclear advisories."
+    },
+    {
+      "id": "food-storage",
+      "section": "Water & food",
+      "title": "Keep food safe without power",
+      "summary": "Limit warm-up and use tested preservation methods.",
+      "steps": [
+        "Keep refrigerator and freezer doors shut as much as possible; use the Food safety calculator for time guidance.",
+        "Use shelf-stable food first when cold storage is uncertain. Discard food when official guidance or the calculator says it is unsafe.",
+        "For home canning, use a current research-tested recipe and its exact equipment, time, pressure, and altitude adjustment.",
+        "Low-acid foods require a pressure canner; drying or salting is not a substitute for a validated canning process."
+      ],
+      "caution": "Botulinum toxin cannot be detected reliably by taste or smell. Do not improvise canning schedules.",
+      "sources": [
+        {
+          "title": "NCHFP — Ensuring Safe Canned Foods",
+          "url": "https://nchfp.uga.edu/how/general-canning-information/ensuring-safe-canned-foods/"
+        },
+        {
+          "title": "USDA — Food Safety During Power Outage",
+          "url": "https://www.foodsafety.gov/food-safety-charts/food-safety-during-power-outage"
+        }
+      ],
+      "useWhen": "Power or refrigeration has failed",
+      "equipment": [
+        "food thermometer",
+        "tested preservation guide"
+      ],
+      "getHelpWhen": "Contact a clinician or poison service for suspected food poisoning; urgent symptoms need emergency care."
+    },
+    {
+      "id": "wild-food",
+      "section": "Water & food",
+      "title": "Wild plants and mushrooms",
+      "summary": "Do not use a short guide or AI answer as an identification key.",
+      "steps": [
+        "Carry enough food before going out, and favor known supplies over foraging.",
+        "Only eat a wild plant or mushroom after a qualified local expert has positively identified it and confirmed safe preparation.",
+        "If poisoning is suspected, stop eating it, keep a sample or photo if safe, and contact poison control or emergency services."
+      ],
+      "caution": "Look-alikes can be deadly. Internet access and image recognition may be unavailable or wrong.",
+      "sources": [
+        {
+          "title": "NPS — Ten Essentials",
+          "url": "https://www.nps.gov/articles/10essentials.htm"
+        },
+        {
+          "title": "Poison Control — Wild Mushroom Safety",
+          "url": "https://www.poison.org/articles/wild-mushroom-warning"
+        }
+      ],
+      "useWhen": "Considering food found outdoors",
+      "equipment": [
+        "known food supplies",
+        "qualified local identification help"
+      ],
+      "getHelpWhen": "Contact poison control or emergency services if an unidentified plant or mushroom was eaten."
+    },
+    {
+      "id": "outdoor-kit",
+      "section": "Bushcraft",
+      "title": "The ten essentials",
+      "summary": "Carry a compact kit for a delayed return or sudden weather change.",
+      "steps": [
+        "Take a map and compass, sun protection, extra clothing, light, first-aid supplies, a repair tool, extra food, extra water and treatment, and emergency shelter.",
+        "Tell someone the route and expected return time. Carry personal medication and a backup power source.",
+        "Practice using the equipment before relying on it."
+      ],
+      "caution": "Pack for the location and season; a phone map is not a substitute for a paper backup.",
+      "sources": [
+        {
+          "title": "NPS — Ten Essentials",
+          "url": "https://www.nps.gov/articles/10essentials.htm"
+        }
+      ],
+      "useWhen": "Before any trip outdoors",
+      "equipment": [
+        "ten essentials",
+        "route plan"
+      ],
+      "getHelpWhen": "Call emergency services for injury, exposure, or a missed return."
+    },
+    {
+      "id": "lost-outdoors",
+      "section": "Bushcraft",
+      "title": "Lost outdoors",
+      "summary": "Pause, locate yourself, and make rescue easier.",
+      "steps": [
+        "Stop and assess immediate hazards, injuries, weather, and remaining daylight.",
+        "Use a map, compass, GPS, and landmarks to establish your last known location. Retrace only a clearly safe route.",
+        "If you cannot safely return, call emergency services with coordinates, trailhead, landmarks, clothing, and medical needs.",
+        "Stay in one safe place, conserve resources, and signal with a whistle, light, or bright material."
+      ],
+      "caution": "Move if there is an immediate threat to life. Do not start a signal fire where fire risk or restrictions make it unsafe.",
+      "sources": [
+        {
+          "title": "NPS — Outdoor Emergency Plan",
+          "url": "https://www.nps.gov/articles/gtgemergencyplan.htm"
+        }
+      ],
+      "useWhen": "Your position or return route is uncertain",
+      "equipment": [
+        "map",
+        "compass",
+        "whistle",
+        "warm layer"
+      ],
+      "getHelpWhen": "Call emergency services when you cannot safely return or someone is injured."
+    },
+    {
+      "id": "navigation",
+      "section": "Bushcraft",
+      "title": "Navigate with a map and compass",
+      "summary": "Orient the map and check your position often.",
+      "steps": [
+        "Download your area before travel and carry a paper topographic map as a backup. Outpost's state basemap does not show terrain contours.",
+        "Use known landmarks and the compass to orient the map; compare the route with terrain and marked hazards.",
+        "Check local magnetic declination before travel and write its date and value on the paper map.",
+        "Mark your starting point and planned return time for a trusted contact."
+      ],
+      "caution": "Magnetic declination changes with location and time. A phone compass can be disrupted by metal or electronics.",
+      "sources": [
+        {
+          "title": "USGS — Topographic Maps",
+          "url": "https://www.usgs.gov/faqs/how-do-i-find-download-or-order-topographic-maps"
+        },
+        {
+          "title": "USGS — Magnetic Declination",
+          "url": "https://www.usgs.gov/faqs/what-declination"
+        }
+      ],
+      "useWhen": "Planning or following an outdoor route",
+      "equipment": [
+        "paper topographic map",
+        "compass",
+        "written declination"
+      ],
+      "getHelpWhen": "Seek rescue if you cannot locate yourself or travel safely."
+    },
+    {
+      "id": "weather-exposure",
+      "section": "Bushcraft",
+      "title": "Storms and exposure",
+      "summary": "Get out of lightning and protect your body temperature.",
+      "steps": [
+        "If you hear thunder, go to a substantial building or enclosed metal-topped vehicle with windows up.",
+        "Stay there for at least 30 minutes after the last thunder. Tents and open shelters do not protect from lightning.",
+        "Keep clothing dry, add layers before chilling, and seek help early for confusion, severe shivering, heat illness, or other concerning symptoms."
+      ],
+      "caution": "There is no safe place outdoors during a thunderstorm.",
+      "sources": [
+        {
+          "title": "NWS — Lightning Tips",
+          "url": "https://www.weather.gov/safety/lightning-tips"
+        },
+        {
+          "title": "NPS — Ten Essentials",
+          "url": "https://www.nps.gov/articles/10essentials.htm"
+        }
+      ],
+      "useWhen": "Thunder, severe weather, heat, or cold threatens",
+      "equipment": [
+        "weather radio",
+        "dry layers",
+        "safe building or vehicle"
+      ],
+      "getHelpWhen": "Seek emergency care for altered mental status, severe heat illness, or suspected hypothermia."
+    },
+    {
+      "id": "fire-safety",
+      "section": "Bushcraft",
+      "title": "Fire and cooking safety",
+      "summary": "Use flame only when permitted and keep combustion outside.",
+      "steps": [
+        "Check current local fire restrictions before lighting a campfire. Use an existing fire ring or a stove when allowed.",
+        "Keep the fire small, attended, and away from flammable materials; extinguish it fully before leaving.",
+        "Never use charcoal, camp stoves, generators, or other fuel-burning equipment inside a home, tent, garage, or near openings.",
+        "Run a generator outdoors more than 20 feet from windows, doors, and vents, with a working carbon monoxide alarm indoors."
+      ],
+      "caution": "Carbon monoxide has no reliable smell. If an alarm sounds or people become dizzy or ill, leave the area and seek emergency help.",
+      "sources": [
+        {
+          "title": "NPS — Campfire Safety",
+          "url": "https://home.nps.gov/articles/campfires.htm"
+        },
+        {
+          "title": "CDC — Carbon Monoxide Poisoning Basics",
+          "url": "https://www.cdc.gov/carbon-monoxide/about/"
+        }
+      ],
+      "useWhen": "Using heat or fuel during an outage or trip",
+      "equipment": [
+        "local fire rules",
+        "water to extinguish",
+        "CO alarm"
+      ],
+      "getHelpWhen": "Leave and call emergency services for a CO alarm, fire, or symptoms of CO poisoning."
+    },
+    {
+      "id": "sanitation",
+      "section": "Bushcraft",
+      "title": "Sanitation without plumbing",
+      "summary": "Keep waste away from water and food.",
+      "steps": [
+        "Store clean water separately from waste and wash hands before handling food and after toilet use.",
+        "Where local rules permit backcountry catholes, choose a location at least 200 feet from water, trails, and camp; pack out toilet paper as required.",
+        "At home, follow local public-health instructions for sewage backup or disrupted water service; keep a covered waste setup away from living and food areas."
+      ],
+      "caution": "Floodwater and sewage can carry pathogens and chemicals. Do not dispose of waste in drinking-water sources.",
+      "sources": [
+        {
+          "title": "NPS — Dispose of Waste Properly",
+          "url": "https://www.nps.gov/articles/000/idkt_lnt_3.htm"
+        },
+        {
+          "title": "CDC — Sanitation During an Emergency",
+          "url": "https://www.cdc.gov/water-emergency/safety/guidelines-for-personal-hygiene-during-an-emergency.html"
+        }
+      ],
+      "useWhen": "Plumbing or backcountry toilets are unavailable",
+      "equipment": [
+        "hand hygiene supplies",
+        "covered waste container",
+        "clean water"
+      ],
+      "getHelpWhen": "Contact public health for sewage backup or contaminated drinking water."
+    },
+    {
+      "id": "toilet-sewer",
+      "section": "Home",
+      "title": "Flushing toilets and preventing sewage backups",
+      "summary": "Check whether wastewater can drain before flushing. Budget water by your toilet's rated flush volume.",
+      "useWhen": "Water or power is out, drains are backing up, or you are planning household sanitation",
+      "equipment": [
+        "toilet model or gallons-per-flush rating",
+        "stored water for flushing",
+        "portable toilet or lined bucket with a tight lid",
+        "heavy-duty bags and handwashing supplies"
+      ],
+      "steps": [
+        "Stop using toilets, sinks, showers, and appliances that drain into the sewer if sewage is backing up, the sewer is out, or the backwater valve is closed. Keep people and pets away from sewage. Stay out of standing water near electrical equipment.",
+        "If only the water supply is out and the sewer or septic system is working, refill a standard gravity toilet's tank to its usual fill line and use the handle. Follow utility advisories and keep flushing water separate from drinking water.",
+        "Check the toilet's gallons-per-flush rating. Many U.S. toilets use 1.28 gal (4.8 L) or 1.6 gal (6.1 L) per flush. Older models can use much more. Measure how much water your tank takes to refill under normal conditions. At 1.6 gal per flush, five household flushes a day for three days use 24 gal (about 91 L).",
+        "If a sewage pump loses power or alarms, or a septic drain field floods, hold off on using the affected drains and get guidance from the utility or septic service.",
+        "If drains are unavailable, use a portable toilet or a sturdy lined bucket with a tight lid. Keep sealed waste bags away from food, water, children, and animals. Follow local public health instructions for disposal. Wash hands with soap and safe water."
+      ],
+      "caution": "Leave sewer lines clear. A blockage can move a backup to another fixture. Ask a licensed plumber whether a backwater valve suits your home and how to maintain it.",
+      "getHelpWhen": "For a backup, contact your local sewer utility or building manager and a plumber. For a private septic system, contact a septic service or local health department.",
+      "sources": [
+        {
+          "title": "EPA — Flush volumes by toilet type",
+          "url": "https://www.epa.gov/watersense/how-watersense-calculator-works"
+        },
+        {
+          "title": "Tualatin Valley Water District — Water outages and toilet tanks",
+          "url": "https://www.tvwd.org/m/faq?cat=24"
+        },
+        {
+          "title": "Government of Canada — Backwater valves",
+          "url": "https://www.canada.ca/en/services/policing/emergencies/preparedness/get-prepared/hazards-emergencies/floods/flood-risk/prevent-flood-damage/backwater-valves.html"
+        },
+        {
+          "title": "City of Toronto — What to do when a backwater valve closes",
+          "url": "https://www.toronto.ca/services-payments/water-environment/managing-rain-melted-snow/basement-flooding/basement-flooding-protection-subsidy-program/?accordion=eligible-work"
+        },
+        {
+          "title": "EPA — Septic systems after a flood",
+          "url": "https://www.epa.gov/ground-water-and-drinking-water/septic-systems-what-do-after-flood"
+        },
+        {
+          "title": "City of Port St. Lucie — Sewer pumps during power outages",
+          "url": "https://www.cityofpsl.com/Government/Your-City-Government/Departments/Utility-Systems/Utility-Education/Storm-Preparation-Recovery"
+        },
+        {
+          "title": "Seattle Emergency Management — Emergency sanitation supplies",
+          "url": "https://www.seattle.gov/emergency-management/prepare/prepare-yourself"
+        }
+      ]
+    },
+    {
+      "id": "grid-down",
+      "section": "Home",
+      "title": "Grid and communications outage",
+      "summary": "Conserve power and keep information channels open.",
+      "steps": [
+        "Use battery or hand-crank radio and official alerts for current instructions. Confirm information before sharing it.",
+        "Charge essential devices from stored power, dim screens, and reserve a way to call for help.",
+        "Use a written contact plan and agreed check-in times. Texts may go through when voice calls fail, but neither is guaranteed.",
+        "Keep generators outdoors and away from openings; never backfeed household wiring."
+      ],
+      "caution": "The app cannot receive live alerts when the phone has no connection. Check local authorities and radio when available.",
+      "sources": [
+        {
+          "title": "FEMA — Power Outages",
+          "url": "https://www.ready.gov/power-outages"
+        },
+        {
+          "title": "CDC — Carbon Monoxide Poisoning Basics",
+          "url": "https://www.cdc.gov/carbon-monoxide/about/"
+        }
+      ],
+      "useWhen": "Electricity or communications fail",
+      "equipment": [
+        "battery radio",
+        "power bank",
+        "paper contact plan"
+      ],
+      "getHelpWhen": "Call emergency services for immediate danger or medical needs when a channel is available."
+    },
+    {
+      "id": "blast-debris",
+      "section": "Civilian safety",
+      "title": "Explosion, blast, or falling debris",
+      "summary": "Get behind shelter, avoid glass, and reassess the building.",
+      "steps": [
+        "If warned of an imminent blast, get inside the nearest sturdy building and move away from windows.",
+        "After a blast, avoid falling glass, damaged structures, downed wires, smoke, and unknown debris.",
+        "Leave a burning or unstable building by a safe route. Otherwise follow local shelter or evacuation instructions.",
+        "Call emergency services when safe and use the app's first-aid checklists for injuries."
+      ],
+      "caution": "Do not approach, handle, or move suspicious debris or unexploded objects. Conditions can change after an initial blast.",
+      "sources": [
+        {
+          "title": "FEMA — Nuclear Explosion Hazard Sheet",
+          "url": "https://www.ready.gov/sites/default/files/2024-03/ready.gov_nuclear-explosion-hazard-info-sheet.pdf"
+        },
+        {
+          "title": "Islington Council — Bombs and Explosions",
+          "url": "https://www.islington.gov.uk/about-the-council/emergency-planning-and-business-continuity/what-to-do-in-an-emergency"
+        }
+      ],
+      "useWhen": "An explosion or dangerous debris is nearby",
+      "equipment": [
+        "sturdy shelter",
+        "shoes",
+        "first-aid kit"
+      ],
+      "getHelpWhen": "Call emergency services for injuries, fire, unstable structures, or suspicious debris."
+    },
+    {
+      "id": "unsafe-drone",
+      "section": "Civilian safety",
+      "title": "Dangerous drone nearby",
+      "summary": "Protect people and report an immediate threat.",
+      "steps": [
+        "Move people away from exposed outdoor areas and windows if the drone appears dangerous; use available sturdy shelter.",
+        "If it appears to pose an immediate threat or is being used for a crime, contact local law enforcement or emergency services when safe.",
+        "Give the location, time, what you observed, and any injuries. Keep a safe distance from fallen equipment or suspicious debris."
+      ],
+      "caution": "Do not shoot at, chase, or interfere with an aircraft. A drone sighting alone does not establish hostile intent.",
+      "sources": [
+        {
+          "title": "FAA — Report a Drone Sighting",
+          "url": "https://www.faa.gov/uas/contact_us/report_uas_sighting"
+        },
+        {
+          "title": "FAA — What to Know About Drones",
+          "url": "https://www.faa.gov/newsroom/what-know-about-drones"
+        }
+      ],
+      "useWhen": "A drone appears dangerous or involved in a crime",
+      "equipment": [
+        "sturdy shelter",
+        "emergency contact method"
+      ],
+      "getHelpWhen": "Report an immediate threat to local law enforcement or emergency services."
+    },
+    {
+      "id": "violent-threat",
+      "section": "Civilian safety",
+      "title": "Violent threat at or near home",
+      "summary": "Prioritize getting people away from danger.",
+      "steps": [
+        "If you can leave safely, evacuate and take others with you without delaying for possessions.",
+        "If you cannot leave safely, hide out of view, silence devices, and use a lockable or otherwise protective space.",
+        "Call emergency services when safe. Give location, number of people, injuries, and a factual description of what you saw.",
+        "Follow responding officers' instructions; keep hands visible and empty."
+      ],
+      "caution": "Avoid confrontation and do not investigate an active threat. Follow current local emergency instructions.",
+      "sources": [
+        {
+          "title": "FEMA — Active Shooter Hazard Sheet",
+          "url": "https://www.ready.gov/sites/default/files/2024-07/ready.gov_active-shooter-info-sheet.pdf"
+        }
+      ],
+      "useWhen": "A person poses an immediate violent threat",
+      "equipment": [
+        "safe exit or protective room",
+        "emergency contact method"
+      ],
+      "getHelpWhen": "Call emergency services as soon as it is safe."
+    },
+    {
+      "id": "fallout",
+      "section": "Civilian safety",
+      "title": "Nuclear blast and fallout",
+      "summary": "Get inside, stay inside, stay tuned.",
+      "steps": [
+        "If warned, get inside the nearest building and away from windows. After a blast wave passes, move to a basement or the middle of a large building, away from outer walls and roof.",
+        "If you may have been outside after fallout arrived, remove the outer layer of clothing and wash exposed skin and hair with soap and water when possible.",
+        "Stay sheltered and listen for official instructions about water, food, movement, and when to leave.",
+        "Use sealed bottled water and packaged food kept indoors until officials advise other sources are safe."
+      ],
+      "caution": "Vehicles and mobile homes are poor fallout shelters. Do not take potassium iodide unless public-health officials direct you to; it is not a general radiation antidote.",
+      "sources": [
+        {
+          "title": "FEMA — Nuclear Explosion Hazard Sheet",
+          "url": "https://www.ready.gov/sites/default/files/2024-03/ready.gov_nuclear-explosion-hazard-info-sheet.pdf"
+        },
+        {
+          "title": "CDC — Food and Water in a Radiation Emergency",
+          "url": "https://www.cdc.gov/radiation-emergencies/safety/food-drinking-water-medicine-safety.html"
+        }
+      ],
+      "useWhen": "A nuclear explosion or official radiation warning occurs",
+      "equipment": [
+        "sturdy indoor shelter",
+        "radio",
+        "sealed water"
+      ],
+      "getHelpWhen": "Follow local emergency-management and public-health instructions; seek care for injuries when safe."
+    },
+    {
+      "id": "first-aid",
+      "section": "Civilian safety",
+      "title": "Injured person",
+      "summary": "Get help and use the verified first-aid checklists.",
+      "steps": [
+        "Check that the scene is safe before approaching. Call emergency services for serious injury or illness when possible.",
+        "Open Outpost's First aid screen for the matching step-by-step checklist and its manual citation.",
+        "If a manual has not been downloaded, the checklist remains on the phone; a downloaded manual provides more detail."
+      ],
+      "caution": "Do not delay emergency care to search a guide or ask the AI assistant.",
+      "sources": [
+        {
+          "title": "FEMA — Until Help Arrives",
+          "url": "https://www.ready.gov/sites/default/files/2020-07/until-help-arrives-instructor-guide.pdf"
+        }
+      ],
+      "useWhen": "Someone is ill or injured",
+      "equipment": [
+        "first-aid kit",
+        "phone or radio for help"
+      ],
+      "getHelpWhen": "Call emergency services for serious injury or illness."
+    },
+    {
+      "id": "information-triage",
+      "section": "Decisions",
+      "title": "Separate facts from rumors",
+      "summary": "Use structured analysis when information is incomplete.",
+      "steps": [
+        "Write what you directly observed, when and where, separately from what someone inferred or repeated.",
+        "Check the source and whether two reports are genuinely independent. Look for alternative explanations.",
+        "State what remains unknown and what evidence would change your mind.",
+        "Choose a reversible protective action when uncertainty is high; update the plan as reliable information arrives.",
+        "Read The Art of War as historical strategy: prepare supplies, understand terrain, and avoid needless conflict. It is not current emergency guidance."
+      ],
+      "caution": "Historical strategy books and declassified intelligence methods are tools for thinking, not proof that any present person or event is hostile.",
+      "sources": [
+        {
+          "title": "CIA — A Tradecraft Primer",
+          "url": "https://www.cia.gov/resources/csi/static/Tradecraft-Primer-apr09.pdf"
+        },
+        {
+          "title": "ODNI — Analytic Standards",
+          "url": "https://www.odni.gov/files/documents/ICD/ICD-203_TA_Analytic_Standards_21_Dec_2022.pdf"
+        },
+        {
+          "title": "Project Gutenberg — The Art of War",
+          "url": "https://www.gutenberg.org/ebooks/132"
+        }
+      ],
+      "useWhen": "Reports conflict or facts remain uncertain",
+      "equipment": [
+        "paper or local note",
+        "source and time"
+      ],
+      "getHelpWhen": "Report immediate danger to authorities; do not delay protective action for analysis."
+    },
+    {
+      "id": "outdoor-shelter",
+      "section": "Bushcraft",
+      "title": "Emergency outdoor shelter",
+      "summary": "Reduce exposure while waiting for a safe return or rescue.",
+      "useWhen": "Weather, daylight, or injury makes continuing unsafe",
+      "equipment": [
+        "tarp, bivy, or space blanket",
+        "dry layers",
+        "ground insulation"
+      ],
+      "steps": [
+        "Choose a place away from falling limbs, flood channels, unstable ground, and other immediate hazards.",
+        "Use the shelter and extra clothing you carried; stay as dry as possible and limit heat loss to the ground.",
+        "If lost, stay where rescuers can find you unless the site is dangerous. Make yourself visible without creating a new hazard.",
+        "Seek a substantial building or enclosed metal-topped vehicle if thunder is nearby; a tarp or tent is not lightning protection."
+      ],
+      "caution": "Do not light a fire inside or close to a fabric shelter. A small outdoor shelter will not protect against lightning, floodwater, or falling debris.",
+      "getHelpWhen": "Call emergency services if you are lost, injured, unable to stay warm, or cannot reach safe shelter.",
+      "sources": [
+        {
+          "title": "NPS — Outdoor Emergency Plan",
+          "url": "https://www.nps.gov/articles/gtgemergencyplan.htm"
+        },
+        {
+          "title": "NPS — Ten Essentials",
+          "url": "https://www.nps.gov/articles/10essentials.htm"
+        },
+        {
+          "title": "NWS — Lightning Tips",
+          "url": "https://www.weather.gov/safety/lightning-tips"
+        }
+      ]
+    },
+    {
+      "id": "signal-rescue",
+      "section": "Bushcraft",
+      "title": "Signal for rescue",
+      "summary": "Make your location easy to report and see.",
+      "useWhen": "Someone is lost, overdue, or waiting for rescuers",
+      "equipment": [
+        "phone or satellite messenger if available",
+        "whistle",
+        "light",
+        "bright material"
+      ],
+      "steps": [
+        "Call emergency services when you can; give coordinates, last known point, trailhead, landmarks, clothing, and medical needs.",
+        "Stay in a safe location after reporting so searchers can find you. Save device power for follow-up contact.",
+        "Use a whistle, flashlight, mirror, or bright fabric to attract attention. Use battery-powered signals sparingly.",
+        "If another person is missing, gather the group, return to the last known location only if safe, and contact rescuers rather than scattering into unknown terrain."
+      ],
+      "caution": "Do not build a signal fire during fire restrictions or high wildfire risk.",
+      "getHelpWhen": "Contact emergency services promptly for a missing, injured, or overdue person.",
+      "sources": [
+        {
+          "title": "NPS — Outdoor Emergency Plan",
+          "url": "https://www.nps.gov/articles/gtgemergencyplan.htm"
+        }
+      ]
+    },
+    {
+      "id": "chemical-release",
+      "section": "Civilian safety",
+      "title": "Chemical release or hazardous air",
+      "summary": "Get away from exposure and use current local instructions to decide whether to shelter or evacuate.",
+      "useWhen": "An official chemical warning or credible nearby release occurs",
+      "equipment": [
+        "radio or alert-capable phone",
+        "safe indoor space or evacuation route",
+        "clean water for decontamination if directed"
+      ],
+      "steps": [
+        "If the release is inside the building and you are exposed, leave the building for fresh air and move away from the source.",
+        "If the release is outside, move away from the area if you can do so safely; do not move toward the source to investigate.",
+        "Listen to police, fire, public-health, or emergency-management instructions. They may direct evacuation or shelter in place; the safest choice depends on the incident.",
+        "If you may have chemical on your body, remove contaminated clothing and wash exposed skin as soon as safely possible. Seek medical or poison-center advice."
+      ],
+      "caution": "Do not assume a mask, a sealed room, or the same shelter used for fallout will protect against every chemical. Follow incident-specific instructions.",
+      "getHelpWhen": "Call emergency services or poison control for exposure, symptoms, or an immediate hazard.",
+      "sources": [
+        {
+          "title": "CDC — What to Do in a Chemical Emergency",
+          "url": "https://www.cdc.gov/chemical-emergencies/response/index.html"
+        },
+        {
+          "title": "CDC — Shelter in Place for a Chemical Emergency",
+          "url": "https://www.cdc.gov/chemical-emergencies/response/shelter-in-place.html"
+        },
+        {
+          "title": "CDC — Evacuate in a Chemical Emergency",
+          "url": "https://www.cdc.gov/chemical-emergencies/response/evacuation.html"
+        }
+      ]
+    }
+  ]
+}

@@ -67,6 +67,8 @@ fun ToolkitScreen(
     onManuals: () -> Unit,
     onContent: () -> Unit,
     onBeforeOutage: () -> Unit,
+    onFieldGuide: () -> Unit,
+    onDecisionNotebook: () -> Unit,
     onBackup: () -> Unit,
     onNotes: () -> Unit,
     onTools: () -> Unit,
@@ -75,6 +77,8 @@ fun ToolkitScreen(
     onSettings: () -> Unit,
 ) {
     val tiles = listOf(
+        Tile("Offline field guide", "Bundled cards for water, shelter, bushcraft, outages, and civilian emergency safety. Works before any downloads.", Icons.AutoMirrored.Filled.MenuBook, onFieldGuide),
+        Tile("Decision notebook", "Record claims, observations, source quality, alternatives, and a protective action threshold.", Icons.AutoMirrored.Filled.Notes, onDecisionNotebook),
         Tile("Content & downloads", "Maps, offline libraries, Wikipedia, AI models, tools, and field manuals. Download before the outage.", Icons.Filled.CloudDownload, onContent),
         Tile("Before the outage", "Checklist of what to download and set up while you still have internet.", Icons.AutoMirrored.Filled.FactCheck, onBeforeOutage),
         Tile("Medical reference", "FDA drug labels, interaction check, conditions, and home & herbal remedies.", Icons.Filled.MedicalServices, onMedical),

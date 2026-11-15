@@ -68,6 +68,7 @@ fun LibraryScreen(
     onOpen: (bookId: String, path: String?) -> Unit,
     onBrowseContent: () -> Unit,
     onOpenPdfFile: (String) -> Unit = {},
+    onOpenTextFile: (String) -> Unit = {},
     initialQuery: String? = null,
     vm: LibraryViewModel = viewModel(),
 ) {
@@ -75,6 +76,9 @@ fun LibraryScreen(
     val search by vm.search.collectAsStateWithLifecycle()
     val pdfs by vm.pdfs.collectAsStateWithLifecycle()
     val pdfTitles by vm.pdfTitles.collectAsStateWithLifecycle()
+    val pdfSearchable by vm.pdfSearchable.collectAsStateWithLifecycle()
+    val texts by vm.texts.collectAsStateWithLifecycle()
+    val textTitles by vm.textTitles.collectAsStateWithLifecycle()
     val importing by vm.importing.collectAsStateWithLifecycle()
     val message by vm.message.collectAsStateWithLifecycle()
     val snackbar = androidx.compose.runtime.remember { androidx.compose.material3.SnackbarHostState() }
@@ -94,7 +98,7 @@ fun LibraryScreen(
                 title = { Text("Library") },
                 actions = {
                     IconButton(onClick = { picker.launch(arrayOf("application/pdf", "application/octet-stream", "*/*")) }) {
-                        Icon(Icons.Filled.Add, "Add your own PDF or ZIM")
+                        Icon(Icons.Filled.Add, "Add your own PDF, text file or ZIM")
                     }
                     IconButton(onClick = vm::rescan) { Icon(Icons.Filled.Refresh, "Rescan for files") }
                 },
@@ -106,13 +110,13 @@ fun LibraryScreen(
             val list = books
             when {
                 list == null -> LinearProgressIndicator(Modifier.fillMaxWidth())
-                list.isEmpty() && pdfs.isEmpty() -> EmptyLibrary(onBrowseContent)
+                list.isEmpty() && pdfs.isEmpty() && texts.isEmpty() -> EmptyLibrary(onBrowseContent)
                 else -> {
                     OutlinedTextField(
                         value = search.query,
                         onValueChange = vm::onQuery,
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp),
-                        placeholder = { Text("Search ${list.size} offline ${if (list.size == 1) "library" else "libraries"}") },
+                        placeholder = { Text("Search downloaded titles and libraries") },
                         leadingIcon = { Icon(Icons.Filled.Search, null) },
                         trailingIcon = {
                             if (search.query.isNotEmpty()) IconButton(onClick = { vm.onQuery("") }) { Icon(Icons.Filled.Clear, "Clear") }
@@ -121,8 +125,13 @@ fun LibraryScreen(
                     )
                     if (search.searching) LinearProgressIndicator(Modifier.fillMaxWidth().padding(horizontal = 12.dp))
                     importing?.let { Text("Importing $it…", Modifier.padding(horizontal = 16.dp), style = MaterialTheme.typography.labelSmall) }
-                    if (search.query.isBlank()) BookList(list, onOpen, pdfs, pdfTitles, onOpenPdfFile, { vm.deletePdf(it) })
-                    else SearchResults(search, anyFullText = list.any { it.hasFullText }, onFullText = vm::runFullText, onOpen = onOpen)
+                    if (search.query.isBlank()) BookList(list, onOpen, pdfs, pdfTitles, pdfSearchable, onOpenPdfFile, { vm.deletePdf(it) },
+                        texts, textTitles, onOpenTextFile, { vm.deleteText(it) })
+                    else SearchResults(search, anyFullText = list.any { it.hasFullText }, onFullText = vm::runFullText, onOpen = onOpen,
+                        texts = texts.filter { (textTitles[it.absolutePath] ?: it.name).contains(search.query, true) },
+                        textTitles = textTitles, onOpenText = onOpenTextFile,
+                        pdfs = pdfs.filter { (pdfTitles[it.name] ?: it.name).contains(search.query, true) },
+                        pdfTitles = pdfTitles, onOpenPdf = onOpenPdfFile)
                 }
             }
         }
@@ -155,10 +164,29 @@ private fun BookList(
     onOpen: (String, String?) -> Unit,
     pdfs: List<java.io.File>,
     pdfTitles: Map<String, String>,
+    pdfSearchable: Map<String, Boolean?>,
     onOpenPdf: (String) -> Unit,
     onDeletePdf: (java.io.File) -> Unit,
+    texts: List<java.io.File>,
+    textTitles: Map<String, String>,
+    onOpenText: (String) -> Unit,
+    onDeleteText: (java.io.File) -> Unit,
 ) {
     LazyColumn(contentPadding = PaddingValues(12.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        if (texts.isNotEmpty()) {
+            item(key = "text-h") { Text("Downloaded readings", style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary) }
+            items(texts, key = { "text:" + it.absolutePath }) { file ->
+                Row(Modifier.fillMaxWidth().clickable { onOpenText(file.absolutePath) }.padding(vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.AutoMirrored.Filled.MenuBook, null, tint = MaterialTheme.colorScheme.primary)
+                    Spacer(Modifier.width(12.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text(textTitles[file.absolutePath] ?: file.nameWithoutExtension, style = MaterialTheme.typography.bodyLarge)
+                        Text("${formatBytes(file.length())} · Offline text", style = MaterialTheme.typography.labelSmall)
+                    }
+                    IconButton(onClick = { onDeleteText(file) }) { Icon(Icons.Filled.Delete, "Delete") }
+                }
+            }
+        }
         if (pdfs.isNotEmpty()) {
             item(key = "pdf-h") { Text("Books & field manuals", style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary) }
             items(pdfs, key = { "pdf:" + it.absolutePath }) { f ->
@@ -167,13 +195,19 @@ private fun BookList(
                     Spacer(Modifier.width(12.dp))
                     Column(Modifier.weight(1f)) {
                         Text(pdfTitles[f.name] ?: f.nameWithoutExtension.replace('_', ' '), style = MaterialTheme.typography.bodyLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                        Text(formatBytes(f.length()), style = MaterialTheme.typography.labelSmall)
+                        val searchStatus = when (pdfSearchable[f.absolutePath]) {
+                            true -> "Text searchable"
+                            false -> "Scanned/image PDF · viewable, not text searchable"
+                            null -> "Search indexing pending or unavailable"
+                        }
+                        Text("${formatBytes(f.length())} · $searchStatus", style = MaterialTheme.typography.labelSmall)
                     }
                     IconButton(onClick = { onDeletePdf(f) }) { Icon(Icons.Filled.Delete, "Delete") }
                 }
             }
-            if (books.isNotEmpty()) item(key = "zim-h") { Text("Offline libraries", style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary) }
         }
+        if (books.isNotEmpty() && (pdfs.isNotEmpty() || texts.isNotEmpty()))
+            item(key = "zim-h") { Text("Offline libraries", style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary) }
         items(books, key = { it.id }) { b ->
             Card(
                 Modifier.fillMaxWidth().clickable(enabled = b.error == null) { onOpen(b.id, null) },
@@ -231,8 +265,28 @@ private fun SearchResults(
     anyFullText: Boolean,
     onFullText: () -> Unit,
     onOpen: (String, String?) -> Unit,
+    texts: List<java.io.File>,
+    textTitles: Map<String, String>,
+    onOpenText: (String) -> Unit,
+    pdfs: List<java.io.File>,
+    pdfTitles: Map<String, String>,
+    onOpenPdf: (String) -> Unit,
 ) {
     LazyColumn(contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)) {
+        if (pdfs.isNotEmpty()) {
+            item { SectionLabel("Downloaded manuals") }
+            items(pdfs, key = { "pdf:" + it.absolutePath }) { file ->
+                Text(pdfTitles[file.name] ?: file.nameWithoutExtension,
+                    Modifier.fillMaxWidth().clickable { onOpenPdf(file.absolutePath) }.padding(8.dp))
+            }
+        }
+        if (texts.isNotEmpty()) {
+            item { SectionLabel("Downloaded readings") }
+            items(texts, key = { "text:" + it.absolutePath }) { file ->
+                Text(textTitles[file.absolutePath] ?: file.nameWithoutExtension,
+                    Modifier.fillMaxWidth().clickable { onOpenText(file.absolutePath) }.padding(8.dp))
+            }
+        }
         if (anyFullText && s.fullTextHits == null) {
             item {
                 AssistChip(
@@ -248,7 +302,7 @@ private fun SearchResults(
             items(hits, key = { "ft:${it.bookId}:${it.path}" }) { HitRow(it, onOpen) }
             item { Spacer(Modifier.size(12.dp)) }
         }
-        if (!s.searching && s.titleHits.isEmpty() && s.fullTextHits == null) {
+        if (!s.searching && s.titleHits.isEmpty() && s.fullTextHits == null && texts.isEmpty() && pdfs.isEmpty()) {
             item { Text("No titles match. Try full-text search or fewer words.", Modifier.padding(8.dp)) }
         }
         if (s.titleHits.isNotEmpty()) item { SectionLabel("Titles") }

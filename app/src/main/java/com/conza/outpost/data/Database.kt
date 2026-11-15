@@ -153,7 +153,7 @@ data class ImportedDocument(
 @Entity(tableName = "chunks", indices = [Index(value = ["sourceType", "sourceId"])])
 data class Chunk(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    val sourceType: String, // "note" | "doc"
+    val sourceType: String, // "note" | "doc" | "pdf" | "text"
     val sourceId: Long,
     val sourceTitle: String,
     val position: Int,
@@ -185,6 +185,10 @@ interface RetrievalDao {
     @Query("SELECT * FROM chunks")
     suspend fun allChunks(): List<Chunk>
 
+    /** Quick keyword search does not need to transfer every stored embedding BLOB. */
+    @Query("SELECT id, sourceType, sourceId, sourceTitle, position, text, NULL AS embedding, NULL AS embeddingModel, sourceRef, page FROM chunks WHERE text != ''")
+    suspend fun allTextChunks(): List<Chunk>
+
     @Query("SELECT COUNT(*) FROM chunks WHERE text != '' AND (embedding IS NULL OR embeddingModel IS NULL OR embeddingModel != :model)")
     suspend fun countStale(model: String): Int
 
@@ -205,7 +209,18 @@ interface RetrievalDao {
 
     @Query("SELECT DISTINCT sourceRef FROM chunks WHERE sourceType = 'pdf'")
     suspend fun indexedPdfs(): List<String>
+
+    @Query("SELECT DISTINCT sourceRef FROM chunks WHERE sourceType = 'pdf' AND text != ''")
+    suspend fun searchablePdfs(): List<String>
+
+    @Query("DELETE FROM chunks WHERE sourceType = 'text' AND sourceRef = :path")
+    suspend fun deleteTextChunks(path: String)
+
+    @Query("SELECT DISTINCT sourceRef, sourceId FROM chunks WHERE sourceType = 'text'")
+    suspend fun indexedTexts(): List<TextIndexState>
 }
+
+data class TextIndexState(val sourceRef: String?, val sourceId: Long)
 
 // ---------- Map pins ----------
 

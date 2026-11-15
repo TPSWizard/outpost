@@ -43,8 +43,8 @@
     4
    ],
    "frequency": "daily",
-   "text": "Treat any water that isn't from sealed bottles",
-   "detail": "Boil 1 minute (3 above 6,500 ft) or use bleach. See Calculators."
+   "text": "Check the water advisory and treat water for germs when appropriate",
+   "detail": "Use sealed water first. Boiling or disinfection does not remove fuel, toxic chemicals, or radioactive contamination; use another source if suspected. For germ risk, see Calculators."
   },
   {
    "id": "w-collect",
@@ -66,7 +66,7 @@
    ],
    "frequency": "once",
    "text": "Find and pin a backup water source on the map",
-   "detail": "Creek, pond, spring, or a neighbor's well. Pin it so everyone knows."
+   "detail": "Identify a source and verify local advisories or testing before use. A creek, pond, spring, or well may contain germs or chemicals; pinning it does not mean it is safe to drink."
   },
   {
    "id": "w-filter",
@@ -144,8 +144,8 @@
     4
    ],
    "frequency": "daily",
-   "text": "Preserve extra food (drying, salting, canning)",
-   "detail": "See the USDA canning guide in Field manuals before canning low-acid foods."
+   "text": "Preserve food only with a tested method",
+   "detail": "Use a current research-tested recipe with its exact equipment, time, pressure, and altitude adjustment. Low-acid foods need a pressure canner; do not improvise or treat drying and salting as equivalent to safe canning."
   },
   {
    "id": "f-pets",
@@ -206,8 +206,8 @@
     2
    ],
    "frequency": "once",
-   "text": "Set up a bucket toilet if water stops",
-   "detail": "Line a bucket with two bags; add sawdust, soil, or cat litter after each use. Bury or bag waste away from water."
+   "text": "Set up a backup toilet if drains cannot be used",
+   "detail": "Use a portable toilet or a sturdy lined bucket with a tight lid. Keep sealed bags away from food and water, and follow local public health instructions for disposal. See the Field Guide for flushing and sewer backup guidance."
   },
   {
    "id": "h-check",

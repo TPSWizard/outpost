@@ -93,10 +93,10 @@ object TextTools {
         val df = q.associateWith { t -> docs.count { t in it } }
         val n = docs.size
         return docs.mapIndexed { i, d ->
-            val tf = d.groupingBy { it }.eachCount()
             var score = 0.0
             for (t in q) {
-                val f = tf[t] ?: continue
+                val f = d.count { it == t }
+                if (f == 0) continue
                 val idf = ln(1 + (n - df[t]!! + 0.5) / (df[t]!! + 0.5))
                 score += idf * (f * 2.2) / (f + 1.2 * (0.25 + 0.75 * d.size / avg))
             }

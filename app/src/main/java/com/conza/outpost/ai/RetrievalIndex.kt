@@ -39,12 +39,14 @@ class RetrievalIndex(
     private class Prepared(val terms: List<String>, val vector: FloatArray?, val model: String?)
     private val prepared = HashMap<Long, Prepared>()
     private var embedJob: Job? = null
+    @Volatile private var interactive = false
     private val _status = MutableStateFlow(IndexStatus())
     val status: StateFlow<IndexStatus> = _status
 
     /** Set by the container; null in tests. */
     var pdfText: PdfTextSource? = null
     private var pdfJob: Job? = null
+    private var textJob: Job? = null
     private val _pdfStatus = MutableStateFlow<String?>(null)
     /** "Reading FM 4-25.11…" while PDFs are being indexed. */
     val pdfStatus: StateFlow<String?> = _pdfStatus
@@ -63,7 +65,7 @@ class RetrievalIndex(
                 (have - want).forEach { p -> mutex.withLock { dao.deletePdfChunks(p) } }
                 for ((f, title) in files) {
                     if (f.absolutePath in have) continue
-                    if (settings.survivalMode) break
+                    if (settings.survivalMode || interactive) break
                     _pdfStatus.value = "Reading $title for search…"
                     val pages = runCatching { src.pages(f) }.getOrNull() ?: continue
                     val chunks = PdfPassages.chunks(f.absolutePath, title, pages)
@@ -72,6 +74,28 @@ class RetrievalIndex(
                     mutex.withLock { dao.deletePdfChunks(f.absolutePath); dao.insertChunks(chunks) }
                 }
             } finally { _pdfStatus.value = null }
+            scheduleEmbedding()
+        }
+    }
+
+    /** Indexes downloaded plain-text readings so the assistant can quote actual passages offline. */
+    fun syncTexts(files: List<Pair<File, String>>) {
+        if (textJob?.isActive == true) return
+        textJob = scope.launch(kotlinx.coroutines.Dispatchers.IO) {
+            val have = dao.indexedTexts().mapNotNull { state -> state.sourceRef?.let { it to state.sourceId } }.toMap()
+            val want = files.map { it.first.absolutePath }.toSet()
+            (have.keys - want).forEach { path -> mutex.withLock { dao.deleteTextChunks(path) } }
+            for ((file, title) in files) {
+                if (settings.survivalMode || interactive) break
+                val versionId = TextPassages.versionId(file)
+                if (have[file.absolutePath] == versionId) continue
+                // Keep index work bounded; unusually large texts can still be opened in the reader.
+                if (file.length() > 5L * 1024 * 1024 || !file.isFile) continue
+                val text = runCatching { file.readText(Charsets.UTF_8) }.getOrNull() ?: continue
+                val chunks = TextPassages.chunks(file.absolutePath, title, text, versionId)
+                if (chunks.isEmpty()) continue
+                mutex.withLock { dao.deleteTextChunks(file.absolutePath); dao.insertChunks(chunks) }
+            }
             scheduleEmbedding()
         }
     }
@@ -117,33 +141,42 @@ class RetrievalIndex(
             ?.let { File(it.filePath) }
 
     /** Embed any passages that don't have a vector for the installed search model yet. */
+    fun setInteractive(active: Boolean) {
+        interactive = active
+        if (active) { embedJob?.cancel(); pdfJob?.cancel(); textJob?.cancel() }
+        else scheduleEmbedding()
+    }
+
     fun scheduleEmbedding() {
-        if (embedJob?.isActive == true || settings.survivalMode) return
+        if (embedJob?.isActive == true || settings.survivalMode || interactive) return
         embedJob = scope.launch {
             val model = embeddingModel() ?: run { _status.value = IndexStatus(); return@launch }
             if (!llm.available) { _status.value = IndexStatus(error = llm.unavailableReason); return@launch }
             val tag = model.name
             try {
                 llm.ensureEmbedModel(model)
-                while (!settings.survivalMode) {
+                while (!settings.survivalMode && !interactive) {
                     val batch = dao.stale(tag, 16)
                     if (batch.isEmpty()) break
                     _status.value = IndexStatus(dao.countStale(tag), true, tag)
                     for (c in batch) {
+                        if (interactive) break
                         val v = llm.embed("search_document: " + c.text) ?: continue
                         dao.setEmbedding(c.id, TextTools.toBytes(v), tag)
                     }
                 }
                 _status.value = IndexStatus(0, false, tag)
+            } catch (t: kotlinx.coroutines.CancellationException) {
+                throw t
             } catch (t: Throwable) {
                 _status.value = IndexStatus(error = t.message)
             }
         }
     }
 
-    /** Best passages from notes and documents for [query]. */
-    suspend fun search(query: String, k: Int = 4): List<RetrievedPassage> {
-        val chunks = dao.allChunks()
+    /** Best passages from notes and documents. Quick mode avoids loading/querying the embedding model. */
+    suspend fun search(query: String, k: Int = 4, semantic: Boolean = false): List<RetrievedPassage> {
+        val chunks = if (semantic) dao.allChunks().filter { it.text.isNotBlank() } else dao.allTextChunks()
         if (chunks.isEmpty()) return emptyList()
         val docs = synchronized(prepared) {
             val docs = chunks.map { c ->
@@ -162,7 +195,7 @@ class RetrievalIndex(
         val keyword = TextTools.rankTerms(query, docs.map { it.terms }).toMap()
         val maxKw = keyword.values.maxOrNull()?.takeIf { it > 0 } ?: 1.0
 
-        val model = embeddingModel()
+        val model = if (semantic) embeddingModel() else null
         val qv = if (model != null && llm.available) runCatching {
             llm.ensureEmbedModel(model); llm.embed("search_query: $query")
         }.getOrNull() else null

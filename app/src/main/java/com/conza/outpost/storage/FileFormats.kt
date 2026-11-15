@@ -16,7 +16,17 @@ object FileFormats {
         ResourceKind.MODEL -> startsWith(file, "GGUF".toByteArray())
         ResourceKind.TOOL -> startsWith(file, byteArrayOf(0x50, 0x4B, 0x03, 0x04)) // PK\3\4
         ResourceKind.DOC -> startsWith(file, "%PDF".toByteArray())
+        ResourceKind.TEXT -> looksLikeText(file)
     }
+
+    private fun looksLikeText(file: File): Boolean = runCatching {
+        if (file.length() < 32) return@runCatching false
+        val head = ByteArray(4096)
+        val n = file.inputStream().use { it.read(head) }
+        if (n <= 0) return@runCatching false
+        val text = String(head, 0, n, Charsets.UTF_8).trimStart('\uFEFF', ' ', '\n', '\r')
+        !text.startsWith("<") && !text.contains('\u0000') && !text.contains('\uFFFD')
+    }.getOrDefault(false)
 
     private fun startsWith(file: File, magic: ByteArray): Boolean = runCatching {
         RandomAccessFile(file, "r").use { raf ->

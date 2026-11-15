@@ -1,9 +1,11 @@
 # Outpost offline assistant audit
 
 Date: 2026-11-15. This audit covers the Android source in this working tree.
-The live v1.2.2 APK at conzahub.com/outpost has **not** been replaced by these
-changes. No phone, Android SDK, or Gradle distribution was available here for
-an APK build or a real latency/battery measurement.
+The last APK directly inspected for the earlier baseline was v1.2.2. Repository
+main subsequently advanced to source v1.3.1, which this branch incorporates.
+These changes have **not** been built or deployed as an APK. No phone, Android
+SDK, or Gradle distribution was available locally for a real latency/battery
+measurement.
 
 ## What is available offline
 
@@ -86,8 +88,8 @@ RAM, CPU, available storage, thermal limits, and battery state.
   takes priority and does not imply unsafe treatment or identification.
 - Pin verified SHA-256 values for release-critical downloads and verify any
   publisher version changes before updating the catalog.
-- Build a release-signed APK. The previously published 1.2.2 APK uses a
-  development signing key and does not contain this working tree.
+- Build a release-signed APK. The current Gradle release configuration still
+  uses a development signing key; no published APK contains this branch yet.
 
 Primary guidance used for the safety core: [CDC emergency water](https://www.cdc.gov/water-emergency/about/),
 [NPS outdoor emergency planning](https://www.nps.gov/articles/gtgemergencyplan.htm),

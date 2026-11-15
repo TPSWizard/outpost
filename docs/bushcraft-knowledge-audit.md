@@ -3,7 +3,7 @@
 ## Implementation update (working tree, 2026-11-15)
 
 The counts and gaps below describe the original source and live v1.2.2 APK at
-the start of the audit. The current working tree adds 20 reviewed, bundled
+the start of the audit. The current working tree adds 21 reviewed, bundled
 field cards, with direct access from Today and Toolkit. The cards cover water,
 food, navigation, weather, shelter, fire, sanitation, being lost, rescue signals,
 first aid, outages, and civilian shelter during violent, chemical, blast,

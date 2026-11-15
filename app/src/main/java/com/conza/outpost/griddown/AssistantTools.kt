@@ -123,11 +123,12 @@ object AnswerPolicy {
     }
 
     private val WATER = Regex("""\b(bleach|purif|disinfect|treat(ing)? water|boil(ing)? water|safe to drink|drinkable|potable)""")
-    private val WATER_HAZARD = Regex("""\b(chemical|fuel|pesticide|toxin|radioactive|radiation|spill)""")
+    private val WATER_HAZARD = Regex("""\b(chemical|fuel|pesticide|toxin|radioactive|radiation|spill|sewage|wastewater|toilet (bowl|water))""")
     private val FOOD = Regex("""\b(fridge|refrigerator|freezer|spoil|food (is )?safe|thaw)""")
 
     fun route(question: String, firstAid: FaFile?): List<Route> = buildList {
         val q = question.lowercase()
+        if (FieldGuide.safetyCardId(q) == "toilet-sewer") return@buildList
         firstAid?.let { f -> FirstAid.match(f, q)?.let { add(Route.FirstAidTopic(it.id, it.title)) } }
         if (WATER.containsMatchIn(q) && !WATER_HAZARD.containsMatchIn(q)) add(Route.WaterTreatment)
         if (FOOD.containsMatchIn(q)) add(Route.FoodSafety)

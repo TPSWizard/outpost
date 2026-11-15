@@ -12,7 +12,7 @@ measurement.
 
 | Component | On a fresh installation | After optional setup |
 |---|---|---|
-| Bundled field guide | 20 short, sourced cards in the APK | Same cards |
+| Bundled field guide | 21 short, sourced cards in the APK | Same cards |
 | Chat model | None | A downloaded GGUF runs through the app's on-device llama.cpp backend; local mode needs no server |
 | PDF manuals | Catalog listings only | Downloaded PDFs open in the reader; extractable pages are indexed locally |
 | Plain-text reading | Catalog listing only | Downloaded UTF-8 text opens in Library and is indexed locally |

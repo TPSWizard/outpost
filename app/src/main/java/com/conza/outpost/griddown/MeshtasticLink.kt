@@ -119,7 +119,7 @@ class MeshtasticLink(private val context: Context, private val scope: CoroutineS
 
     @Suppress("DEPRECATION")
     private fun writeDescriptor(g: BluetoothGatt, d: BluetoothGattDescriptor, v: ByteArray): Boolean =
-        if (Build.VERSION.SDK_INT >= 33) g.writeDescriptor(d, v) == 0 else { d.value = v; g.writeDescriptor(d) }
+        if (Build.VERSION.SDK_INT >= 33) g.writeDescriptor(d, v) == android.bluetooth.BluetoothStatusCodes.SUCCESS else { d.value = v; g.writeDescriptor(d) }
 
     /** One GATT operation at a time; Android drops overlapping ones. */
     private suspend fun await(start: () -> Boolean): Any? {
@@ -132,7 +132,7 @@ class MeshtasticLink(private val context: Context, private val scope: CoroutineS
     private suspend fun write(bytes: ByteArray) = op.withLock {
         val g = gatt ?: return@withLock; val ch = toRadio ?: return@withLock
         await {
-            if (Build.VERSION.SDK_INT >= 33) g.writeCharacteristic(ch, bytes, BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT) == 0
+            if (Build.VERSION.SDK_INT >= 33) g.writeCharacteristic(ch, bytes, BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT) == android.bluetooth.BluetoothStatusCodes.SUCCESS
             else { ch.value = bytes; ch.writeType = BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT; g.writeCharacteristic(ch) }
         }
     }

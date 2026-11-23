@@ -245,6 +245,7 @@ guide('pressure-workflow','Pressure-canning equipment and process','Canning',[
  'Remove jars upright onto a towel or rack and leave undisturbed 12–24 hours. Check seals after cooling. Failed seals and uncertain processes remain flagged. Follow current NCHFP directions for corrective handling. Refrigeration options require dependable cooling.',
 ],['pressure','home-storage']);
 guide('bath-workflow','Boiling-water canning','Canning',[
+ 'Before loading, preheat water to 140°F for raw-packed foods or 180°F for hot-packed foods. Keep filled jars upright on the rack. Add boiling water around jars as needed, cover the canner, and bring to a vigorous boil.',
  'Use boiling-water canning only with the tested acid-food, acidified, jam or pickle recipe. Fully cover jars with water at least 1 inch above the tops, or 2 inches for processing over 30 minutes.',
  'Bring water to a full boil before timing. Maintain a boil and the required water cover throughout. If boiling stops, restore it and restart the full process. Afterward, turn off heat, remove the canner lid and wait 5 minutes before lifting jars.',
  'Cool jars upright and undisturbed 12–24 hours before checking seals. Sterilize empty jars for processes under 10 minutes by boiling 10 minutes below 1,000 ft and adding 1 minute per additional 1,000 ft. Follow the verified recipe and jar/lid instructions.',

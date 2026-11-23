@@ -129,7 +129,7 @@ class FoodRepository(private val context: Context, private val db: OutpostDataba
         require(content.recipes.any { it.id == batch.recipeId && it.version == batch.recipeVersion && it == recipe && it.verified }) { "Batch recipe does not match a verified bundled recipe version" }
         val process = CanningRules.process(recipe, batch.jar, batch.gauge, batch.elevationFeet)
         require(process.minutes == batch.processingMinutes && process.psi == batch.pressurePsi)
-        require(batch.recipeVersion == recipe.version && batch.method == recipe.method)
+        require(batch.recipeVersion == recipe.version && batch.method == recipe.method && batch.food == recipe.food)
         require(batch.jars > 0)
         if (batch.seal == "SEALED") require(batch.processComplete && !batch.interrupted && batch.stage == "COMPLETE") { "Review processing and seals first" }
         val usable = batch.seal == "SEALED" && batch.processComplete && !batch.interrupted
@@ -199,7 +199,7 @@ class FoodRepository(private val context: Context, private val db: OutpostDataba
             val recipe = content.recipes.singleOrNull { it.id == batch.recipeId && it.version == batch.recipeVersion && it.verified } ?: error("Backup has an unsupported recipe version; retain it as an archive and ask for an app update")
             require(batch.recipeSnapshot == null || batch.recipeSnapshot == recipe) { "Backup recipe differs from the verified bundled instructions" }
             val process = CanningRules.process(recipe, batch.jar, batch.gauge, batch.elevationFeet)
-            require(process.minutes == batch.processingMinutes && process.psi == batch.pressurePsi && batch.method == recipe.method)
+            require(process.minutes == batch.processingMinutes && process.psi == batch.pressurePsi && batch.method == recipe.method && batch.food == recipe.food)
         }
         val restored = FoodBackups.holdRestoredTimers(backup.state)
         val before = export()

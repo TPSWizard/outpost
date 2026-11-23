@@ -136,4 +136,15 @@ class FoodLogicTest {
         assertEquals("HELD", restored.lots.single().safety)
         assertThrows(IllegalArgumentException::class.java) { CanningWorkflow.advance(restored.batches.single(), 0, 3, 0) }
     }
+    @Test fun waterBathUsesBoilingConfirmationFiveMinuteWaitAndTwelveHourSealCooling() {
+        val draft = batch("PREPARE").copy(method = "WATER_BATH", pressurePsi = null, processingMinutes = 15)
+        val ready = CanningWorkflow.advance(draft, 0, 3, 0)
+        assertEquals("REACH_PROCESS", ready.stage)
+        assertThrows(IllegalArgumentException::class.java) { CanningWorkflow.advance(ready, 0, 3, 0) }
+        val process = CanningWorkflow.advance(ready.copy(pressureConfirmed = true), 0, 3, 0)
+        val wait = CanningWorkflow.advance(process, 15 * 60000L, 3, 0)
+        assertEquals("WAIT_REMOVE", wait.stage); assertEquals(300000L, FoodTimers.remaining(wait, 15 * 60000L, 3))
+        val cooling = CanningWorkflow.advance(wait, 20 * 60000L, 3, 0)
+        assertEquals("SEAL_WAIT", cooling.stage); assertEquals(12 * 3600000L, FoodTimers.remaining(cooling, 20 * 60000L, 3))
+    }
 }

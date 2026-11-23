@@ -6,6 +6,8 @@ import com.conza.outpost.data.FoodWorkspaceRow
 import com.conza.outpost.data.InventoryItem
 import com.conza.outpost.data.OutpostDatabase
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
 import java.util.UUID
@@ -75,10 +77,29 @@ class FoodRepository(private val context: Context, private val db: OutpostDataba
     private fun decode(row: FoodWorkspaceRow?) = row?.let { FoodJson.state(it.payload) } ?: initial()
     private suspend fun state() = decode(db.foodWorkspace().get())
     private suspend fun put(state: FoodState) { FoodValidation.state(state); db.foodWorkspace().put(FoodWorkspaceRow(payload = FoodJson.encode(state))) }
-    fun observe() = combine(db.foodWorkspace().observe(), db.inventory().observe()) { row, inventory ->
-        FoodSnapshot(decode(row), inventory.filter { it.category in setOf("FOOD", "WATER") })
+    /** Old Supplies presets could reuse a UUID for separate rows. Preserve every quantity. */
+    private suspend fun ensureInventoryIdentities() = db.withTransaction {
+        val seen = mutableSetOf<String>()
+        val events = mutableListOf<InventoryEvent>()
+        db.inventory().all().sortedBy { it.id }.forEach { row ->
+            if (row.uuid.isBlank() || !seen.add(row.uuid)) {
+                val uuid = UUID.randomUUID().toString(); seen.add(uuid)
+                db.inventory().upsert(row.copy(uuid = uuid))
+                events += InventoryEvent(inventoryUuid = uuid, change = 0.0, reason = "Distinct ID assigned to legacy duplicate row; stock quantity preserved")
+            }
+        }
+        if (events.isNotEmpty()) { val current = state(); put(current.copy(events = current.events + events)) }
     }
-    suspend fun snapshot() = FoodSnapshot(state(), db.inventory().all().filter { it.category in setOf("FOOD", "WATER") })
+    fun observe() = flow {
+        ensureInventoryIdentities()
+        emitAll(combine(db.foodWorkspace().observe(), db.inventory().observe()) { row, inventory ->
+            FoodSnapshot(decode(row), inventory.filter { it.category in setOf("FOOD", "WATER") })
+        })
+    }
+    suspend fun snapshot(): FoodSnapshot {
+        ensureInventoryIdentities()
+        return FoodSnapshot(state(), db.inventory().all().filter { it.category in setOf("FOOD", "WATER") })
+    }
     suspend fun change(block: (FoodState) -> FoodState) = db.withTransaction { put(block(state())) }
 
     suspend fun saveLot(row: InventoryItem, lot: InventoryLot) = db.withTransaction {

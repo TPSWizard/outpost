@@ -22,6 +22,8 @@ Room advances **3 → 4** with one additive `food_workspace` table (`id INTEGER 
 
 The workspace is typed, versioned JSON (`FoodState.format = 1`) stored transactionally through Room. It contains profiles, lot metadata keyed by existing inventory UUID, locations, targets, equipment, batches, harvests, meals and inventory events. `inventory_items` remains the single quantity ledger. Repository transactions keep deductions and their metadata/event changes together. Existing household members, supplies, notes, chats, pins, downloads and settings are retained.
 
+Older Supplies presets could reuse a UUID when added more than once. On first food access, duplicate/blank inventory UUIDs are repaired in one transaction: the first existing ID is retained and additional rows receive distinct IDs. Quantities, numeric row IDs, notes and all other stock fields remain unchanged, and the repair is logged. New preset entries now receive fresh UUIDs. This is a compatibility repair, not a stock merge or reseeding operation.
+
 Java API desugaring supplies date/time APIs on Android 7 (API 24–25). No new runtime service or account is required. Food timer jobs have no network constraint or network operation.
 
 ## Backups and rollback

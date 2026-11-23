@@ -120,7 +120,7 @@ fun SuppliesScreen(onBack: () -> Unit, onDrugSearch: (String) -> Unit, onFood: (
             if (list.isEmpty()) item { Text("Nothing here yet. Tap Add, or pick a common item:", style = MaterialTheme.typography.bodySmall) }
             if (list.isEmpty()) item {
                 Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    PRESETS.filter { filter == null || it.category == filter!!.name }.forEach { p -> FilterChip(false, { edit = p.copy() }, label = { Text(p.name) }) }
+                    PRESETS.filter { filter == null || it.category == filter!!.name }.forEach { p -> FilterChip(false, { edit = p.copy(uuid = java.util.UUID.randomUUID().toString()) }, label = { Text(p.name) }) }
                 }
             }
             items(list, key = { "i-${it.id}" }) { item ->

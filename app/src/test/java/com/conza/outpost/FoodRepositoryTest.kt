@@ -127,4 +127,20 @@ class FoodRepositoryTest {
             assertEquals(6, repo.snapshot().state.profile.people)
         }
     }
+    @Test fun legacyDuplicateSupplyIdsKeepBothQuantitiesAndBecomeIndividuallyEditable() = runBlocking {
+        val db = database()
+        db.inventory().upsert(InventoryItem(uuid = "old-preset", category = "FOOD", name = "First purchase", quantity = 4.0, unit = "can"))
+        db.inventory().upsert(InventoryItem(uuid = "old-preset", category = "FOOD", name = "Second purchase", quantity = 7.0, unit = "can"))
+        val repo = FoodRepository(context, db)
+        val snapshot = repo.snapshot()
+        assertEquals(2, snapshot.supplies.size)
+        assertEquals(2, snapshot.supplies.map { it.uuid }.distinct().size)
+        assertEquals(11.0, snapshot.supplies.sumOf { it.quantity }, 0.0)
+        assertEquals("old-preset", snapshot.supplies.first { it.name == "First purchase" }.uuid)
+        val second = snapshot.supplies.first { it.name == "Second purchase" }
+        repo.consume(second.uuid, 2.0, "Consumed")
+        assertEquals(4.0, db.inventory().byUuid("old-preset")!!.quantity, 0.0)
+        assertEquals(5.0, db.inventory().byUuid(second.uuid)!!.quantity, 0.0)
+        FoodBackups.decode(repo.export())
+    }
 }

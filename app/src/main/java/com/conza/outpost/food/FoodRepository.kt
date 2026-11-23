@@ -27,6 +27,11 @@ data class FoodSupply(
 data class FoodBackup(val format: Int = 1, val exportedAt: String, val state: FoodState, val supplies: List<FoodSupply>)
 
 object FoodBackups {
+    fun holdRestoredTimers(state: FoodState): FoodState {
+        val active = state.batches.filter { it.timerElapsedEnds != null || it.stage !in setOf("COMPLETE", "PREPARE") }.map { it.id }.toSet()
+        return state.copy(batches = state.batches.map { if (it.id in active) FoodTimers.interrupted(it).copy(interruptionStage = "IMPORTED") else it },
+            lots = state.lots.map { if (it.batchId in active && it.safety != "COMPROMISED") it.copy(safety = "HELD") else it })
+    }
     fun encode(backup: FoodBackup): String = FoodJson.format.encodeToString(FoodBackup.serializer(), backup)
     fun decode(text: String): FoodBackup {
         require(text.length <= 20_000_000) { "Pantry backup is too large" }
@@ -88,7 +93,7 @@ class FoodRepository(private val context: Context, private val db: OutpostDataba
         val current = state()
         lot.productId?.let { id ->
             val product = content.products.single { it.id == id }
-            require(row.unit == product.unit && row.category == "FOOD") { "Use the catalog unit ${product.unit} for this food" }
+            require(row.unit == product.unit && row.category == "FOOD" && lot.kind == product.kind) { "Use the catalog type and unit ${product.unit} for this food" }
         }
         if (lot.kind == "HOME" && lot.safety == "INSPECT") {
             require(lot.batchId != null) { "Home-canned food needs a reviewed processing batch" }
@@ -175,32 +180,44 @@ class FoodRepository(private val context: Context, private val db: OutpostDataba
     /** Adds missing IDs only. Existing stock and metadata win conflicts on import. */
     suspend fun import(text: String) {
         val backup = FoodBackups.decode(text)
+        require(backup.state.lots.all { it.productId == null || content.products.any { p -> p.id == it.productId } }) { "Backup uses an unknown catalog product" }
+        backup.state.lots.forEach { lot ->
+            if (lot.productId != null) {
+                val product = content.products.single { it.id == lot.productId }
+                val row = backup.supplies.firstOrNull { it.uuid == lot.inventoryUuid }
+                require(lot.kind == product.kind && (row == null || row.unit == product.unit)) { "Backup stock units do not match the food catalog" }
+            }
+        }
+        require(backup.state.customMeals.all { meal -> meal.ingredients.all { ingredient -> content.products.any { it.id == ingredient.productId } } }) { "Backup meal has an unknown ingredient" }
+        require(backup.state.mealPlans.all { plan -> (content.meals + backup.state.customMeals).any { it.id == plan.mealId } }) { "Backup has an unknown meal" }
         backup.state.batches.forEach { batch ->
             val recipe = content.recipes.singleOrNull { it.id == batch.recipeId && it.version == batch.recipeVersion && it.verified } ?: error("Backup has an unsupported recipe version; retain it as an archive and ask for an app update")
             require(batch.recipeSnapshot == null || batch.recipeSnapshot == recipe) { "Backup recipe differs from the verified bundled instructions" }
             val process = CanningRules.process(recipe, batch.jar, batch.gauge, batch.elevationFeet)
             require(process.minutes == batch.processingMinutes && process.psi == batch.pressurePsi && batch.method == recipe.method)
         }
+        val restored = FoodBackups.holdRestoredTimers(backup.state)
         val before = export()
         java.io.File(context.filesDir, "pantry-before-import.json").writeText(before)
         db.withTransaction {
             val current = state()
-            val existing = db.inventory().all().map { it.uuid }.toSet()
+            val allExisting = db.inventory().all()
+            val pristine = db.foodWorkspace().get() == null && allExisting.isEmpty()
+            val existing = allExisting.map { it.uuid }.toSet()
             backup.supplies.filter { it.uuid !in existing }.forEach { db.inventory().upsert(it.row()) }
+            if (pristine) { put(restored); return@withTransaction }
             fun <T> merge(old: List<T>, added: List<T>, key: (T) -> String): List<T> = old + added.filter { value -> old.none { key(it) == key(value) } }
             put(current.copy(
-                profiles = merge(current.profiles, backup.state.profiles) { it.id },
-                lots = merge(current.lots, backup.state.lots) { it.inventoryUuid },
-                locations = merge(current.locations, backup.state.locations) { it.id },
-                targets = merge(current.targets, backup.state.targets) { it.productId },
-                equipment = merge(current.equipment, backup.state.equipment) { it.id },
-                batches = merge(current.batches, backup.state.batches.map {
-                    if (it.timerElapsedEnds != null || it.stage !in setOf("COMPLETE", "PREPARE", "INTERRUPTED")) FoodTimers.interrupted(it) else it
-                }) { it.id },
-                harvests = merge(current.harvests, backup.state.harvests) { it.id },
-                events = merge(current.events, backup.state.events) { it.id },
-                mealPlans = merge(current.mealPlans, backup.state.mealPlans) { it.id },
-                customMeals = merge(current.customMeals, backup.state.customMeals) { it.id },
+                profiles = merge(current.profiles, restored.profiles) { it.id },
+                lots = merge(current.lots, restored.lots) { it.inventoryUuid },
+                locations = merge(current.locations, restored.locations) { it.id },
+                targets = merge(current.targets, restored.targets) { it.productId },
+                equipment = merge(current.equipment, restored.equipment) { it.id },
+                batches = merge(current.batches, restored.batches) { it.id },
+                harvests = merge(current.harvests, restored.harvests) { it.id },
+                events = merge(current.events, restored.events) { it.id },
+                mealPlans = merge(current.mealPlans, restored.mealPlans) { it.id },
+                customMeals = merge(current.customMeals, restored.customMeals) { it.id },
             ))
         }
     }

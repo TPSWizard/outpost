@@ -59,6 +59,17 @@ object Backup {
         }
         require(hasDb) { "That file isn't an Outpost backup" }
         require(File(tmp, "db/$DB").inputStream().use { val b = ByteArray(15); var n = 0; while (n < 15) { val r = it.read(b, n, 15 - n); if (r < 0) break; n += r }; String(b, 0, n) } == "SQLite format 3") { "The backup's database is damaged" }
+        // Monotonic timer deadlines belong to the original device/boot, never a restored copy.
+        android.database.sqlite.SQLiteDatabase.openDatabase(File(tmp, "db/$DB").path, null, android.database.sqlite.SQLiteDatabase.OPEN_READWRITE).use { incoming ->
+            require(incoming.version in 1..4) { "This backup needs a different Outpost database version" }
+            if (incoming.version >= 4) incoming.rawQuery("SELECT payload FROM food_workspace WHERE id=1", null).use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val state = com.conza.outpost.food.FoodJson.state(cursor.getString(0))
+                    val held = com.conza.outpost.food.FoodBackups.holdRestoredTimers(state)
+                    incoming.execSQL("UPDATE food_workspace SET payload=? WHERE id=1", arrayOf(com.conza.outpost.food.FoodJson.encode(held)))
+                }
+            }
+        }
         context.container.db.close()
         val dbFile = context.getDatabasePath(DB)
         listOf("", "-wal", "-shm").forEach { File(dbFile.path + it).delete() }

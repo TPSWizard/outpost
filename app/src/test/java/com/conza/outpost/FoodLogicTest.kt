@@ -128,4 +128,12 @@ class FoodLogicTest {
         val estimate = MealMath.estimate(content.meals.first(), 7, FoodState(), emptyList())
         assertTrue(estimate.incomplete); assertEquals(0.0, estimate.calories, 0.0)
     }
+    @Test fun restoredActiveTimersAreHeldEvenIfTheBootCounterHappensToMatch() {
+        val active = batch().copy(timerBoot = 3, timerElapsedEnds = 10000)
+        val restored = FoodBackups.holdRestoredTimers(FoodState(batches = listOf(active), lots = listOf(InventoryLot("jar", kind = "HOME", safety = "HELD", batchId = active.id))))
+        assertEquals("IMPORTED", restored.batches.single().interruptionStage)
+        assertNull(restored.batches.single().timerElapsedEnds)
+        assertEquals("HELD", restored.lots.single().safety)
+        assertThrows(IllegalArgumentException::class.java) { CanningWorkflow.advance(restored.batches.single(), 0, 3, 0) }
+    }
 }

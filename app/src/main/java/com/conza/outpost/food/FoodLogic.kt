@@ -35,7 +35,7 @@ object FoodValidation {
             lot.pricePerUnit?.let { nonnegative(it, "Price") }
             date(lot.purchaseDate); date(lot.rotationDate); date(lot.openedDate)
             require(lot.safety in setOf("INSPECT", "UNKNOWN", "HELD", "COMPROMISED"))
-            require(lot.kind in setOf("COMMERCIAL", "DRY", "HOME", "CUSTOM"))
+            require(lot.kind in setOf("COMMERCIAL", "DRY", "READY", "HOME", "CUSTOM"))
             if (lot.kind == "HOME" && lot.safety == "INSPECT") {
                 val batch = state.batches.singleOrNull { it.id == lot.batchId }
                 require(batch != null && batch.seal == "SEALED" && batch.processComplete && !batch.interrupted) { "Home-canned stock needs a reviewed batch" }
@@ -115,8 +115,8 @@ object PantryMath {
         fun energy(kind: String) = available.filter { lots[it.uuid]?.kind == kind }.sumOf { it.quantity * calories(it) }
         val daily = p.people.toDouble() * p.calories
         val noCook = available.filter { lots[it.uuid]?.noCook == true }.sumOf { it.quantity * calories(it) }
-        val protein = available.sumOf { it.quantity * (lots[it.uuid]?.proteinPerUnit ?: 0.0) }
-        val gallons = supplies.filter { it.category == "WATER" }.sumOf {
+        val protein = available.sumOf { if (lots[it.uuid]?.nutritionSource?.isNotBlank() == true) it.quantity * (lots[it.uuid]?.proteinPerUnit ?: 0.0) else 0.0 }
+        val gallons = supplies.filter { it.category == "WATER" && usable(lots[it.uuid]) }.sumOf {
             it.quantity * (it.litersPerUnit ?: runCatching { liters(1.0, it.unit) }.getOrNull() ?: Rationing.litersPerUnit(it) ?: 0.0)
         } / LITERS_PER_GALLON
         val waterPerDay = p.people * p.waterGallons

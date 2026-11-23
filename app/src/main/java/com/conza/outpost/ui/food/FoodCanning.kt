@@ -120,9 +120,12 @@ internal fun BatchControls(repo: FoodRepository, batch: CanningBatch, run: (susp
                 }
             }) { Text(when (batch.stage) { "PREPARE" -> if (batch.method == "PRESSURE") "Start continuous steam vent: 10 min" else "Continue to boiling confirmation"; "REACH_PROCESS" -> "Start full processing timer"; "NATURAL_COOL" -> "Fully depressurized: start 10-minute wait"; "WAIT_REMOVE" -> "Jars removed: start cooling reminder"; "CHECK_SEALS" -> "Save batch inspection"; "INTERRUPTED" -> "Review complete: return to processing confirmation"; else -> "Confirm step and continue" }) }
         }
-        if (batch.stage != "PREPARE" && batch.stage != "COMPLETE") OutlinedButton(onClick = { run {
+        if (batch.stage == "PROCESS" && !unknownTimer) OutlinedButton(onClick = { run {
             val next = FoodTimers.interrupted(batch); repo.saveBatch(next); FoodTimerWorker.schedule(context, next)
-        } }) { Text("Pressure / boil lost or process uncertain — HOLD") }
+        } }) { Text("Observed pressure / boil drop — restart full time") }
+        if (batch.stage != "PREPARE" && batch.stage != "COMPLETE") OutlinedButton(onClick = { run {
+            val next = FoodTimers.interrupted(batch).copy(interruptionStage = "UNCERTAIN"); repo.saveBatch(next); FoodTimerWorker.schedule(context, next)
+        } }) { Text("History / venting / cooling uncertain — HOLD") }
         OutlinedButton(onClick = { run { val next = batch.copy(seal = "COMPROMISED", stage = "COMPLETE", timerEndsAt = null, timerElapsedEnds = null, timerBoot = null); repo.saveBatch(next); FoodTimerWorker.schedule(context, next) } }) { Text("Flag compromised / discard") }
         OutlinedButton(onClick = { onEdit(FoodFormSpec("Batch notes", "Keep processing observations, canner model, failed seals and handling history here.", listOf(input("notes", "Notes", batch.notes))) { v -> repo.saveBatch(batch.copy(notes = v.text("notes"))) }) }) { Text("Edit notes") }
         Button(onClick = { run { repo.addBatchToPantry(batch.id) } }) { Text("Record jars in pantry (held until reviewed)") }

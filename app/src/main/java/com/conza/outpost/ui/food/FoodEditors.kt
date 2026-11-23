@@ -27,7 +27,8 @@ internal fun lotForm(repo: FoodRepository, state: FoodState, row: InventoryItem?
     return FoodFormSpec(if (row == null) "Record owned / purchased stock" else "Edit pantry lot", "Only enter food or water actually owned. Quantity uses the catalog unit shown below. Nutrition = label per serving × servings per ONE stock unit (one can, lb, jar, gal, etc.). For pounds, convert the label serving weight first. Blank nutrition is unknown. Dates use YYYY-MM-DD. Rotation dates are quality reminders, never safety guarantees. Home-canned stock needs a reviewed linked batch before it counts toward coverage.",
         listOf(input("name", "Product / brand / size", old.name), choice("product", "Catalog link", lot.productId, listOf("" to "Custom / no catalog link") + repo.content.products.map { it.id to "${it.name} · ${it.unit}" }),
             choice("category", "Supply category", old.category, listOf("FOOD" to "Food", "WATER" to "Water")),
-            choice("kind", "Food type", lot.kind, listOf("COMMERCIAL" to "Commercial canned", "DRY" to "Dry / bulk", "HOME" to "Home-canned", "CUSTOM" to "Other")),
+            choice("kind", "Food type", lot.kind, listOf("COMMERCIAL" to "Commercial canned", "DRY" to "Dry / bulk", "READY" to "Ready-to-eat meal", "HOME" to "Home-canned", "CUSTOM" to "Other")),
+            input("foodcategory", "Custom food group / category", lot.foodCategory.ifBlank { product?.category.orEmpty() }),
             input("quantity", "Quantity owned", old.quantity, true), input("unit", "Stock unit (can, lb, jar, gal…)", old.unit),
             input("servings", "Servings per stock unit", 1, true), input("calories", "Calories per label serving (optional)", old.caloriesPerUnit, true), input("protein", "Protein grams per label serving (optional)", lot.proteinPerUnit, true),
             input("source", "Nutrition source / product label", lot.nutritionSource), input("liters", "Water liters per stock unit (optional)", old.litersPerUnit, true),
@@ -51,7 +52,7 @@ internal fun lotForm(repo: FoodRepository, state: FoodState, row: InventoryItem?
             caloriesPerUnit = kcal, litersPerUnit = v.optionalNumber("liters"), expiry = v.opt("bestby"), notes = v.text("notes")),
             lot.copy(productId = productId, kind = kind, proteinPerUnit = protein, nutritionSource = v.text("source"), noCook = kind != "HOME" && v.flag("nocook"), waterNeeded = v.flag("waterneeded"),
                 locationId = v.opt("location"), purchaseDate = purchased, rotationDate = rotation, openedDate = v.opt("opened"), safety = v.text("safety"),
-                volumeLitersPerUnit = v.optionalNumber("volume"), pricePerUnit = v.optionalNumber("price")))
+                volumeLitersPerUnit = v.optionalNumber("volume"), pricePerUnit = v.optionalNumber("price"), foodCategory = v.text("foodcategory")))
     }
 }
 

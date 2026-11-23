@@ -161,7 +161,7 @@ pressure('dry-beans','Pinto, black, kidney beans, chickpeas · hydrated','Beans'
  ['Sort and wash dried beans. Cover with boiling water, boil 2 minutes, remove from heat, soak 1 hour, and drain.','Cover with fresh water and boil 30 minutes. Pack beans and hot cooking water.'],'1 inch','Cooking water',{PINT:75,QUART:90},{warnings:['Hydration and the 30-minute boil are required. Do not pack dry beans straight into jars.']});
 for(const bones of [false,true]) for(const pack of ['HOT','RAW']) {
  pressure(`poultry-${bones?'bone-in':'boneless'}-${pack.toLowerCase()}`,`Chicken / turkey ${bones?'with bones':'boneless'} · ${pack.toLowerCase()}`,'Meat & poultry','chicken-or-rabbit',pack,
-  ['Use properly chilled, freshly dressed poultry. Trim excess fat and cut pieces to fit.',pack==='HOT'?'Boil, steam, or bake until about two-thirds done. Pack with hot broth.':'Loosely fill with raw meat. Add no liquid.'],'1¼ inches',pack==='HOT'?'Hot broth':'No added liquid',bones?{PINT:65,QUART:75}:{PINT:75,QUART:90},
+  ['Use healthy freshly dressed chicken or turkey kept safely cold. Dressed chicken must be chilled 6–12 hours before canning. Trim excess fat and cut pieces to fit.',pack==='HOT'?'Boil, steam, or bake until about two-thirds done. Pack with hot broth.':'Loosely fill with raw meat. Add no liquid.'],'1¼ inches',pack==='HOT'?'Hot broth':'No added liquid',bones?{PINT:65,QUART:75}:{PINT:75,QUART:90},
   {warnings:['Keep meat cold before processing. Raw-pack meat may not remain covered by its own juices.']});
 }
 for(const pack of ['HOT','RAW']) pressure(`meat-chunks-${pack.toLowerCase()}`,`Beef / pork / venison chunks · ${pack.toLowerCase()}`,'Meat & poultry','meat-strips-cubes-or-chunks',pack,

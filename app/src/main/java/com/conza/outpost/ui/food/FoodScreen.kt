@@ -7,6 +7,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -44,6 +45,11 @@ fun FoodScreen(onBack: () -> Unit, onFullBackup: () -> Unit) {
     var activeBatch by rememberSaveable { mutableStateOf<String?>(null) }
     var form by remember { mutableStateOf<FoodFormSpec?>(null) }
     var exportKind by rememberSaveable { mutableStateOf("json") }
+    val listState = rememberLazyListState()
+    LaunchedEffect(section, activeBatch) { listState.scrollToItem(0) }
+    val notifications = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { allowed ->
+        scope.launch { snackbar.showSnackbar(if (allowed) "Food timer reminders enabled" else "Reminders are disabled; use an independent timer") }
+    }
     val run: (suspend () -> Unit) -> Unit = { block -> scope.launch {
         try { withContext(Dispatchers.IO) { block() } }
         catch (e: Exception) { if (e is CancellationException) throw e; snackbar.showSnackbar(e.message ?: "Operation failed") }
@@ -84,7 +90,7 @@ fun FoodScreen(onBack: () -> Unit, onFullBackup: () -> Unit) {
                 return@Column
             }
             val state = s.state; val content = repo.content
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(12.dp, 8.dp, 12.dp, 32.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            LazyColumn(Modifier.fillMaxSize(), state = listState, contentPadding = PaddingValues(12.dp, 8.dp, 12.dp, 32.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 when (section) {
                     "Dashboard" -> {
                         item { FoodCard("${state.profile.name} · ${state.profile.people} people") {
@@ -137,8 +143,8 @@ fun FoodScreen(onBack: () -> Unit, onFullBackup: () -> Unit) {
                             Button(onClick = { form = lotForm(repo, state) }) { Text("Add food") }
                             OutlinedButton(onClick = { form = lotForm(repo, state, water = true) }) { Text("Add water") }
                         } }
-                        item { OutlinedTextField(search, { search = it }, label = { Text("Search actual pantry") }, modifier = Modifier.fillMaxWidth()) }
-                        val sorted = s.supplies.filter { it.name.contains(search, true) }.sortedWith(compareBy<InventoryItem> { row -> state.lots.firstOrNull { it.inventoryUuid == row.uuid }?.purchaseDate ?: "9999" }.thenBy { row -> state.lots.firstOrNull { it.inventoryUuid == row.uuid }?.rotationDate ?: "9999" })
+                        item { CatalogFilter(search, { search = it }, category, { category = it }, state.lots.map { it.foodCategory }.filter { it.isNotBlank() }.distinct()) }
+                        val sorted = s.supplies.filter { row -> row.name.contains(search, true) && (category.isEmpty() || state.lots.firstOrNull { it.inventoryUuid == row.uuid }?.foodCategory == category) }.sortedWith(compareBy<InventoryItem> { row -> state.lots.firstOrNull { it.inventoryUuid == row.uuid }?.purchaseDate ?: "9999" }.thenBy { row -> state.lots.firstOrNull { it.inventoryUuid == row.uuid }?.rotationDate ?: "9999" })
                         if (sorted.isEmpty()) item { Text("No owned stock matches. Shopping templates do not add stock.") }
                         items(sorted, key = { it.uuid }) { row ->
                             val lot = state.lots.firstOrNull { it.inventoryUuid == row.uuid }
@@ -161,7 +167,7 @@ fun FoodScreen(onBack: () -> Unit, onFullBackup: () -> Unit) {
                     }
                     "Canned foods", "Bulk dry storage" -> {
                         val kind = if (section == "Canned foods") "COMMERCIAL" else "DRY"
-                        val products = content.products.filter { it.kind == kind }
+                        val products = content.products.filter { it.kind == kind || (kind == "DRY" && it.kind == "READY") }
                         item { Text(if (kind == "COMMERCIAL") "324 cans are the initial 7-person shopping target. No stock is preloaded. Use real package labels for calories and protein. Manufacturer dates override a generic quality planning window." else "Starter dry-goods targets are editable. White rice and brown rice have different oil content and storage behavior. Avoid moisture in oxygen-reduced packaging.") }
                         item { CatalogFilter(search, { search = it }, category, { category = it }, products.map { it.category }.distinct()) }
                         items(products.filter { it.name.contains(search, true) && (category.isEmpty() || it.category == category) }, key = { it.id }) { product ->
@@ -185,6 +191,7 @@ fun FoodScreen(onBack: () -> Unit, onFullBackup: () -> Unit) {
                         } else {
                             item { Text("Pressure canning & food preservation. Every draft keeps its recipe version and exact schedule. Jars remain held until processing and seal review. Timers never measure canner pressure.") }
                             item { Button(onClick = { section = "Canning recipes" }) { Text("Choose a verified recipe") } }
+                            if (android.os.Build.VERSION.SDK_INT >= 33) item { TextButton(onClick = { notifications.launch(android.Manifest.permission.POST_NOTIFICATIONS) }) { Text("Allow optional timer reminders") } }
                             items(state.batches.reversed(), key = { it.id }) { b -> FoodCard("${b.food} · ${b.date}") {
                                 Text("${b.jars} × ${b.jar} · ${b.stage.replace('_', ' ')} · ${b.seal}")
                                 if (b.interrupted) Text("Processing interrupted — held", color = MaterialTheme.colorScheme.error)

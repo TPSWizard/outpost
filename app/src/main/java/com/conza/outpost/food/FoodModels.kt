@@ -79,6 +79,7 @@ data class InventoryLot(
     val rotationDate: String? = null, val safety: String = "INSPECT",
     val batchId: String? = null, val volumeLitersPerUnit: Double? = null,
     val pricePerUnit: Double? = null,
+    val foodCategory: String = "",
 )
 
 @Serializable

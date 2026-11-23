@@ -72,11 +72,13 @@ class FoodRepositoryTest {
     @Test fun freshBackupRestorePreservesUserDataAndMergeKeepsExistingStock() = runBlocking {
         val source = FoodRepository(context, database())
         source.saveLot(InventoryItem(uuid = "stock", category = "FOOD", name = "My brand", quantity = 9.0, unit = "can"), InventoryLot("stock", "c-chicken", "COMMERCIAL", purchaseDate = "2026-11-22"))
-        source.change { it.copy(harvests = listOf(GardenHarvest(food = "Beans", date = "2026-11-22", pounds = 3.0))) }
+        source.change { it.copy(activeProfileId = "tampa-9", targets = listOf(PurchaseTarget("c-chicken", 50.0)), harvests = listOf(GardenHarvest(food = "Beans", date = "2026-11-22", pounds = 3.0))) }
         val exported = source.export()
         val restored = FoodRepository(context, database()); restored.import(exported)
         assertEquals(source.snapshot().state.lots, restored.snapshot().state.lots)
         assertEquals(source.snapshot().state.harvests, restored.snapshot().state.harvests)
+        assertEquals(source.snapshot().state.targets, restored.snapshot().state.targets)
+        assertEquals("tampa-9", restored.snapshot().state.activeProfileId)
         assertEquals(9.0, restored.snapshot().supplies.single().quantity, 0.0)
         restored.consume("stock", 2.0, "Consumed"); restored.import(exported)
         assertEquals(7.0, restored.snapshot().supplies.single().quantity, 0.0)
@@ -111,13 +113,13 @@ class FoodRepositoryTest {
                 }
                 val setup = schema.getJSONArray("setupQueries")
                 for (i in 0 until setup.length()) raw.execSQL(setup.getString(i))
-                raw.execSQL("INSERT INTO notes (id,title,body,pinned,createdAt,updatedAt) VALUES (1,'Keep this note','Original user data',0,1,1)")
-                if (version >= 2) raw.execSQL("INSERT INTO inventory_items (id,uuid,category,name,quantity,unit,litersPerUnit,caloriesPerUnit,dailyUse,expiry,notes,updatedAt) VALUES (1,'keep-water','WATER','My water',12,'gal',NULL,NULL,NULL,NULL,'Keep this stock',1)")
+                if (version >= 2) raw.execSQL("INSERT INTO notes (id,title,body,pinned,createdAt,updatedAt) VALUES (1,'Keep this note','Original user data',0,1,1)")
+                if (version >= 3) raw.execSQL("INSERT INTO inventory_items (id,uuid,category,name,quantity,unit,litersPerUnit,caloriesPerUnit,dailyUse,expiry,notes,updatedAt) VALUES (1,'keep-water','WATER','My water',12,'gal',NULL,NULL,NULL,NULL,'Keep this stock',1)")
                 raw.version = version
             }
             val db = database(name)
-            assertEquals("Original user data", db.notes().get(1)!!.body)
-            if (version >= 2) assertEquals(12.0, db.inventory().byUuid("keep-water")!!.quantity, 0.0)
+            if (version >= 2) assertEquals("Original user data", db.notes().get(1)!!.body) else assertTrue(db.notes().all().isEmpty())
+            if (version >= 3) assertEquals(12.0, db.inventory().byUuid("keep-water")!!.quantity, 0.0)
             val repo = FoodRepository(context, db)
             assertEquals(7, repo.snapshot().state.profile.people)
             repo.change { it.copy(activeProfileId = "tampa-6") }

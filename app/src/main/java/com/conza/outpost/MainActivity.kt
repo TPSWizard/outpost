@@ -200,6 +200,7 @@ private fun OutpostNavHost(nav: NavHostController, modifier: Modifier) {
     val gridNav = com.conza.outpost.ui.griddown.GridNav(
         firstAid = { nav.navigate("firstaid") },
         supplies = { nav.navigate("supplies") },
+        food = { nav.navigate("food") },
         household = { nav.navigate("household") },
         calculators = { nav.navigate("calculators") },
         weather = { nav.navigate("weather") },
@@ -228,7 +229,8 @@ private fun OutpostNavHost(nav: NavHostController, modifier: Modifier) {
             onOpenNote = { nav.navigate("note/$it") },
         ) }
         composable("household") { com.conza.outpost.ui.griddown.HouseholdScreen(onBack = gridNav.back) }
-        composable("supplies") { com.conza.outpost.ui.griddown.SuppliesScreen(onBack = gridNav.back, onDrugSearch = gridNav.drugSearch) }
+        composable("supplies") { com.conza.outpost.ui.griddown.SuppliesScreen(onBack = gridNav.back, onDrugSearch = gridNav.drugSearch, onFood = gridNav.food) }
+        composable("food") { com.conza.outpost.ui.food.FoodScreen(onBack = gridNav.back, onFullBackup = { nav.navigate("backup") }, onCalculators = gridNav.calculators, onFieldGuide = gridNav.fieldGuide) }
         composable("calculators?tab={tab}", arguments = listOf(navArgument("tab") { type = NavType.IntType; defaultValue = 0 })) { e ->
             com.conza.outpost.ui.griddown.CalculatorsScreen(onBack = gridNav.back, initialTab = e.arguments?.getInt("tab") ?: 0)
         }
@@ -307,6 +309,7 @@ private fun OutpostNavHost(nav: NavHostController, modifier: Modifier) {
                 onContent = { nav.navigate("content?tab=0") },
                 onBeforeOutage = { nav.navigate("before") },
                 onFieldGuide = gridNav.fieldGuide,
+                onFood = gridNav.food,
                 onDecisionNotebook = { nav.navigate("evidence") },
                 onBackup = { nav.navigate("backup") },
                 onNotes = { nav.navigate("notes") },

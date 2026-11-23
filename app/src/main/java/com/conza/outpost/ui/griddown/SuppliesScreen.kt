@@ -64,7 +64,7 @@ private val PRESETS = listOf(
 )
 
 @Composable
-fun SuppliesScreen(onBack: () -> Unit, onDrugSearch: (String) -> Unit) {
+fun SuppliesScreen(onBack: () -> Unit, onDrugSearch: (String) -> Unit, onFood: () -> Unit) {
     val c = LocalContext.current.container
     val dao = c.db.inventory()
     val scope = rememberCoroutineScope()
@@ -83,6 +83,7 @@ fun SuppliesScreen(onBack: () -> Unit, onDrugSearch: (String) -> Unit) {
         val s = snapshot
         LazyColumn(Modifier.padding(pad), contentPadding = PaddingValues(12.dp, 12.dp, 12.dp, 96.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             if (s == null) return@LazyColumn
+            item { TextButton(onClick = onFood) { Text("Food & Water: pantry, preservation, meals and shopping") } }
             if (s.members.isEmpty()) item { Notice("Add your household (Today → Household) so days remaining use your family's real needs.") }
             item { WarningCard(s.warnings, "Under ${Rationing.WARN_DAYS.toInt()} days left") }
             items(s.statuses, key = { "s-${it.category}" }) { st ->
@@ -119,7 +120,7 @@ fun SuppliesScreen(onBack: () -> Unit, onDrugSearch: (String) -> Unit) {
             if (list.isEmpty()) item { Text("Nothing here yet. Tap Add, or pick a common item:", style = MaterialTheme.typography.bodySmall) }
             if (list.isEmpty()) item {
                 Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    PRESETS.filter { filter == null || it.category == filter!!.name }.forEach { p -> FilterChip(false, { edit = p.copy() }, label = { Text(p.name) }) }
+                    PRESETS.filter { filter == null || it.category == filter!!.name }.forEach { p -> FilterChip(false, { edit = p.copy(uuid = java.util.UUID.randomUUID().toString()) }, label = { Text(p.name) }) }
                 }
             }
             items(list, key = { "i-${it.id}" }) { item ->

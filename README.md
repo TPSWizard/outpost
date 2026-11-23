@@ -20,6 +20,11 @@ of Docker containers. Outpost implements each of those features natively inside 
 
 ## Highlights
 
+- **Food & Water.** Offline pantry lots and label-based coverage, the editable 324-can starter shopping template,
+  dry storage, exact verified canning schedules and guided batch timers, seven-day meals, harvest allocation,
+  equipment, storage conditions, safety references and local backup/export. Shares quantities with Supplies.
+  See [implementation and offline phone check](docs/food-storage.md) and [official sources](docs/food-sources.md).
+
 - **Content Manager.** Uses NOMAD's catalog files unchanged (bundled snapshot plus refresh from GitHub), along with
   Outpost's own catalog of GGUF models and tool packs (`assets/catalog/outpost-extras.json`).
   - Downloads run in WorkManager foreground jobs and resume over HTTP Range, surviving restarts and reboots.

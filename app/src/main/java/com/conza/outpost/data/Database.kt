@@ -258,10 +258,11 @@ interface MarkerDao {
         ImportedDocument::class, Chunk::class, MapMarker::class,
         HouseholdMember::class, Medication::class, InventoryItem::class, ChecklistDone::class,
         PressureSample::class, BatterySample::class, PlanItem::class, RadioLogEntry::class, MeshMessage::class,
+        FoodWorkspaceRow::class,
     ],
-    version = 3,
+    version = 4,
     exportSchema = true,
-    autoMigrations = [AutoMigration(from = 1, to = 2), AutoMigration(from = 2, to = 3)],
+    autoMigrations = [AutoMigration(from = 1, to = 2), AutoMigration(from = 2, to = 3), AutoMigration(from = 3, to = 4)],
 )
 abstract class OutpostDatabase : RoomDatabase() {
     abstract fun installed(): InstalledDao
@@ -272,6 +273,7 @@ abstract class OutpostDatabase : RoomDatabase() {
     abstract fun household(): HouseholdDao
     abstract fun inventory(): InventoryDao
     abstract fun gridDown(): GridDownDao
+    abstract fun foodWorkspace(): FoodWorkspaceDao
 
     companion object {
         fun create(context: Context): OutpostDatabase =

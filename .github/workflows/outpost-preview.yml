@@ -2,10 +2,14 @@ name: Outpost Preview APK
 
 on:
   push:
-    branches: ['codex/outpost-preview']
+    branches: ['codex/outpost-preview', 'codex/food-storage-preservation']
 
 permissions:
   contents: read
+
+concurrency:
+  group: outpost-preview-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   preview:
@@ -22,7 +26,9 @@ jobs:
           packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
       - uses: gradle/actions/setup-gradle@v6
       - name: Test and assemble Preview
-        run: ./gradlew :app:testPreviewUnitTest :app:assemblePreview --no-daemon
+        run: |
+          ./gradlew :app:testPreviewUnitTest :app:lintPreview --no-daemon --max-workers=2 --stacktrace
+          ./gradlew :app:assemblePreview --no-daemon --max-workers=2 --stacktrace
       - name: Verify the phone APK
         shell: bash
         run: |
@@ -54,6 +60,7 @@ jobs:
           grep -Fx 'lib/arm64-v8a/liboutpost_llm.so' "$RUNNER_TEMP/outpost-preview-files.txt"
           grep -Fx 'lib/arm64-v8a/libllama.so' "$RUNNER_TEMP/outpost-preview-files.txt"
           grep -Fx 'assets/griddown/field-guide.json' "$RUNNER_TEMP/outpost-preview-files.txt"
+          grep -Fx 'assets/food/content.json' "$RUNNER_TEMP/outpost-preview-files.txt"
           sha256sum "$apk"
       - name: Upload the installable APK
         uses: actions/upload-artifact@v7
@@ -61,3 +68,13 @@ jobs:
           path: ${{ runner.temp }}/Outpost-Preview-arm64.apk
           archive: false
           if-no-files-found: error
+      - name: Upload verification reports and Room schema
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: outpost-food-verification
+          path: |
+            app/build/reports/tests/
+            app/build/reports/lint-results-preview.*
+            app/build/test-results/
+            app/schemas/

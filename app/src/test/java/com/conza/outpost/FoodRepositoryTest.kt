@@ -90,12 +90,13 @@ class FoodRepositoryTest {
             pressurePsi = 11, processingMinutes = 20, rotationDate = "2027-11-22", recipeSnapshot = r)
         repo.saveBatch(b); repo.addBatchToPantry(b.id)
         assertEquals("HELD", repo.snapshot().state.lots.single().safety)
-        try { repo.saveBatch(b.copy(stage = "COMPLETE", seal = "SEALED")); fail("Unprocessed food cannot pass inspection") } catch (_: IllegalArgumentException) { }
-        try { repo.saveBatch(b.copy(recipeSnapshot = r.copy(schedules = listOf(RecipeSchedule("PINT", listOf(1)))), processingMinutes = 1)); fail("Modified recipe must be rejected") } catch (_: IllegalArgumentException) { }
-        val complete = b.copy(stage = "COMPLETE", seal = "SEALED", processComplete = true, preflightComplete = true)
+        try { repo.saveBatch(repo.snapshot().state.batches.single().copy(stage = "COMPLETE", seal = "SEALED")); fail("Unprocessed food cannot pass inspection") } catch (_: IllegalArgumentException) { }
+        try { repo.saveBatch(repo.snapshot().state.batches.single().copy(recipeSnapshot = r.copy(schedules = listOf(RecipeSchedule("PINT", listOf(1)))), processingMinutes = 1)); fail("Modified recipe must be rejected") } catch (_: IllegalArgumentException) { }
+        val complete = repo.snapshot().state.batches.single().copy(stage = "COMPLETE", seal = "SEALED", processComplete = true, preflightComplete = true)
         repo.saveBatch(complete)
         assertEquals("INSPECT", repo.snapshot().state.lots.single().safety)
-        repo.saveBatch(complete.copy(seal = "COMPROMISED"))
+        try { repo.saveBatch(complete.copy(notes = "Stale UI action")); fail("Stale batch edits must be rejected") } catch (_: IllegalArgumentException) { }
+        repo.saveBatch(repo.snapshot().state.batches.single().copy(seal = "COMPROMISED"))
         assertEquals("COMPROMISED", repo.snapshot().state.lots.single().safety)
     }
     @Test fun allExistingSchemaVersionsMigrateWithoutLosingNotesOrSupplies() = runBlocking {

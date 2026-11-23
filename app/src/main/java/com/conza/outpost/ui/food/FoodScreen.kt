@@ -31,7 +31,7 @@ private val sections = listOf("Dashboard", "My pantry", "Canned foods", "Bulk dr
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FoodScreen(onBack: () -> Unit, onFullBackup: () -> Unit) {
+fun FoodScreen(onBack: () -> Unit, onFullBackup: () -> Unit, onCalculators: () -> Unit, onFieldGuide: () -> Unit) {
     val context = LocalContext.current
     val repo = context.container.food
     val scope = rememberCoroutineScope()
@@ -118,6 +118,7 @@ fun FoodScreen(onBack: () -> Unit, onFullBackup: () -> Unit) {
                             Text("Hot weather, illness, pregnancy and extra sanitation can increase water needs. Calories alone do not establish a balanced diet. The 324-can template is not a complete calorie plan.")
                             Text("${s.supplies.count { it.category == "WATER" && it.litersPerUnit == null && runCatching { PantryMath.liters(1.0, it.unit) }.isFailure }} water lots have no recognized volume; verify them in My pantry.")
                             Button(onClick = { section = "My pantry" }) { Text("Manage food and water") }
+                            OutlinedButton(onClick = onCalculators) { Text("Water treatment / outage food safety") }
                         } }
                         item { FoodCard("Shortages by category") {
                             content.products.groupBy { it.category }.forEach { (name, products) ->
@@ -290,6 +291,7 @@ fun FoodScreen(onBack: () -> Unit, onFullBackup: () -> Unit) {
                         item { GuideCard(content.guides.first { it.id == "storage-setup" }, content) }
                     }
                     "Safety reference" -> {
+                        item { OutlinedButton(onClick = onCalculators) { Text("Water treatment / outage food safety calculators") }; TextButton(onClick = onFieldGuide) { Text("Open field guide, including toilets and sewers") } }
                         content.guides.filter { it.section in setOf("Safety", "Getting started") }.forEach { g -> item(g.id) { GuideCard(g, content) } }
                         item { FoodCard("Bundled source register") { Text("Instructions and source metadata above are already stored on your phone. Opening the original website is optional and requires a connection."); FoodSources(content, content.sources.map { it.id }) } }
                     }

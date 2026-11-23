@@ -26,6 +26,7 @@ class FoodTimerWorker(context: Context, params: WorkerParameters) : CoroutineWor
         val batch = applicationContext.container.food.snapshot().state.batches.firstOrNull { it.id == id } ?: return Result.success()
         if (batch.stage != stage || batch.timerEndsAt != inputData.getLong("ends", -1)) return Result.success()
         val manager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= 33 && androidx.core.content.ContextCompat.checkSelfPermission(applicationContext, android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) return Result.success()
         if (Build.VERSION.SDK_INT >= 26) manager.createNotificationChannel(NotificationChannel("food-timers", "Food preservation reminders", NotificationManager.IMPORTANCE_HIGH))
         val intent = PendingIntent.getActivity(applicationContext, id.hashCode(), Intent(applicationContext, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         runCatching { manager.notify(id.hashCode(), NotificationCompat.Builder(applicationContext, "food-timers")

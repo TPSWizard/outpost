@@ -114,14 +114,17 @@ class FoodRepository(private val context: Context, private val db: OutpostDataba
     }
 
     suspend fun remove(uuid: String) = db.withTransaction {
-        db.inventory().byUuid(uuid)?.let { db.inventory().delete(it.id) }
+        val removed = db.inventory().byUuid(uuid)
+        removed?.let { db.inventory().delete(it.id) }
         val current = state()
         put(current.copy(lots = current.lots.filterNot { it.inventoryUuid == uuid },
-            events = current.events + InventoryEvent(inventoryUuid = uuid, change = 0.0, reason = "Lot removed")))
+            events = current.events + InventoryEvent(inventoryUuid = uuid, change = -(removed?.quantity ?: 0.0), reason = "Lot removed")))
     }
 
     suspend fun saveBatch(batch: CanningBatch) = db.withTransaction {
         val current = state()
+        val previous = current.batches.firstOrNull { it.id == batch.id }
+        require(batch.revision == (previous?.revision ?: 0L)) { "This batch changed while you were viewing it. Reopen the current record before saving." }
         val recipe = batch.recipeSnapshot ?: content.recipes.single { it.id == batch.recipeId }
         require(content.recipes.any { it.id == batch.recipeId && it.version == batch.recipeVersion && it == recipe && it.verified }) { "Batch recipe does not match a verified bundled recipe version" }
         val process = CanningRules.process(recipe, batch.jar, batch.gauge, batch.elevationFeet)
@@ -131,7 +134,7 @@ class FoodRepository(private val context: Context, private val db: OutpostDataba
         if (batch.seal == "SEALED") require(batch.processComplete && !batch.interrupted && batch.stage == "COMPLETE") { "Review processing and seals first" }
         val usable = batch.seal == "SEALED" && batch.processComplete && !batch.interrupted
         val lotSafety = if (usable) "INSPECT" else if (batch.seal == "COMPROMISED" || batch.seal == "FAILED") "COMPROMISED" else "HELD"
-        put(current.copy(batches = current.batches.filterNot { it.id == batch.id } + batch,
+        put(current.copy(batches = current.batches.filterNot { it.id == batch.id } + batch.copy(revision = batch.revision + 1),
             lots = current.lots.map { if (it.batchId == batch.id) it.copy(safety = lotSafety) else it },
             harvests = current.harvests.map { if (it.id == batch.harvestId) it.copy(batchIds = (it.batchIds + batch.id).distinct()) else it }))
     }
@@ -142,9 +145,11 @@ class FoodRepository(private val context: Context, private val db: OutpostDataba
         require(current.lots.none { it.batchId == batchId }) { "This batch already has a pantry lot" }
         val uuid = UUID.randomUUID().toString()
         val inspected = batch.seal == "SEALED" && batch.processComplete && !batch.interrupted
+        val safety = if (batch.seal in setOf("FAILED", "COMPROMISED")) "COMPROMISED" else if (inspected) "INSPECT" else "HELD"
         db.inventory().upsert(InventoryItem(uuid = uuid, category = "FOOD", name = "${batch.food} · batch ${batch.id.take(8)}", quantity = batch.jars.toDouble(), unit = batch.jar, expiry = batch.rotationDate))
         put(current.copy(lots = current.lots + InventoryLot(uuid, kind = "HOME", noCook = false, purchaseDate = batch.date,
-            rotationDate = batch.rotationDate, safety = if (inspected) "INSPECT" else "HELD", batchId = batch.id, locationId = batch.locationId)))
+            rotationDate = batch.rotationDate, safety = safety, batchId = batch.id, locationId = batch.locationId),
+            events = current.events + InventoryEvent(inventoryUuid = uuid, change = batch.jars.toDouble(), reason = "Home-canned batch recorded · $safety")))
     }
 
     suspend fun consumeMeal(planId: String) = db.withTransaction {

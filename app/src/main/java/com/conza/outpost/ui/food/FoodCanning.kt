@@ -71,7 +71,10 @@ internal fun batchForm(repo: FoodRepository, state: FoodState, recipe: CannedFoo
 internal fun BatchControls(repo: FoodRepository, batch: CanningBatch, run: (suspend () -> Unit) -> Unit, onEdit: (FoodFormSpec) -> Unit) {
     val context = LocalContext.current
     val boot = remember { Settings.Global.getInt(context.contentResolver, Settings.Global.BOOT_COUNT, -1).toLong() }
-    val elapsed by produceState(initialValue = SystemClock.elapsedRealtime(), batch.id) { while (true) { value = SystemClock.elapsedRealtime(); delay(1000) } }
+    val elapsed by produceState(initialValue = SystemClock.elapsedRealtime(), batch.id, batch.timerElapsedEnds) {
+        value = SystemClock.elapsedRealtime()
+        while (batch.timerElapsedEnds != null) { delay(1000); value = SystemClock.elapsedRealtime() }
+    }
     val remaining = FoodTimers.remaining(batch, elapsed, boot)
     val unknownTimer = batch.timerElapsedEnds != null && remaining == null
     var confirm by remember(batch.id, batch.stage) { mutableStateOf(false) }

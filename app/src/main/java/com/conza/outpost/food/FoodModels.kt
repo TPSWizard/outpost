@@ -117,6 +117,7 @@ data class CanningBatch(
     val preflightComplete: Boolean = false, val harvestId: String? = null,
     val recipeSnapshot: CannedFoodRecipe? = null,
     val interruptionStage: String? = null,
+    val revision: Long = 0,
 )
 
 @Serializable

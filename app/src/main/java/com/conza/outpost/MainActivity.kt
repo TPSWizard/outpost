@@ -230,7 +230,7 @@ private fun OutpostNavHost(nav: NavHostController, modifier: Modifier) {
         ) }
         composable("household") { com.conza.outpost.ui.griddown.HouseholdScreen(onBack = gridNav.back) }
         composable("supplies") { com.conza.outpost.ui.griddown.SuppliesScreen(onBack = gridNav.back, onDrugSearch = gridNav.drugSearch, onFood = gridNav.food) }
-        composable("food") { com.conza.outpost.ui.food.FoodScreen(onBack = gridNav.back, onFullBackup = { nav.navigate("backup") }) }
+        composable("food") { com.conza.outpost.ui.food.FoodScreen(onBack = gridNav.back, onFullBackup = { nav.navigate("backup") }, onCalculators = gridNav.calculators, onFieldGuide = gridNav.fieldGuide) }
         composable("calculators?tab={tab}", arguments = listOf(navArgument("tab") { type = NavType.IntType; defaultValue = 0 })) { e ->
             com.conza.outpost.ui.griddown.CalculatorsScreen(onBack = gridNav.back, initialTab = e.arguments?.getInt("tab") ?: 0)
         }

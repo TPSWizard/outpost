@@ -14,8 +14,8 @@ android {
         applicationId = "com.conza.outpost"
         minSdk = 24
         targetSdk = 36
-        versionCode = 13
-        versionName = "1.3.1"
+        versionCode = 14
+        versionName = "1.4.0"
     }
 
     // One universal APK (emulators, any device) plus a slim arm64 APK for modern phones.
@@ -46,10 +46,12 @@ android {
     }
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures { compose = true }
+    testOptions { unitTests.isIncludeAndroidResources = true }
     packaging {
         jniLibs {
             // We only use libzim (reading + search). libkiwix's server/library layer is ~28 MB per ABI.
@@ -75,6 +77,7 @@ ksp {
 }
 
 dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
@@ -108,4 +111,5 @@ dependencies {
     implementation(libs.play.services.nearby)
     testImplementation(libs.junit)
     testImplementation(libs.pdfbox.desktop)
+    testImplementation("org.robolectric:robolectric:4.18")
 }

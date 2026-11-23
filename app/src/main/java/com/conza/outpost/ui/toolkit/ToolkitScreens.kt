@@ -68,6 +68,7 @@ fun ToolkitScreen(
     onContent: () -> Unit,
     onBeforeOutage: () -> Unit,
     onFieldGuide: () -> Unit,
+    onFood: () -> Unit,
     onDecisionNotebook: () -> Unit,
     onBackup: () -> Unit,
     onNotes: () -> Unit,
@@ -77,6 +78,7 @@ fun ToolkitScreen(
     onSettings: () -> Unit,
 ) {
     val tiles = listOf(
+        Tile("Food & Water", "Offline pantry, nutrition coverage, shopping, preservation workflows, meals, harvests and storage safety.", Icons.AutoMirrored.Filled.MenuBook, onFood),
         Tile("Offline field guide", "Bundled cards for water, shelter, bushcraft, outages, and civilian emergency safety. Works before any downloads.", Icons.AutoMirrored.Filled.MenuBook, onFieldGuide),
         Tile("Decision notebook", "Record claims, observations, source quality, alternatives, and a protective action threshold.", Icons.AutoMirrored.Filled.Notes, onDecisionNotebook),
         Tile("Content & downloads", "Maps, offline libraries, Wikipedia, AI models, tools, and field manuals. Download before the outage.", Icons.Filled.CloudDownload, onContent),

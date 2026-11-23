@@ -1,0 +1,4245 @@
+{
+  "version": "2026-11-22",
+  "sources": [
+    {
+      "id": "pressure",
+      "title": "NCHFP / UGA — Using Pressure Canners",
+      "url": "https://nchfp.uga.edu/how/can/general-information/using-pressure-canners/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "bath",
+      "title": "NCHFP / UGA — Using Boiling Water Canners",
+      "url": "https://nchfp.uga.edu/how/can/general-information/using-boiling-water-canners/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "home-storage",
+      "title": "NCHFP — Storing Home Canned Foods",
+      "url": "https://nchfp.uga.edu/how/can/general-information/storing-home-canned-foods",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "commercial",
+      "title": "USDA FSIS — Food Product Dating",
+      "url": "https://www.govinfo.gov/content/pkg/GOVPUB-A110-PURL-gpo15519/pdf/GOVPUB-A110-PURL-gpo15519.pdf",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "commercial-chart",
+      "title": "University of Nebraska Extension — Home Food Storage",
+      "url": "https://food.unl.edu/free-resource/food-storage/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "dry-pack",
+      "title": "Utah State Extension — Packaging Foods",
+      "url": "https://extension.usu.edu/preserve-the-harvest/food-storage-packaging",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "dry-moisture",
+      "title": "Utah State Extension — Get the Most Out of Food Storage",
+      "url": "https://extension.usu.edu/news_sections/home_family_and_food/get_the_most_of_food_storage",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "dry-quality",
+      "title": "Utah State Extension — Food Storage in Home",
+      "url": "https://extension.usu.edu/preserve-the-harvest/research/food-storage-in-home",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "dry-conditions",
+      "title": "Utah State Extension — Food Storage Conditions",
+      "url": "https://extension.usu.edu/preserve-the-harvest/research/storage-conditions",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "brown-rice",
+      "title": "Utah State Extension — Food Storage Booklet, brown rice",
+      "url": "https://extension.usu.edu/preserve-the-harvest/files/Food-Storage-Booklet.pdf",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "botulism",
+      "title": "CDC — Home-Canned Foods",
+      "url": "https://www.cdc.gov/botulism/prevention/home-canned-foods.html",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "outage",
+      "title": "FoodSafety.gov — Food Safety During Power Outage",
+      "url": "https://www.foodsafety.gov/food-safety-charts/food-safety-during-power-outage",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "water",
+      "title": "CDC — Creating an Emergency Water Supply",
+      "url": "https://www.cdc.gov/water-emergency/about/how-to-create-and-store-an-emergency-water-supply.html",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "hygiene",
+      "title": "CDC — Personal Hygiene During an Emergency",
+      "url": "https://www.cdc.gov/water-emergency/safety/guidelines-for-personal-hygiene-during-an-emergency.html",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "co",
+      "title": "CDC — Carbon Monoxide Prevention",
+      "url": "https://www.cdc.gov/carbon-monoxide/prevention/index.html",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "firearm",
+      "title": "CDC — Preventing Firearm Injury and Death",
+      "url": "https://www.cdc.gov/firearm-violence/prevention/index.html",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "potato-garden",
+      "title": "UF/IFAS — Growing Potatoes in Florida",
+      "url": "https://sfyl.ifas.ufl.edu/lawn-and-garden/potatoes-home-garden/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "potato-calendar",
+      "title": "UF/IFAS Manatee — Sprouting Spuds, February 2025",
+      "url": "https://sfyl.ifas.ufl.edu/media/sfylifasufledu/manatee/docs/pdfs/master-gardners/newsletters/February-2025---The-Garden-Bench.pdf",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "sweet-calendar",
+      "title": "UF/IFAS — Root Crop Production, Central Florida planting table",
+      "url": "https://edis.ifas.ufl.edu/publication/CV300/pdf",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "garden-calendar",
+      "title": "UF/IFAS Pinellas — School Garden Seed Suggestions",
+      "url": "https://sfyl.ifas.ufl.edu/media/sfylifasufledu/pinellas/lawn-and-garden/school-garden-seeds.pdf",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "mulch",
+      "title": "University of Minnesota Extension — Mulching for Soil and Garden Health",
+      "url": "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/mulching-for-soil-and-garden-health",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "potato-soil",
+      "title": "University of Minnesota Extension — Growing Potatoes",
+      "url": "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/growing-potatoes",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "green-beans-hot",
+      "title": "NCHFP — Green or wax beans · hot pack",
+      "url": "https://nchfp.uga.edu/how/can/canning-vegetables-and-vegetable-products/beans-snap-and-italian-pieces-green-and-wax/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "carrots-hot",
+      "title": "NCHFP — Carrots · hot pack",
+      "url": "https://nchfp.uga.edu/how/can/canning-vegetables-and-vegetable-products/carrots-sliced-or-diced/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "green-beans-raw",
+      "title": "NCHFP — Green or wax beans · raw pack",
+      "url": "https://nchfp.uga.edu/how/can/canning-vegetables-and-vegetable-products/beans-snap-and-italian-pieces-green-and-wax/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "carrots-raw",
+      "title": "NCHFP — Carrots · raw pack",
+      "url": "https://nchfp.uga.edu/how/can/canning-vegetables-and-vegetable-products/carrots-sliced-or-diced/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "white-potato-cubes",
+      "title": "NCHFP — White potatoes · ½-inch cubes",
+      "url": "https://nchfp.uga.edu/how/can/canning-vegetables-and-vegetable-products/potatoes-white-cubed-or-whole/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "white-potato-whole",
+      "title": "NCHFP — White potatoes · whole 1–2 inch",
+      "url": "https://nchfp.uga.edu/how/can/canning-vegetables-and-vegetable-products/potatoes-white-cubed-or-whole/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "sweet-potato",
+      "title": "NCHFP — Sweet potatoes · pieces or small whole",
+      "url": "https://nchfp.uga.edu/how/can/canning-vegetables-and-vegetable-products/potatoes-sweet-pieces-or-whole/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "asparagus",
+      "title": "NCHFP — Asparagus · hot pack",
+      "url": "https://nchfp.uga.edu/how/can/canning-vegetables-and-vegetable-products/asparagus-spear-or-pieces/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "beets",
+      "title": "NCHFP — Beets · hot peeled pieces",
+      "url": "https://nchfp.uga.edu/how/can/canning-vegetables-and-vegetable-products/beets-whole-cubed-or-sliced/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "corn",
+      "title": "NCHFP — Corn · whole kernels, hot pack",
+      "url": "https://nchfp.uga.edu/how/can/canning-vegetables-and-vegetable-products/corn-whole-kernel/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "peas",
+      "title": "NCHFP — Green or English peas · hot pack",
+      "url": "https://nchfp.uga.edu/how/can/canning-vegetables-and-vegetable-products/peas-green-or-english-shelled/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "pumpkin",
+      "title": "NCHFP — Pumpkin or winter squash · 1-inch cubes",
+      "url": "https://nchfp.uga.edu/how/can/canning-vegetables-and-vegetable-products/pumpkins-and-winter-squash-cubed/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "dry-beans",
+      "title": "NCHFP — Pinto, black, kidney beans, chickpeas · hydrated",
+      "url": "https://nchfp.uga.edu/how/can/canning-vegetables-and-vegetable-products/beans-or-peas-shelled-dried-all-varieties/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "poultry-boneless-hot",
+      "title": "NCHFP — Chicken / turkey boneless · hot",
+      "url": "https://nchfp.uga.edu/how/can/preparing-and-canning-poultry-red-meats-and-seafoods/chicken-or-rabbit/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "poultry-boneless-raw",
+      "title": "NCHFP — Chicken / turkey boneless · raw",
+      "url": "https://nchfp.uga.edu/how/can/preparing-and-canning-poultry-red-meats-and-seafoods/chicken-or-rabbit/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "poultry-bone-in-hot",
+      "title": "NCHFP — Chicken / turkey with bones · hot",
+      "url": "https://nchfp.uga.edu/how/can/preparing-and-canning-poultry-red-meats-and-seafoods/chicken-or-rabbit/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "poultry-bone-in-raw",
+      "title": "NCHFP — Chicken / turkey with bones · raw",
+      "url": "https://nchfp.uga.edu/how/can/preparing-and-canning-poultry-red-meats-and-seafoods/chicken-or-rabbit/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "meat-chunks-hot",
+      "title": "NCHFP — Beef / pork / venison chunks · hot",
+      "url": "https://nchfp.uga.edu/how/can/preparing-and-canning-poultry-red-meats-and-seafoods/meat-strips-cubes-or-chunks/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "meat-chunks-raw",
+      "title": "NCHFP — Beef / pork / venison chunks · raw",
+      "url": "https://nchfp.uga.edu/how/can/preparing-and-canning-poultry-red-meats-and-seafoods/meat-strips-cubes-or-chunks/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "ground-meat",
+      "title": "NCHFP — Ground beef / pork / venison · browned",
+      "url": "https://nchfp.uga.edu/how/can/preparing-and-canning-poultry-red-meats-and-seafoods/meat-ground-or-chopped/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "chicken-broth",
+      "title": "NCHFP — Chicken or turkey broth",
+      "url": "https://nchfp.uga.edu/how/can/preparing-and-canning-poultry-red-meats-and-seafoods/chicken-or-turkey-stock/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "beef-broth",
+      "title": "NCHFP — Beef broth",
+      "url": "https://nchfp.uga.edu/how/can/preparing-and-canning-poultry-red-meats-and-seafoods/meat-stock/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "fish-pint",
+      "title": "NCHFP — Salmon and listed fatty fish · pints",
+      "url": "https://nchfp.uga.edu/how/can/preparing-and-canning-poultry-red-meats-and-seafoods/fish-pint-jars-usda/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "tuna",
+      "title": "NCHFP — Tuna · precooked, water pack",
+      "url": "https://nchfp.uga.edu/how/can/preparing-and-canning-poultry-red-meats-and-seafoods/tuna/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "soup-meat-vegetable",
+      "title": "NCHFP — Tested soup procedure · vegetables / meat",
+      "url": "https://nchfp.uga.edu/how/can/canning-vegetables-and-vegetable-products/soups/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "soup-seafood",
+      "title": "NCHFP — Tested soup procedure · includes seafood",
+      "url": "https://nchfp.uga.edu/how/can/canning-vegetables-and-vegetable-products/soups/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "peaches",
+      "title": "NCHFP — Yellow peaches · hot halves or slices",
+      "url": "https://nchfp.uga.edu/how/can/canning-fruits-and-fruit-products/peaches-halved-or-sliced/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "pears",
+      "title": "NCHFP — European pears · hot halves",
+      "url": "https://nchfp.uga.edu/how/can/canning-fruits-and-fruit-products/pears-halved/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "apples",
+      "title": "NCHFP — Apples · hot slices",
+      "url": "https://nchfp.uga.edu/how/can/canning-fruits-and-fruit-products/apples-sliced/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "berries",
+      "title": "NCHFP — Blueberries, currants, gooseberries or huckleberries · hot",
+      "url": "https://nchfp.uga.edu/how/can/canning-fruits-and-fruit-products/berries-whole/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "tomatoes",
+      "title": "NCHFP — Crushed tomatoes · acidified, no added liquid",
+      "url": "https://nchfp.uga.edu/how/can/how-do-i-can-tomatoes/crushed-tomatoes-with-no-added-liquid/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "tomato-acid",
+      "title": "NCHFP — Tomato Acidification Directions",
+      "url": "https://nchfp.uga.edu/how/can/how-do-i-can-tomatoes/tomato-acidification-directions/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "berry-jam",
+      "title": "NCHFP — Berry jam · no added pectin",
+      "url": "https://nchfp.uga.edu/how/make-jam-jelly/jams/berry-jams-without-pectin/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "apple-jelly",
+      "title": "NCHFP — Apple jelly · no added pectin",
+      "url": "https://nchfp.uga.edu/how/make-jam-jelly/jellies/apple-jelly-without-pectin/",
+      "verified": "2026-11-22"
+    },
+    {
+      "id": "dill-pickles",
+      "title": "NCHFP — Quick fresh-pack dill pickles",
+      "url": "https://nchfp.uga.edu/how/can/canning-pickled-products/quick-fresh-pack-dill-pickles/",
+      "verified": "2026-11-22"
+    }
+  ],
+  "products": [
+    {
+      "id": "c-chicken",
+      "name": "Canned chicken",
+      "category": "Meat & seafood",
+      "size": "12–13 oz",
+      "target": 24,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-low",
+      "noCook": true,
+      "qualityMonths": 24
+    },
+    {
+      "id": "c-tuna",
+      "name": "Chunk light tuna",
+      "category": "Meat & seafood",
+      "size": "5 oz",
+      "target": 24,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-low",
+      "noCook": true,
+      "qualityMonths": 24
+    },
+    {
+      "id": "c-salmon",
+      "name": "Canned salmon",
+      "category": "Meat & seafood",
+      "size": "14–15 oz",
+      "target": 12,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-low",
+      "noCook": true,
+      "qualityMonths": 24
+    },
+    {
+      "id": "c-sardines",
+      "name": "Sardines",
+      "category": "Meat & seafood",
+      "size": "3–4 oz",
+      "target": 12,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-low",
+      "noCook": true,
+      "qualityMonths": 24
+    },
+    {
+      "id": "c-chili",
+      "name": "Chili with beans",
+      "category": "Complete meals",
+      "size": "15–19 oz",
+      "target": 24,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-low",
+      "noCook": true,
+      "qualityMonths": 24
+    },
+    {
+      "id": "c-stew",
+      "name": "Beef stew",
+      "category": "Complete meals",
+      "size": "18–20 oz",
+      "target": 12,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-low",
+      "noCook": true,
+      "qualityMonths": 24
+    },
+    {
+      "id": "c-soup",
+      "name": "Hearty soup",
+      "category": "Complete meals",
+      "size": "18–20 oz",
+      "target": 24,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-low",
+      "noCook": true,
+      "qualityMonths": 24
+    },
+    {
+      "id": "c-black-beans",
+      "name": "Black beans",
+      "category": "Beans",
+      "size": "15 oz",
+      "target": 12,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-low",
+      "noCook": true,
+      "qualityMonths": 24
+    },
+    {
+      "id": "c-kidney-beans",
+      "name": "Kidney or pinto beans",
+      "category": "Beans",
+      "size": "15 oz",
+      "target": 12,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-low",
+      "noCook": true,
+      "qualityMonths": 24
+    },
+    {
+      "id": "c-chickpeas",
+      "name": "Chickpeas",
+      "category": "Beans",
+      "size": "15 oz",
+      "target": 12,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-low",
+      "noCook": true,
+      "qualityMonths": 24
+    },
+    {
+      "id": "c-baked-beans",
+      "name": "Baked beans",
+      "category": "Beans",
+      "size": "15–16 oz",
+      "target": 12,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-low",
+      "noCook": true,
+      "qualityMonths": 24
+    },
+    {
+      "id": "c-green-beans",
+      "name": "Green beans",
+      "category": "Vegetables",
+      "size": "14–15 oz",
+      "target": 12,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-low",
+      "noCook": true,
+      "qualityMonths": 24
+    },
+    {
+      "id": "c-corn",
+      "name": "Corn",
+      "category": "Vegetables",
+      "size": "15 oz",
+      "target": 12,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-low",
+      "noCook": true,
+      "qualityMonths": 24
+    },
+    {
+      "id": "c-carrots",
+      "name": "Carrots",
+      "category": "Vegetables",
+      "size": "14–15 oz",
+      "target": 12,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-low",
+      "noCook": true,
+      "qualityMonths": 24
+    },
+    {
+      "id": "c-peas",
+      "name": "Peas",
+      "category": "Vegetables",
+      "size": "15 oz",
+      "target": 12,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-low",
+      "noCook": true,
+      "qualityMonths": 24
+    },
+    {
+      "id": "c-spinach",
+      "name": "Spinach or mixed vegetables",
+      "category": "Vegetables",
+      "size": "14–15 oz",
+      "target": 12,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-low",
+      "noCook": true,
+      "qualityMonths": 24
+    },
+    {
+      "id": "c-peaches",
+      "name": "Peaches",
+      "category": "Fruit",
+      "size": "15 oz",
+      "target": 12,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-high",
+      "noCook": true,
+      "qualityMonths": 18
+    },
+    {
+      "id": "c-pears",
+      "name": "Pears",
+      "category": "Fruit",
+      "size": "15 oz",
+      "target": 12,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-high",
+      "noCook": true,
+      "qualityMonths": 18
+    },
+    {
+      "id": "c-oranges",
+      "name": "Mandarin oranges",
+      "category": "Fruit",
+      "size": "11–15 oz",
+      "target": 12,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-high",
+      "noCook": true,
+      "qualityMonths": 18
+    },
+    {
+      "id": "c-pineapple",
+      "name": "Pineapple or fruit cocktail",
+      "category": "Fruit",
+      "size": "15–20 oz",
+      "target": 12,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-high",
+      "noCook": true,
+      "qualityMonths": 18
+    },
+    {
+      "id": "c-tomatoes",
+      "name": "Diced tomatoes",
+      "category": "Ingredients & starches",
+      "size": "14–15 oz",
+      "target": 12,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-high",
+      "noCook": true,
+      "qualityMonths": 18
+    },
+    {
+      "id": "c-tomato-sauce",
+      "name": "Tomato sauce",
+      "category": "Ingredients & starches",
+      "size": "14–15 oz",
+      "target": 12,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-high",
+      "noCook": true,
+      "qualityMonths": 18
+    },
+    {
+      "id": "c-potatoes",
+      "name": "Canned potatoes",
+      "category": "Ingredients & starches",
+      "size": "14–15 oz",
+      "target": 12,
+      "kind": "COMMERCIAL",
+      "unit": "can",
+      "storageId": "commercial-low",
+      "noCook": true,
+      "qualityMonths": 24
+    },
+    {
+      "id": "white-rice",
+      "name": "White rice",
+      "unit": "lb",
+      "target": 75,
+      "storageId": "dry-grain",
+      "noCook": false,
+      "waterNeeded": true,
+      "cookingMinutes": 20,
+      "qualityMonths": 24,
+      "kind": "DRY",
+      "category": "Dry goods & staples",
+      "size": "",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    },
+    {
+      "id": "brown-rice",
+      "name": "Brown rice",
+      "unit": "lb",
+      "target": 0,
+      "storageId": "brown-rice",
+      "noCook": false,
+      "waterNeeded": true,
+      "cookingMinutes": 45,
+      "qualityMonths": 6,
+      "kind": "DRY",
+      "category": "Dry goods & staples",
+      "size": "",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    },
+    {
+      "id": "dry-beans",
+      "name": "Dry beans / lentils",
+      "unit": "lb",
+      "target": 40,
+      "storageId": "dry-bean",
+      "noCook": false,
+      "waterNeeded": true,
+      "cookingMinutes": null,
+      "qualityMonths": null,
+      "kind": "DRY",
+      "category": "Dry goods & staples",
+      "size": "",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    },
+    {
+      "id": "lentils",
+      "name": "Lentils",
+      "unit": "lb",
+      "target": 0,
+      "storageId": "dry-bean",
+      "noCook": false,
+      "waterNeeded": true,
+      "cookingMinutes": null,
+      "qualityMonths": null,
+      "kind": "DRY",
+      "category": "Dry goods & staples",
+      "size": "",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    },
+    {
+      "id": "pasta",
+      "name": "Pasta",
+      "unit": "lb",
+      "target": 35,
+      "storageId": "dry-grain",
+      "noCook": false,
+      "waterNeeded": true,
+      "cookingMinutes": null,
+      "qualityMonths": 24,
+      "kind": "DRY",
+      "category": "Dry goods & staples",
+      "size": "",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    },
+    {
+      "id": "oats",
+      "name": "Rolled oats",
+      "unit": "lb",
+      "target": 30,
+      "storageId": "dry-grain",
+      "noCook": false,
+      "waterNeeded": true,
+      "cookingMinutes": null,
+      "qualityMonths": 6,
+      "kind": "DRY",
+      "category": "Dry goods & staples",
+      "size": "",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    },
+    {
+      "id": "wheat",
+      "name": "Wheat berries",
+      "unit": "lb",
+      "target": 0,
+      "storageId": "dry-grain",
+      "noCook": false,
+      "waterNeeded": true,
+      "cookingMinutes": null,
+      "qualityMonths": null,
+      "kind": "DRY",
+      "category": "Dry goods & staples",
+      "size": "",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    },
+    {
+      "id": "flour",
+      "name": "White flour",
+      "unit": "lb",
+      "target": 0,
+      "storageId": "flour",
+      "noCook": false,
+      "waterNeeded": true,
+      "cookingMinutes": null,
+      "qualityMonths": 12,
+      "kind": "DRY",
+      "category": "Dry goods & staples",
+      "size": "",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    },
+    {
+      "id": "cornmeal",
+      "name": "Cornmeal",
+      "unit": "lb",
+      "target": 0,
+      "storageId": "flour",
+      "noCook": false,
+      "waterNeeded": true,
+      "cookingMinutes": null,
+      "qualityMonths": 12,
+      "kind": "DRY",
+      "category": "Dry goods & staples",
+      "size": "",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    },
+    {
+      "id": "sugar",
+      "name": "Sugar",
+      "unit": "lb",
+      "target": 0,
+      "storageId": "sugar-salt",
+      "noCook": true,
+      "waterNeeded": false,
+      "cookingMinutes": 0,
+      "qualityMonths": null,
+      "kind": "DRY",
+      "category": "Dry goods & staples",
+      "size": "",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    },
+    {
+      "id": "salt",
+      "name": "Salt",
+      "unit": "lb",
+      "target": 0,
+      "storageId": "sugar-salt",
+      "noCook": true,
+      "waterNeeded": false,
+      "cookingMinutes": 0,
+      "qualityMonths": null,
+      "kind": "DRY",
+      "category": "Dry goods & staples",
+      "size": "",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    },
+    {
+      "id": "honey",
+      "name": "Honey",
+      "unit": "jar",
+      "target": 0,
+      "storageId": "honey",
+      "noCook": true,
+      "waterNeeded": false,
+      "cookingMinutes": 0,
+      "qualityMonths": null,
+      "kind": "DRY",
+      "category": "Dry goods & staples",
+      "size": "",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    },
+    {
+      "id": "peanut-butter",
+      "name": "Peanut butter",
+      "unit": "jar",
+      "target": 12,
+      "storageId": "oils",
+      "noCook": true,
+      "waterNeeded": false,
+      "cookingMinutes": 0,
+      "qualityMonths": null,
+      "kind": "DRY",
+      "category": "Dry goods & staples",
+      "size": "16 oz per jar",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    },
+    {
+      "id": "oil",
+      "name": "Cooking oil",
+      "unit": "gal",
+      "target": 3,
+      "storageId": "oils",
+      "noCook": false,
+      "waterNeeded": false,
+      "cookingMinutes": null,
+      "qualityMonths": null,
+      "kind": "DRY",
+      "category": "Dry goods & staples",
+      "size": "",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    },
+    {
+      "id": "milk",
+      "name": "Nonfat powdered milk",
+      "unit": "lb",
+      "target": 0,
+      "storageId": "milk",
+      "noCook": false,
+      "waterNeeded": true,
+      "cookingMinutes": null,
+      "qualityMonths": null,
+      "kind": "DRY",
+      "category": "Dry goods & staples",
+      "size": "",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    },
+    {
+      "id": "freeze-dried",
+      "name": "Freeze-dried food",
+      "unit": "pouch",
+      "target": 0,
+      "storageId": "prepared",
+      "noCook": false,
+      "waterNeeded": true,
+      "cookingMinutes": null,
+      "qualityMonths": null,
+      "kind": "DRY",
+      "category": "Dry goods & staples",
+      "size": "",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    },
+    {
+      "id": "dried-fruit",
+      "name": "Dehydrated fruit",
+      "unit": "pouch",
+      "target": 0,
+      "storageId": "dried-produce",
+      "noCook": true,
+      "waterNeeded": false,
+      "cookingMinutes": 0,
+      "qualityMonths": null,
+      "kind": "DRY",
+      "category": "Dry goods & staples",
+      "size": "",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    },
+    {
+      "id": "dried-vegetables",
+      "name": "Dehydrated vegetables",
+      "unit": "pouch",
+      "target": 0,
+      "storageId": "dried-produce",
+      "noCook": false,
+      "waterNeeded": true,
+      "cookingMinutes": null,
+      "qualityMonths": null,
+      "kind": "DRY",
+      "category": "Dry goods & staples",
+      "size": "",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    },
+    {
+      "id": "ready-meal",
+      "name": "Shelf-stable ready-to-eat meal",
+      "unit": "pouch",
+      "target": 0,
+      "storageId": "prepared",
+      "noCook": true,
+      "waterNeeded": false,
+      "cookingMinutes": 0,
+      "qualityMonths": null,
+      "kind": "READY",
+      "category": "Dry goods & staples",
+      "size": "",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    },
+    {
+      "id": "other",
+      "name": "Other shelf-stable staple",
+      "unit": "package",
+      "target": 0,
+      "storageId": "prepared",
+      "noCook": false,
+      "waterNeeded": false,
+      "cookingMinutes": null,
+      "qualityMonths": null,
+      "kind": "DRY",
+      "category": "Dry goods & staples",
+      "size": "",
+      "portion": "Enter the label serving size and servings per stock unit. Cooking times follow your package.",
+      "nutrition": "Calories and protein vary by product. Coverage uses the nutrition you enter, with missing labels shown as incomplete."
+    }
+  ],
+  "storage": [
+    {
+      "id": "commercial-low",
+      "title": "Commercial low-acid cans",
+      "container": "Keep in original, intact packaging.",
+      "quality": "USDA general best-quality window 2–5 years for meat, fish, beans, vegetables, and most soups. Manufacturer dates and conditions take priority.",
+      "oxygen": "Keep the original sealed can. Additional oxygen absorbers are unnecessary.",
+      "conditions": "Store cool, dry, dark, off the floor, and protected from pests. Monitor heat and humidity during Tampa power outages.",
+      "mylar": "Original can is the preservation barrier.",
+      "bucket": "Shelving must carry the load. Keep cans dry.",
+      "vacuum": "Keep commercially sealed packaging intact.",
+      "discard": "Discard swollen, leaking, deeply dented at seams, or badly rusted cans. Never taste suspect food.",
+      "sources": [
+        "commercial",
+        "commercial-chart"
+      ]
+    },
+    {
+      "id": "commercial-high",
+      "title": "Commercial high-acid cans",
+      "container": "Original intact cans or jars.",
+      "quality": "USDA general best-quality window 12–18 months for tomatoes and fruit. Check manufacturer guidance.",
+      "oxygen": "Use the original sealed packaging.",
+      "conditions": "Store cool, dry, dark, off the floor, and protected from pests. Monitor heat and humidity during Tampa power outages.",
+      "mylar": "Original packaging is sufficient.",
+      "bucket": "Protect jars from breakage and cans from moisture.",
+      "vacuum": "Keep original seals intact.",
+      "discard": "Discard moldy, wet, insect-damaged, leaking, or rancid food. Follow recall and product instructions.",
+      "sources": [
+        "commercial",
+        "commercial-chart"
+      ]
+    },
+    {
+      "id": "home",
+      "title": "Home-canned food",
+      "container": "Proper canning jars, tested process, sound seals. Remove bands after checking seals.",
+      "quality": "Plan to rotate within one year for best quality. This is a quality target, not a food-specific safety expiration.",
+      "oxygen": "Use the tested canning process, not an oxygen absorber.",
+      "conditions": "Preferred 50–70°F. Avoid storage above 95°F, dampness, sunlight, and freezing that breaks seals.",
+      "mylar": "Canning jars are the preservation container.",
+      "bucket": "Protect jars on stable shelves.",
+      "vacuum": "An intact seal cannot prove correct processing.",
+      "discard": "Discard food of uncertain processing history, damaged or leaking jars, bulging lids, spurting contents, or mold. Never taste to test safety.",
+      "sources": [
+        "home-storage",
+        "botulism"
+      ]
+    },
+    {
+      "id": "dry-grain",
+      "title": "Low-fat dry grains and pasta",
+      "container": "Food-safe moisture-proof jars, cans, or properly sealed foil laminate bags.",
+      "quality": "Use product dates. USU household planning examples at 70°F include pasta two years and hot cereals six months. Packaging and heat change quality.",
+      "oxygen": "Appropriate only for genuinely dry products, approximately 10% moisture or less. Moist reduced-oxygen storage can permit botulism.",
+      "conditions": "Store cool, dry, dark, off the floor, and protected from pests. Monitor heat and humidity during Tampa power outages.",
+      "mylar": "Food-safe foil laminate provides a moisture and oxygen barrier when properly heat sealed.",
+      "bucket": "Use a clean food-grade bucket and compatible lid for physical protection around sealed food bags. Keep away from chemicals.",
+      "vacuum": "Vacuum packaging preserves quality only when suitable for the food. Moist food still needs validated preservation or refrigeration.",
+      "discard": "Discard moldy, wet, insect-damaged, leaking, or rancid food. Follow recall and product instructions.",
+      "sources": [
+        "dry-pack",
+        "dry-moisture",
+        "dry-conditions"
+      ]
+    },
+    {
+      "id": "dry-bean",
+      "title": "Dry beans and lentils",
+      "container": "Dry, sealed food-safe container; foil laminate within a food-grade bucket for larger quantities.",
+      "quality": "Use product dates and rotate foods you cook regularly. Older beans can take longer to soften; budget water and fuel.",
+      "oxygen": "Use only with sufficiently dry food in an appropriate barrier package. Never seal cooked or soaked beans this way.",
+      "conditions": "Store cool, dry, dark, off the floor, and protected from pests. Monitor heat and humidity during Tampa power outages.",
+      "mylar": "Food-safe foil laminate provides a moisture and oxygen barrier when properly heat sealed.",
+      "bucket": "Use a clean food-grade bucket and compatible lid for physical protection around sealed food bags. Keep away from chemicals.",
+      "vacuum": "Vacuum packaging preserves quality only when suitable for the food. Moist food still needs validated preservation or refrigeration.",
+      "discard": "Discard moldy, wet, insect-damaged, leaking, or rancid food. Follow recall and product instructions.",
+      "sources": [
+        "dry-pack",
+        "dry-moisture",
+        "dry-conditions"
+      ]
+    },
+    {
+      "id": "brown-rice",
+      "title": "Brown rice",
+      "container": "Airtight container, cool and dark.",
+      "quality": "USU gives up to six months at 70°F. Its bran oils limit quality. Refrigeration may extend quality only while reliable.",
+      "oxygen": "Removing oxygen does not remove the bran oil or its rancidity risk.",
+      "conditions": "Store cool, dry, dark, off the floor, and protected from pests. Monitor heat and humidity during Tampa power outages.",
+      "mylar": "Food-safe foil laminate provides a moisture and oxygen barrier when properly heat sealed.",
+      "bucket": "Use a clean food-grade bucket and compatible lid for physical protection around sealed food bags. Keep away from chemicals.",
+      "vacuum": "Vacuum packaging preserves quality only when suitable for the food. Moist food still needs validated preservation or refrigeration.",
+      "discard": "Discard moldy, wet, insect-damaged, leaking, or rancid food. Follow recall and product instructions.",
+      "sources": [
+        "brown-rice",
+        "dry-pack"
+      ]
+    },
+    {
+      "id": "flour",
+      "title": "Flour and cornmeal",
+      "container": "Airtight, food-safe container away from heat and pests.",
+      "quality": "USU examples at 70°F give white enriched flour and cornmeal one year. Whole-grain flours contain more oil and need quicker rotation.",
+      "oxygen": "Only for sufficiently dry, suitable products. Whole-grain oils still limit quality. Never eat flour raw.",
+      "conditions": "Store cool, dry, dark, off the floor, and protected from pests. Monitor heat and humidity during Tampa power outages.",
+      "mylar": "Food-safe foil laminate provides a moisture and oxygen barrier when properly heat sealed.",
+      "bucket": "Use a clean food-grade bucket and compatible lid for physical protection around sealed food bags. Keep away from chemicals.",
+      "vacuum": "Vacuum packaging preserves quality only when suitable for the food. Moist food still needs validated preservation or refrigeration.",
+      "discard": "Discard moldy, wet, insect-damaged, leaking, or rancid food. Follow recall and product instructions.",
+      "sources": [
+        "dry-quality",
+        "dry-pack",
+        "dry-moisture"
+      ]
+    },
+    {
+      "id": "sugar-salt",
+      "title": "Sugar and salt",
+      "container": "Dry airtight, odor-proof food-grade containers.",
+      "quality": "Follow product quality guidance and protect from moisture and contamination.",
+      "oxygen": "Generally unnecessary. Keep dry to prevent caking.",
+      "conditions": "Store cool, dry, dark, off the floor, and protected from pests. Monitor heat and humidity during Tampa power outages.",
+      "mylar": "Food-safe foil laminate provides a moisture and oxygen barrier when properly heat sealed.",
+      "bucket": "Use a clean food-grade bucket and compatible lid for physical protection around sealed food bags. Keep away from chemicals.",
+      "vacuum": "Vacuum packaging preserves quality only when suitable for the food. Moist food still needs validated preservation or refrigeration.",
+      "discard": "Discard moldy, wet, insect-damaged, leaking, or rancid food. Follow recall and product instructions.",
+      "sources": [
+        "dry-pack",
+        "dry-moisture",
+        "dry-conditions"
+      ]
+    },
+    {
+      "id": "honey",
+      "title": "Honey",
+      "container": "Tightly closed glass or food-safe container.",
+      "quality": "Follow the label. Crystallization alone is not evidence of spoilage.",
+      "oxygen": "Do not add oxygen absorbers to liquids or moist foods.",
+      "conditions": "Store cool, dry, dark, off the floor, and protected from pests. Monitor heat and humidity during Tampa power outages.",
+      "mylar": "Keep honey in its suitable original container.",
+      "bucket": "Use a clean food-grade bucket and compatible lid for physical protection around sealed food bags. Keep away from chemicals.",
+      "vacuum": "Not needed for sealed honey.",
+      "discard": "Discard moldy, wet, insect-damaged, leaking, or rancid food. Follow recall and product instructions.",
+      "sources": [
+        "dry-pack"
+      ]
+    },
+    {
+      "id": "oils",
+      "title": "Peanut butter and cooking oils",
+      "container": "Original tightly closed, light-protective packaging; smaller containers help rotation.",
+      "quality": "Use manufacturer dates. Oils and nut butters can become rancid; no multidecade storage claim is made.",
+      "oxygen": "Do not use as a universal life-extension method for oils or moist foods.",
+      "conditions": "Store cool, dry, dark, off the floor, and protected from pests. Monitor heat and humidity during Tampa power outages.",
+      "mylar": "Do not repackage liquids in improvised bags.",
+      "bucket": "Avoid placing loose oil directly into general bulk-storage buckets.",
+      "vacuum": "Vacuum packaging preserves quality only when suitable for the food. Moist food still needs validated preservation or refrigeration.",
+      "discard": "Discard moldy, wet, insect-damaged, leaking, or rancid food. Follow recall and product instructions.",
+      "sources": [
+        "dry-pack",
+        "dry-moisture",
+        "dry-conditions"
+      ]
+    },
+    {
+      "id": "milk",
+      "title": "Nonfat powdered milk",
+      "container": "Dry, opaque airtight food-safe container; keep the original label.",
+      "quality": "Follow the manufacturer and rotate. Reconstituted milk needs safe water and dependable refrigeration.",
+      "oxygen": "May be suitable for dry nonfat milk in a proper sealed package. Follow the packager instructions.",
+      "conditions": "Store cool, dry, dark, off the floor, and protected from pests. Monitor heat and humidity during Tampa power outages.",
+      "mylar": "Food-safe foil laminate provides a moisture and oxygen barrier when properly heat sealed.",
+      "bucket": "Use a clean food-grade bucket and compatible lid for physical protection around sealed food bags. Keep away from chemicals.",
+      "vacuum": "Vacuum packaging preserves quality only when suitable for the food. Moist food still needs validated preservation or refrigeration.",
+      "discard": "Discard moldy, wet, insect-damaged, leaking, or rancid food. Follow recall and product instructions.",
+      "sources": [
+        "dry-pack",
+        "dry-moisture",
+        "dry-conditions"
+      ]
+    },
+    {
+      "id": "dried-produce",
+      "title": "Dried fruits and vegetables",
+      "container": "Completely dried and cooled food, moisture-proof packaging in small portions.",
+      "quality": "Follow the product or validated drying guidance. Moisture uptake and mold can shorten quality rapidly in humid weather.",
+      "oxygen": "Only when the food is dry enough for reduced-oxygen storage. Home-dried fruit may retain too much moisture.",
+      "conditions": "Store cool, dry, dark, off the floor, and protected from pests. Monitor heat and humidity during Tampa power outages.",
+      "mylar": "Food-safe foil laminate provides a moisture and oxygen barrier when properly heat sealed.",
+      "bucket": "Use a clean food-grade bucket and compatible lid for physical protection around sealed food bags. Keep away from chemicals.",
+      "vacuum": "Vacuum packaging preserves quality only when suitable for the food. Moist food still needs validated preservation or refrigeration.",
+      "discard": "Discard moldy, wet, insect-damaged, leaking, or rancid food. Follow recall and product instructions.",
+      "sources": [
+        "dry-pack",
+        "dry-moisture",
+        "dry-conditions"
+      ]
+    },
+    {
+      "id": "prepared",
+      "title": "Prepared shelf-stable meals",
+      "container": "Original package; distinguish shelf-stable products from those labeled Keep Refrigerated.",
+      "quality": "Manufacturer-specific dates, preparation, water needs, and storage temperatures apply.",
+      "oxygen": "Use original preservation packaging. Do not improvise reduced-oxygen storage.",
+      "conditions": "Store cool, dry, dark, off the floor, and protected from pests. Monitor heat and humidity during Tampa power outages.",
+      "mylar": "Food-safe foil laminate provides a moisture and oxygen barrier when properly heat sealed.",
+      "bucket": "Use a clean food-grade bucket and compatible lid for physical protection around sealed food bags. Keep away from chemicals.",
+      "vacuum": "Vacuum packaging preserves quality only when suitable for the food. Moist food still needs validated preservation or refrigeration.",
+      "discard": "Discard moldy, wet, insect-damaged, leaking, or rancid food. Follow recall and product instructions.",
+      "sources": [
+        "dry-pack",
+        "dry-moisture",
+        "dry-conditions"
+      ]
+    }
+  ],
+  "recipes": [
+    {
+      "id": "green-beans-hot",
+      "food": "Green or wax beans · hot pack",
+      "category": "Vegetables",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Select sound tender pods. Wash and trim; leave whole or cut into 1-inch pieces.",
+        "Boil in water for 5 minutes and pack loosely."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1 inch",
+      "liquid": "Hot cooking liquid",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            20
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            25
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Use a tested pressure canner and the exact food preparation. Follow the bundled pressure-canning steps."
+      ],
+      "sources": [
+        "green-beans-hot"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "carrots-hot",
+      "food": "Carrots · hot pack",
+      "category": "Vegetables",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Wash, peel, rewash, and slice or dice.",
+        "Cover with boiling water and simmer 5 minutes. Pack hot."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1 inch",
+      "liquid": "Hot cooking liquid or water",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            25
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            30
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Use a tested pressure canner and the exact food preparation. Follow the bundled pressure-canning steps."
+      ],
+      "sources": [
+        "carrots-hot"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "green-beans-raw",
+      "food": "Green or wax beans · raw pack",
+      "category": "Vegetables",
+      "method": "PRESSURE",
+      "pack": "RAW",
+      "preparation": [
+        "Select sound tender pods. Wash and trim; leave whole or cut into 1-inch pieces.",
+        "Pack raw beans firmly."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Raw pack only as described",
+      "headspace": "1 inch",
+      "liquid": "Boiling water",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            20
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            25
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Use a tested pressure canner and the exact food preparation. Follow the bundled pressure-canning steps."
+      ],
+      "sources": [
+        "green-beans-raw"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "carrots-raw",
+      "food": "Carrots · raw pack",
+      "category": "Vegetables",
+      "method": "PRESSURE",
+      "pack": "RAW",
+      "preparation": [
+        "Wash, peel, rewash, and slice or dice.",
+        "Pack raw carrots tightly."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Raw pack only as described",
+      "headspace": "1 inch",
+      "liquid": "Hot water",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            25
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            30
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Use a tested pressure canner and the exact food preparation. Follow the bundled pressure-canning steps."
+      ],
+      "sources": [
+        "carrots-raw"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "white-potato-cubes",
+      "food": "White potatoes · ½-inch cubes",
+      "category": "Vegetables",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Wash and peel. Hold cut pieces in ascorbic-acid solution prepared according to its label. Drain.",
+        "Cut into ½-inch cubes, boil 2 minutes, and drain. Pack hot."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1 inch",
+      "liquid": "FRESH boiling water. Discard the starchy cooking water.",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            35
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            40
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Use a tested pressure canner and the exact food preparation. Follow the bundled pressure-canning steps."
+      ],
+      "sources": [
+        "white-potato-cubes"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "white-potato-whole",
+      "food": "White potatoes · whole 1–2 inch",
+      "category": "Vegetables",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Use sound 1–2 inch diameter potatoes. Wash and peel; hold in label-prepared ascorbic-acid solution.",
+        "Drain, boil whole potatoes 10 minutes, drain, and pack hot."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1 inch",
+      "liquid": "FRESH boiling water, not starchy cooking water.",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            35
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            40
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Use a tested pressure canner and the exact food preparation. Follow the bundled pressure-canning steps."
+      ],
+      "sources": [
+        "white-potato-whole"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "sweet-potato",
+      "food": "Sweet potatoes · pieces or small whole",
+      "category": "Vegetables",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Wash and boil or steam 15–20 minutes until partly soft. Peel.",
+        "Cut into uniform pieces as needed and pack hot."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1 inch",
+      "liquid": "Fresh boiling water; this edition uses water rather than syrup.",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            65
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            90
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Keep pieces intact. Do not mash, puree, or dry pack."
+      ],
+      "sources": [
+        "sweet-potato"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "asparagus",
+      "food": "Asparagus · hot pack",
+      "category": "Vegetables",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Wash, remove scales and tough stems, and wash again. Leave spears or cut 1-inch pieces.",
+        "Boil 2–3 minutes and pack loosely."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1 inch",
+      "liquid": "Boiling water",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            30
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            40
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Use a tested pressure canner and the exact food preparation. Follow the bundled pressure-canning steps."
+      ],
+      "sources": [
+        "asparagus"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "beets",
+      "food": "Beets · hot peeled pieces",
+      "category": "Vegetables",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Leave 1 inch of stem and the roots during initial washing. Boil 15–25 minutes until skins slip.",
+        "Cool only enough to handle; peel, trim roots and stems. Keep small beets whole or cut larger beets into ½-inch cubes or slices. Pack while hot."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1 inch",
+      "liquid": "Fresh boiling water, not the original boiling liquid.",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            30
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            35
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Use a tested pressure canner and the exact food preparation. Follow the bundled pressure-canning steps."
+      ],
+      "sources": [
+        "beets"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "corn",
+      "food": "Corn · whole kernels, hot pack",
+      "category": "Vegetables",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Husk, remove silk, and wash. Blanch ears 3 minutes. Cut kernels about ¾ of their depth without scraping the cob.",
+        "Add 1 cup hot water per quart of kernels, bring to boil, simmer 5 minutes. Pack corn with liquid."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1 inch",
+      "liquid": "Cooking liquid",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            55
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            85
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Use a tested pressure canner and the exact food preparation. Follow the bundled pressure-canning steps."
+      ],
+      "sources": [
+        "corn"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "peas",
+      "food": "Green or English peas · hot pack",
+      "category": "Vegetables",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Choose sound young peas, shell and wash.",
+        "Boil in water 2 minutes. Pack loosely with hot liquid."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1 inch",
+      "liquid": "Hot cooking liquid",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            40
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            40
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Use a tested pressure canner and the exact food preparation. Follow the bundled pressure-canning steps."
+      ],
+      "sources": [
+        "peas"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "pumpkin",
+      "food": "Pumpkin or winter squash · 1-inch cubes",
+      "category": "Vegetables",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Choose mature hard-rind pumpkin or winter squash. Wash, remove seeds, peel, and cut into 1-inch cubes.",
+        "Boil cubes 2 minutes in water and pack hot."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1 inch",
+      "liquid": "Hot cooking liquid",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            55
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            90
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Only intact cubes. No home-canning schedule for puree, mashed pumpkin, or pumpkin butter is supplied."
+      ],
+      "sources": [
+        "pumpkin"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "dry-beans",
+      "food": "Pinto, black, kidney beans, chickpeas · hydrated",
+      "category": "Beans",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Sort and wash dried beans. Cover with boiling water, boil 2 minutes, remove from heat, soak 1 hour, and drain.",
+        "Cover with fresh water and boil 30 minutes. Pack beans and hot cooking water."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1 inch",
+      "liquid": "Cooking water",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            75
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            90
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Hydration and the 30-minute boil are required. Do not pack dry beans straight into jars."
+      ],
+      "sources": [
+        "dry-beans"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "poultry-boneless-hot",
+      "food": "Chicken / turkey boneless · hot",
+      "category": "Meat & poultry",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Use properly chilled, freshly dressed poultry. Trim excess fat and cut pieces to fit.",
+        "Boil, steam, or bake until about two-thirds done. Pack with hot broth."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1¼ inches",
+      "liquid": "Hot broth",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            75
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            90
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Keep meat cold before processing. Raw-pack meat may not remain covered by its own juices."
+      ],
+      "sources": [
+        "poultry-boneless-hot"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "poultry-boneless-raw",
+      "food": "Chicken / turkey boneless · raw",
+      "category": "Meat & poultry",
+      "method": "PRESSURE",
+      "pack": "RAW",
+      "preparation": [
+        "Use properly chilled, freshly dressed poultry. Trim excess fat and cut pieces to fit.",
+        "Loosely fill with raw meat. Add no liquid."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Raw pack only as described",
+      "headspace": "1¼ inches",
+      "liquid": "No added liquid",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            75
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            90
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Keep meat cold before processing. Raw-pack meat may not remain covered by its own juices."
+      ],
+      "sources": [
+        "poultry-boneless-raw"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "poultry-bone-in-hot",
+      "food": "Chicken / turkey with bones · hot",
+      "category": "Meat & poultry",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Use properly chilled, freshly dressed poultry. Trim excess fat and cut pieces to fit.",
+        "Boil, steam, or bake until about two-thirds done. Pack with hot broth."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1¼ inches",
+      "liquid": "Hot broth",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            65
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            75
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Keep meat cold before processing. Raw-pack meat may not remain covered by its own juices."
+      ],
+      "sources": [
+        "poultry-bone-in-hot"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "poultry-bone-in-raw",
+      "food": "Chicken / turkey with bones · raw",
+      "category": "Meat & poultry",
+      "method": "PRESSURE",
+      "pack": "RAW",
+      "preparation": [
+        "Use properly chilled, freshly dressed poultry. Trim excess fat and cut pieces to fit.",
+        "Loosely fill with raw meat. Add no liquid."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Raw pack only as described",
+      "headspace": "1¼ inches",
+      "liquid": "No added liquid",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            65
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            75
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Keep meat cold before processing. Raw-pack meat may not remain covered by its own juices."
+      ],
+      "sources": [
+        "poultry-bone-in-raw"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "meat-chunks-hot",
+      "food": "Beef / pork / venison chunks · hot",
+      "category": "Meat & poultry",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Use high-quality chilled meat, remove excess fat and large bones.",
+        "Precook until rare by browning, roasting, or stewing. Pack with boiling liquid."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1 inch",
+      "liquid": "Boiling broth, water, or meat drippings",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            75
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            90
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Use a tested pressure canner and the exact food preparation. Follow the bundled pressure-canning steps."
+      ],
+      "sources": [
+        "meat-chunks-hot"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "meat-chunks-raw",
+      "food": "Beef / pork / venison chunks · raw",
+      "category": "Meat & poultry",
+      "method": "PRESSURE",
+      "pack": "RAW",
+      "preparation": [
+        "Use high-quality chilled meat, remove excess fat and large bones.",
+        "Fill with raw pieces. Do not add liquid."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Raw pack only as described",
+      "headspace": "1 inch",
+      "liquid": "No added liquid",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            75
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            90
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Use a tested pressure canner and the exact food preparation. Follow the bundled pressure-canning steps."
+      ],
+      "sources": [
+        "meat-chunks-raw"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "ground-meat",
+      "food": "Ground beef / pork / venison · browned",
+      "category": "Meat & poultry",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Use fresh chilled meat. For ground venison, the source calls for one part high-quality pork fat to three or four parts venison before grinding.",
+        "Brown ground meat or formed patties/balls. Remove excess fat and pack."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1 inch",
+      "liquid": "Boiling broth, tomato juice, or water",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            75
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            90
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Use a tested pressure canner and the exact food preparation. Follow the bundled pressure-canning steps."
+      ],
+      "sources": [
+        "ground-meat"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "chicken-broth",
+      "food": "Chicken or turkey broth",
+      "category": "Meat & poultry",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Cover carcass bones with water and simmer 30–45 minutes until small meat tidbits release.",
+        "Remove bones, cool under safe refrigeration, and discard excess fat. Reboil broth and pack hot."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1 inch",
+      "liquid": "The boiling broth",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            20
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            25
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "The source includes a cooling step. Maintain food-safe temperatures; if reliable cooling is unavailable, do not improvise this step."
+      ],
+      "sources": [
+        "chicken-broth"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "beef-broth",
+      "food": "Beef broth",
+      "category": "Meat & poultry",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Crack fresh trimmed beef bones, rinse and cover with water. Simmer covered 3–4 hours.",
+        "Remove bones, cool under safe refrigeration and discard excess fat. Reheat to boiling."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1 inch",
+      "liquid": "The boiling broth",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            20
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            25
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "This stock process allows only small meat tidbits. It is not a chunky stew schedule. Safe cooling is required."
+      ],
+      "sources": [
+        "beef-broth"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "fish-pint",
+      "food": "Salmon and listed fatty fish · pints",
+      "category": "Seafood",
+      "method": "PRESSURE",
+      "pack": "RAW",
+      "preparation": [
+        "Use bluefish, mackerel, salmon, steelhead or trout. Eviscerate within 2 hours of catch and keep cleaned fish on ice.",
+        "Remove head, tail, fins, scales and blood. Cut into 3½-inch lengths. Pack skin toward glass."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Raw pack only as described",
+      "headspace": "1 inch",
+      "liquid": "No added liquid",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            100
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "This process is for the listed fish, excludes tuna, and supports pint jars only. No quart option."
+      ],
+      "sources": [
+        "fish-pint"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "tuna",
+      "food": "Tuna · precooked, water pack",
+      "category": "Seafood",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Keep fish on ice; remove viscera and wash. Bake at 350°F for 1 hour to 165–175°F internal temperature.",
+        "Refrigerate cooked fish overnight. Remove skin, bones, blood vessels and dark flesh. Cut to jar length and pack firmly without crushing."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1 inch",
+      "liquid": "Water",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "HALF_PINT",
+          "minutes": [
+            100
+          ]
+        },
+        {
+          "jar": "PINT",
+          "minutes": [
+            100
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "Dependable overnight refrigeration is part of this selected process. No quart schedule is supplied."
+      ],
+      "sources": [
+        "tuna"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "soup-meat-vegetable",
+      "food": "Tested soup procedure · vegetables / meat",
+      "category": "Soups",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Use only ingredients with their own tested canning recommendations. Prepare each as its own hot-pack recipe requires. Cook meat until tender and remove bones.",
+        "For each cup of dried beans or peas, use 3 cups water, boil 2 minutes, stand off heat 1 hour, reboil and drain.",
+        "Combine prepared solids and broth, tomatoes or water to cover. Boil 5 minutes. Half-fill jars with solids, then add liquid."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1 inch",
+      "liquid": "Broth, tomatoes, or water",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            60
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            75
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "No pasta, rice, flour, dairy, cream, or other thickeners. Beans must be rehydrated. Only the specified half-solids, half-liquid pack is supported."
+      ],
+      "sources": [
+        "soup-meat-vegetable"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "soup-seafood",
+      "food": "Tested soup procedure · includes seafood",
+      "category": "Soups",
+      "method": "PRESSURE",
+      "pack": "HOT",
+      "preparation": [
+        "Use only ingredients with their own tested canning recommendations. Prepare each as its own hot-pack recipe requires. Cook meat until tender and remove bones.",
+        "For each cup of dried beans or peas, use 3 cups water, boil 2 minutes, stand off heat 1 hour, reboil and drain.",
+        "Combine prepared solids and broth, tomatoes or water to cover. Boil 5 minutes. Half-fill jars with solids, then add liquid."
+      ],
+      "peeling": "As described in preparation",
+      "precook": "Required as described",
+      "headspace": "1 inch",
+      "liquid": "Broth, tomatoes, or water",
+      "saltAcid": "Salt is optional for these plain low-acid foods. Preserve exact preparation and liquid requirements.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            100
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            100
+          ]
+        }
+      ],
+      "dial": [
+        {
+          "maxFeet": 2000,
+          "psi": 11
+        },
+        {
+          "maxFeet": 4000,
+          "psi": 12
+        },
+        {
+          "maxFeet": 6000,
+          "psi": 13
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 14
+        }
+      ],
+      "weighted": [
+        {
+          "maxFeet": 1000,
+          "psi": 10
+        },
+        {
+          "maxFeet": 8000,
+          "psi": 15
+        }
+      ],
+      "waterBathBands": [],
+      "warnings": [
+        "No pasta, rice, flour, dairy, cream, or other thickeners. Beans must be rehydrated. Only the specified half-solids, half-liquid pack is supported."
+      ],
+      "sources": [
+        "soup-seafood"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "peaches",
+      "food": "Yellow peaches · hot halves or slices",
+      "category": "Fruits",
+      "method": "WATER_BATH",
+      "pack": "HOT",
+      "preparation": [
+        "Use yellow-flesh peaches only. Dip 30–60 seconds in boiling water, briefly cool, peel, pit and halve or slice.",
+        "Bring drained peaches to a boil in water. Pack hot fruit and liquid."
+      ],
+      "peeling": "As specified in preparation",
+      "precook": "As specified",
+      "headspace": "½ inch",
+      "liquid": "Hot water",
+      "saltAcid": "Preserve the exact tested ingredients.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            20,
+            25,
+            30,
+            35
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            25,
+            30,
+            35,
+            40
+          ]
+        }
+      ],
+      "dial": [],
+      "weighted": [],
+      "waterBathBands": [
+        1000,
+        3000,
+        6000,
+        20000
+      ],
+      "warnings": [
+        "White-flesh peaches are excluded. No verified home-canning procedure for them is provided."
+      ],
+      "sources": [
+        "peaches"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "pears",
+      "food": "European pears · hot halves",
+      "category": "Fruits",
+      "method": "WATER_BATH",
+      "pack": "HOT",
+      "preparation": [
+        "Wash, peel, halve lengthwise and core ripe European pears.",
+        "Boil drained halves in water for 5 minutes and pack hot."
+      ],
+      "peeling": "As specified in preparation",
+      "precook": "As specified",
+      "headspace": "½ inch",
+      "liquid": "Hot water",
+      "saltAcid": "Preserve the exact tested ingredients.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            20,
+            25,
+            30,
+            35
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            25,
+            30,
+            35,
+            40
+          ]
+        }
+      ],
+      "dial": [],
+      "weighted": [],
+      "waterBathBands": [
+        1000,
+        3000,
+        6000,
+        20000
+      ],
+      "warnings": [
+        "Asian pears require a different acidified recipe. This selection excludes them."
+      ],
+      "sources": [
+        "pears"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "apples",
+      "food": "Apples · hot slices",
+      "category": "Fruits",
+      "method": "WATER_BATH",
+      "pack": "HOT",
+      "preparation": [
+        "Wash, peel and core. Slice into label-prepared ascorbic-acid solution, then drain.",
+        "Use 1 pint water per 5 lb apple slices. Boil 5 minutes while stirring and pack hot."
+      ],
+      "peeling": "As specified in preparation",
+      "precook": "As specified",
+      "headspace": "½ inch",
+      "liquid": "Hot cooking liquid",
+      "saltAcid": "Preserve the exact tested ingredients.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            20,
+            25,
+            30,
+            35
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            20,
+            25,
+            30,
+            35
+          ]
+        }
+      ],
+      "dial": [],
+      "weighted": [],
+      "waterBathBands": [
+        1000,
+        3000,
+        6000,
+        20000
+      ],
+      "warnings": [
+        "Use the exact recipe and the bundled boiling-water canning instructions."
+      ],
+      "sources": [
+        "apples"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "berries",
+      "food": "Blueberries, currants, gooseberries or huckleberries · hot",
+      "category": "Fruits",
+      "method": "WATER_BATH",
+      "pack": "HOT",
+      "preparation": [
+        "Use only these four named berries. Wash small quantities, drain, remove caps and stems. Snip gooseberry heads and tails.",
+        "Heat berries in boiling water 30 seconds and drain. Add ½ cup hot juice to each jar, fill berries and cover with hot juice."
+      ],
+      "peeling": "As specified in preparation",
+      "precook": "As specified",
+      "headspace": "½ inch",
+      "liquid": "Hot juice",
+      "saltAcid": "Preserve the exact tested ingredients.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            15,
+            20,
+            20,
+            25
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            15,
+            20,
+            20,
+            25
+          ]
+        }
+      ],
+      "dial": [],
+      "weighted": [],
+      "waterBathBands": [
+        1000,
+        3000,
+        6000,
+        20000
+      ],
+      "warnings": [
+        "Use the exact recipe and the bundled boiling-water canning instructions."
+      ],
+      "sources": [
+        "berries"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "tomatoes",
+      "food": "Crushed tomatoes · acidified, no added liquid",
+      "category": "Tomatoes",
+      "method": "WATER_BATH",
+      "pack": "HOT",
+      "preparation": [
+        "Wash, blanch 30–60 seconds, cool briefly, peel, core, trim damaged portions and quarter. Crush and heat the first one-sixth.",
+        "At boiling, gradually stir in the remaining quarters. Boil gently 5 minutes once all are added. Pack immediately."
+      ],
+      "peeling": "As specified in preparation",
+      "precook": "As specified",
+      "headspace": "½ inch",
+      "liquid": "Own juice only",
+      "saltAcid": "Per pint add 1 tbsp bottled lemon juice FROM CONCENTRATE or ¼ tsp citric acid. Per quart use 2 tbsp or ½ tsp. Acid is required.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            35,
+            40,
+            45,
+            50
+          ]
+        },
+        {
+          "jar": "QUART",
+          "minutes": [
+            45,
+            50,
+            55,
+            60
+          ]
+        }
+      ],
+      "dial": [],
+      "weighted": [],
+      "waterBathBands": [
+        1000,
+        3000,
+        6000,
+        20000
+      ],
+      "warnings": [
+        "No added water, vegetables, starch, or changed ingredient proportions. Acidification is required."
+      ],
+      "sources": [
+        "tomatoes",
+        "tomato-acid"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "berry-jam",
+      "food": "Berry jam · no added pectin",
+      "category": "Jams & jellies",
+      "method": "WATER_BATH",
+      "pack": "HOT",
+      "preparation": [
+        "Use 9 cups crushed berries and 6 cups sugar. Sterilize empty jars before filling.",
+        "Combine washed, crushed berries and sugar. Heat slowly to dissolve sugar, then boil rapidly, stirring as it thickens, until the mixture reaches the desired jellying point. Fill hot sterile jars."
+      ],
+      "peeling": "As specified in preparation",
+      "precook": "As specified",
+      "headspace": "¼ inch",
+      "liquid": "None added",
+      "saltAcid": "Keep the 9-cup fruit to 6-cup sugar proportions.",
+      "schedules": [
+        {
+          "jar": "HALF_PINT",
+          "minutes": [
+            5,
+            10,
+            15
+          ]
+        },
+        {
+          "jar": "PINT",
+          "minutes": [
+            5,
+            10,
+            15
+          ]
+        }
+      ],
+      "dial": [],
+      "weighted": [],
+      "waterBathBands": [
+        1000,
+        6000,
+        20000
+      ],
+      "warnings": [
+        "Do not reduce sugar or add peppers, dairy, or other low-acid ingredients. Empty jars require boiling sterilization for a 5-minute process."
+      ],
+      "sources": [
+        "berry-jam"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "apple-jelly",
+      "food": "Apple jelly · no added pectin",
+      "category": "Jams & jellies",
+      "method": "WATER_BATH",
+      "pack": "HOT",
+      "preparation": [
+        "For juice use about 3 lb tart apples, ¼ underripe and ¾ ripe, with 3 cups water. Remove stems/blossoms, leave peel and cores, cut small, boil then simmer covered 20–25 minutes and strain through a jelly bag.",
+        "Measure 4 cups juice and 3 cups sugar. Boil to 8°F above the local water boiling point or until jelly sheets from a spoon. Skim and fill hot sterile jars."
+      ],
+      "peeling": "As specified in preparation",
+      "precook": "As specified",
+      "headspace": "¼ inch",
+      "liquid": "Measured juice",
+      "saltAcid": "Preserve the exact tested ingredients.",
+      "schedules": [
+        {
+          "jar": "HALF_PINT",
+          "minutes": [
+            5,
+            10,
+            15
+          ]
+        },
+        {
+          "jar": "PINT",
+          "minutes": [
+            5,
+            10,
+            15
+          ]
+        }
+      ],
+      "dial": [],
+      "weighted": [],
+      "waterBathBands": [
+        1000,
+        6000,
+        20000
+      ],
+      "warnings": [
+        "Keep exact proportions. Sterilize empty jars before a 5-minute process. No quart schedule."
+      ],
+      "sources": [
+        "apple-jelly"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "dill-pickles",
+      "food": "Quick fresh-pack dill pickles",
+      "category": "Pickles",
+      "method": "WATER_BATH",
+      "pack": "RAW",
+      "preparation": [
+        "Use 8 lb pickling cucumbers 3–5 inches long. Wash, cut 1/16 inch off blossom ends, leave ¼-inch stems. Soak 12 hours in 2 gal water with ¾ cup canning salt, then drain.",
+        "Boil 1½ qt vinegar (5% acidity), 2 qt water, ½ cup canning salt, ¼ cup sugar and 2 tbsp whole mixed pickling spice in a cloth bag.",
+        "Pack cucumbers into pint jars. Add 1 tsp mustard seed and 1½ heads dill or 1½ tsp dill seed per pint. Cover with boiling pickling liquid."
+      ],
+      "peeling": "As specified in preparation",
+      "precook": "As specified",
+      "headspace": "½ inch",
+      "liquid": "Exact boiling pickling solution",
+      "saltAcid": "Use 5% acidity vinegar and the exact recipe ratios. This edition supports pints only.",
+      "schedules": [
+        {
+          "jar": "PINT",
+          "minutes": [
+            10,
+            15,
+            20
+          ]
+        }
+      ],
+      "dial": [],
+      "weighted": [],
+      "waterBathBands": [
+        1000,
+        6000,
+        20000
+      ],
+      "warnings": [
+        "No substitution of vinegar strength, reduction of acid, or untested vegetable additions."
+      ],
+      "sources": [
+        "dill-pickles"
+      ],
+      "version": "2026-11-22",
+      "verified": true
+    },
+    {
+      "id": "white-peaches",
+      "food": "White-flesh peaches",
+      "category": "Fruits",
+      "method": "UNVERIFIED",
+      "pack": "UNSUPPORTED",
+      "preparation": [
+        "NCHFP reports no tested home-canning process for white peaches. Use another validated preservation method."
+      ],
+      "peeling": "Unverified",
+      "precook": "Unverified",
+      "headspace": "Unverified",
+      "liquid": "Unverified",
+      "saltAcid": "Unverified",
+      "warnings": [
+        "No verified home-canning procedure available in this offline edition."
+      ],
+      "sources": [
+        "botulism",
+        "pressure"
+      ],
+      "verified": false,
+      "version": "2026-11-22"
+    },
+    {
+      "id": "puree",
+      "food": "Pumpkin puree / pumpkin butter",
+      "category": "Vegetables",
+      "method": "UNVERIFIED",
+      "pack": "UNSUPPORTED",
+      "preparation": [
+        "The tested recipe is for cubes only. Puree changes heat transfer."
+      ],
+      "peeling": "Unverified",
+      "precook": "Unverified",
+      "headspace": "Unverified",
+      "liquid": "Unverified",
+      "saltAcid": "Unverified",
+      "warnings": [
+        "No verified home-canning procedure available in this offline edition."
+      ],
+      "sources": [
+        "botulism",
+        "pressure"
+      ],
+      "verified": false,
+      "version": "2026-11-22"
+    },
+    {
+      "id": "vegetable-broth",
+      "food": "Custom vegetable broth",
+      "category": "Soups",
+      "method": "UNVERIFIED",
+      "pack": "UNSUPPORTED",
+      "preparation": [
+        "A plain meat-stock schedule cannot be assumed suitable for a custom vegetable broth. Choose an exact tested recipe."
+      ],
+      "peeling": "Unverified",
+      "precook": "Unverified",
+      "headspace": "Unverified",
+      "liquid": "Unverified",
+      "saltAcid": "Unverified",
+      "warnings": [
+        "No verified home-canning procedure available in this offline edition."
+      ],
+      "sources": [
+        "botulism",
+        "pressure"
+      ],
+      "verified": false,
+      "version": "2026-11-22"
+    },
+    {
+      "id": "custom-recipe",
+      "food": "Custom food, cream soup, or unlisted seafood",
+      "category": "Other",
+      "method": "UNVERIFIED",
+      "pack": "UNSUPPORTED",
+      "preparation": [
+        "A recipe for a similar food is insufficient evidence. Ask Extension and obtain the exact tested preparation."
+      ],
+      "peeling": "Unverified",
+      "precook": "Unverified",
+      "headspace": "Unverified",
+      "liquid": "Unverified",
+      "saltAcid": "Unverified",
+      "warnings": [
+        "No verified home-canning procedure available in this offline edition."
+      ],
+      "sources": [
+        "botulism",
+        "pressure"
+      ],
+      "verified": false,
+      "version": "2026-11-22"
+    }
+  ],
+  "guides": [
+    {
+      "id": "offline",
+      "title": "Using Food & Water offline",
+      "section": "Getting started",
+      "paragraphs": [
+        "All guides, recipe tables, pantry calculations, shopping lists, batches and timers are installed with the app. Links identify sources and open when connected. Reading the source metadata requires no network.",
+        "Choose an editable planning profile. The Tampa baseline is 7 people, 30 days, 2,000 calories and 1 gallon water per person per day. That is 420,000 calories and 210 gallons. Heat, illness, pets, cooking and toilet flushing can increase water needs.",
+        "Targets start with 324 cans and selected dry staples. Targets are shopping suggestions. Add already-owned or purchased lots to record real food. Enter serving calories, protein and servings per stock unit from labels. Missing nutrition stays visibly incomplete.",
+        "Pantry lots share the existing Supplies quantities. Consumption updates both screens. Profiles change planning assumptions without changing stock. JSON export includes food data and water supplies. Import adds missing IDs and keeps existing entries on conflicts. The full Outpost backup includes the entire Room database.",
+        "Keep the canner under direct supervision. Timers cannot measure pressure or temperature. Countdown deadlines persist across app restarts on the same device boot. After a restart of the phone or import from another device, verify your separate timer and treat an uncertain process as compromised."
+      ],
+      "sources": [
+        "water",
+        "pressure"
+      ]
+    },
+    {
+      "id": "commercial-life",
+      "title": "Commercial cans and quality dates",
+      "section": "Shelf life",
+      "paragraphs": [
+        "Low-acid commercially canned meat, fish, beans and most vegetables have a USDA general best-quality window of 2–5 years. High-acid tomatoes and fruits generally have 12–18 months. Keep manufacturer labels and check product-specific storage instructions.",
+        "These are quality recommendations for sound unopened cans stored correctly. Keep foods labeled Keep Refrigerated under reliable refrigeration. Damaged packaging or unsafe storage changes the decision regardless of the date.",
+        "After opening, follow label and food-specific guidance. Without dependable refrigeration, open only what the group will eat at the meal and discard perishable leftovers beyond safe holding limits."
+      ],
+      "sources": [
+        "commercial",
+        "commercial-chart",
+        "outage"
+      ]
+    },
+    {
+      "id": "home-life",
+      "title": "Home-canned quality and inspection",
+      "section": "Shelf life",
+      "paragraphs": [
+        "Use one year as the general rotation target for properly processed home-canned foods. Preferred storage is 50–70°F in a clean, dark, dry place. Avoid temperatures above 95°F. Heat in Tampa garages and sheds can shorten quality and damage food.",
+        "Remove screw bands after cooling and checking seals, wash and dry jars, then date and label them. A sealed lid cannot establish that an untested or interrupted process was safe. Quality dates do not certify safety.",
+        "Discard suspect food. Do not taste it. Botulinum toxin may have no visible sign, smell or taste. CDC advises boiling properly home-canned low-acid foods and tomatoes before eating. Below 1,000 ft boil 10 minutes, with one additional minute for each extra 1,000 ft. This does not rescue improperly canned or suspect food."
+      ],
+      "sources": [
+        "home-storage",
+        "botulism"
+      ]
+    },
+    {
+      "id": "pressure-workflow",
+      "title": "Pressure-canning equipment and process",
+      "section": "Canning",
+      "paragraphs": [
+        "Use a pressure canner validated for the USDA process, large enough for at least four upright quart jars on a rack. Ordinary pressure cookers and electric multicookers cannot be substituted. Check dial-gauge accuracy annually and follow the canner and lid manufacturers.",
+        "Follow the selected preparation, jar size, liquid and headspace. Remove bubbles, wipe rims, fit new flat lids and bands as the manufacturer directs. Use the canner rack and the recipe/manufacturer water amount. Keep jars upright.",
+        "Exhaust a steady stream of steam through the open vent for 10 minutes. Fit the weight or close the vent as directed. Start the processing timer only after the selected pressure is reached. Maintain it continuously. If it drops, restore pressure and restart the entire processing time.",
+        "After processing, switch off heat and let pressure fall naturally. Follow the canner lock and gauge indicators. After complete depressurization, remove the weight or open the petcock and wait 10 minutes before carefully opening away from your face. Never force-cool or force the lid.",
+        "Remove jars upright onto a towel or rack and leave undisturbed 12–24 hours. Check seals after cooling. Failed seals and uncertain processes remain flagged. Follow current NCHFP directions for corrective handling. Refrigeration options require dependable cooling."
+      ],
+      "sources": [
+        "pressure",
+        "home-storage"
+      ]
+    },
+    {
+      "id": "bath-workflow",
+      "title": "Boiling-water canning",
+      "section": "Canning",
+      "paragraphs": [
+        "Use boiling-water canning only with the tested acid-food, acidified, jam or pickle recipe. Fully cover jars with water at least 1 inch above the tops, or 2 inches for processing over 30 minutes.",
+        "Bring water to a full boil before timing. Maintain a boil and the required water cover throughout. If boiling stops, restore it and restart the full process. Afterward, turn off heat, remove the canner lid and wait 5 minutes before lifting jars.",
+        "Cool jars upright and undisturbed 12–24 hours before checking seals. Sterilize empty jars for processes under 10 minutes by boiling 10 minutes below 1,000 ft and adding 1 minute per additional 1,000 ft. Follow the verified recipe and jar/lid instructions."
+      ],
+      "sources": [
+        "bath",
+        "home-storage"
+      ]
+    },
+    {
+      "id": "storage-setup",
+      "title": "Bulk packaging, pests and moisture",
+      "section": "Storage",
+      "paragraphs": [
+        "A properly sealed food-safe foil laminate bag limits oxygen and moisture transmission. A food-grade bucket adds handling and pest protection, but rodents can still damage plastics. Divide stocks into portions that can be used after opening.",
+        "USU warns against oxygen absorbers for moist foods. Reduced-oxygen dry storage requires foods at about 10% moisture or less. Cooked beans, fresh vegetables, moist dried foods, oils and other unsuitable foods need a different method. Vacuum sealing does not make food shelf-stable.",
+        "Keep white rice distinct from brown rice and whole-grain flour. The latter contain oils that can turn rancid. Keep packages dry, away from chemicals and light. Inspect for condensation, pests, mold and damage.",
+        "Use first-in, first-out rotation. Record actual location, approximate temperature and humidity. Canned food must avoid freezing that damages seals. Capacity calculations use entered package volume, not jar food volume or guessed shelf load."
+      ],
+      "sources": [
+        "dry-pack",
+        "dry-moisture",
+        "dry-conditions",
+        "brown-rice"
+      ]
+    },
+    {
+      "id": "menu-guide",
+      "title": "Meals, water and cooking fuel",
+      "section": "Meals",
+      "paragraphs": [
+        "The seven-day menu is an editable example. It is not a complete nutritional prescription. Add foods for allergies, age, illness, infant feeding and dietary needs. Include varied proteins, fruits, vegetables, carbohydrates and fats. Never give honey to infants under one year.",
+        "Meal calories and protein are calculated from the pantry labels entered for its ingredients. They remain incomplete while labels are missing. Fractional can portions are planning quantities. Prepare a group batch that uses whole packages and serve promptly when refrigeration is unavailable.",
+        "Water volumes and burner minutes are editable planning assumptions, not canning instructions. Package cooking directions control. Set stove kW or fuel grams/hour measured for your own burner to estimate energy or fuel. Beans can need substantial water and fuel. Plan commercial ready-to-eat food for the first outage days."
+      ],
+      "sources": [
+        "commercial-chart",
+        "outage",
+        "dry-quality"
+      ]
+    },
+    {
+      "id": "garden-potatoes",
+      "title": "Central Florida winter potatoes",
+      "section": "Garden",
+      "paragraphs": [
+        "UF/IFAS Manatee guidance places Irish potatoes in January–February for Central Florida. Use certified disease-free seed potatoes suited to the region. Grocery potatoes may carry disease or sprout inhibitors. Use clean planting material and rotate crop families.",
+        "Choose a sunny site and well-drained soil. Raised beds help drainage in small yards. Check moisture below the surface, irrigate as the soil needs, and keep developing tubers covered from light. UF/IFAS warns against eating green potatoes.",
+        "Straw mulch can reduce evaporation and weeds. It supplements adequate soil, nutrients, drainage and water. A shallow planting/no-dig trial needs enough cover to prevent greening and monitoring for pests and wet spots. It is not a guaranteed yield method for Florida heat or floods.",
+        "Record harvest weight and allocate fresh use, preservation, spoilage and suitable future planting. Retain only healthy stock when appropriate to the variety and local disease guidance. Keep diseased tubers out of future planting."
+      ],
+      "sources": [
+        "potato-calendar",
+        "potato-garden",
+        "potato-soil",
+        "mulch"
+      ]
+    },
+    {
+      "id": "garden-season",
+      "title": "Sweet potatoes, beans and small gardens",
+      "section": "Garden",
+      "paragraphs": [
+        "UF/IFAS Root Crop Production lists Central Florida sweetpotato planting February–June. Use healthy disease-free slips from a reputable source, suitable soil and space for vines. Adjust timing for weather and local Extension advice.",
+        "The Pinellas school garden guide gives pole beans August–September or February–March, and carrots August or January. These are local planning windows. Summer southern peas and okra suit warm conditions better than many cool-season vegetables.",
+        "Choose raised beds or a small sunny plot with accessible water and drainage. Plant manageable areas in succession. Keep seeds labeled with variety and harvest year, dry and protected from pests and heat. Hybrid seed may not reproduce the original variety consistently.",
+        "Harvest is extra supply rather than guaranteed emergency calories. Eat fresh when practical, choose a tested preservation method for surplus, and record actual yields. A potato harvest can link to the verified peeled, hot-pack recipe without forcing all produce into canning."
+      ],
+      "sources": [
+        "sweet-calendar",
+        "garden-calendar",
+        "potato-garden"
+      ]
+    },
+    {
+      "id": "safe-cooking",
+      "title": "Cooking, refrigeration and clean water",
+      "section": "Safety",
+      "paragraphs": [
+        "Operate portable generators outdoors at least 20 feet from doors, windows and vents, with exhaust directed away. Use battery-backed carbon monoxide alarms. Keep outdoor stoves and grills outside and follow equipment clearances.",
+        "Use smoke alarms and an accessible extinguisher rated for likely fires. Keep a clear exit, supervise flames, and keep children away from hot stoves and canners. Use the manufacturer-approved burner for the canner.",
+        "A closed refrigerator keeps food safe for about 4 hours without power. A closed full freezer holds temperature about 48 hours, half full about 24. Check food-specific guidance. Discard perishable food held above 40°F for over 2 hours, or over 1 hour in conditions above 90°F.",
+        "Wash hands with soap and safe water before food and after handling waste. Keep drinking water separate. Use the Outpost water and outage calculators, and follow current local advisories."
+      ],
+      "sources": [
+        "co",
+        "outage",
+        "hygiene"
+      ]
+    },
+    {
+      "id": "home-security",
+      "title": "Household accident prevention",
+      "section": "Safety",
+      "paragraphs": [
+        "Use working locks, practical lighting, alerts, a household contact plan and accessible evacuation routes. Keep paths and exits usable for children and adults with limited mobility.",
+        "Keep firearms unloaded and locked, with ammunition secured separately. Store keys and combinations away from children and unauthorized users. Keep ammunition dry, in suitable manufacturer packaging and away from heat.",
+        "Injurious booby traps can harm family members, neighbors and emergency responders and can create serious legal liability. Use locks, alarms, observation and evacuation planning for household security."
+      ],
+      "sources": [
+        "firearm"
+      ]
+    }
+  ],
+  "meals": [
+    {
+      "day": 1,
+      "id": "d1-breakfast",
+      "title": "Oats, peanut butter and fruit",
+      "type": "Low-water",
+      "ingredients": [
+        {
+          "productId": "oats",
+          "unitsPerPerson": 0.12
+        },
+        {
+          "productId": "peanut-butter",
+          "unitsPerPerson": 0.08
+        },
+        {
+          "productId": "c-peaches",
+          "unitsPerPerson": 0.25
+        }
+      ],
+      "waterLitersPerPerson": 0.18,
+      "burnerMinutes": 8,
+      "instructions": "Cook oats according to the package using safe water. Add peanut butter and fruit. For no-cook days substitute a ready-to-eat labeled breakfast."
+    },
+    {
+      "day": 1,
+      "id": "d1-lunch",
+      "title": "Tuna and chickpea vegetable bowl",
+      "type": "No-cook",
+      "ingredients": [
+        {
+          "productId": "c-tuna",
+          "unitsPerPerson": 0.5
+        },
+        {
+          "productId": "c-chickpeas",
+          "unitsPerPerson": 0.4
+        },
+        {
+          "productId": "c-carrots",
+          "unitsPerPerson": 0.25
+        }
+      ],
+      "waterLitersPerPerson": 0,
+      "burnerMinutes": 0,
+      "instructions": "Use commercially canned food labeled ready to eat. Drain as desired, mix and serve promptly. Scale for the group to use whole packages."
+    },
+    {
+      "day": 1,
+      "id": "d1-dinner",
+      "title": "Rice, beans and canned chicken",
+      "type": "Cooked",
+      "ingredients": [
+        {
+          "productId": "white-rice",
+          "unitsPerPerson": 0.2
+        },
+        {
+          "productId": "c-kidney-beans",
+          "unitsPerPerson": 0.4
+        },
+        {
+          "productId": "c-chicken",
+          "unitsPerPerson": 0.3
+        },
+        {
+          "productId": "oil",
+          "unitsPerPerson": 0.004
+        }
+      ],
+      "waterLitersPerPerson": 0.5,
+      "burnerMinutes": 25,
+      "instructions": "Cook rice or pasta by its package directions on a safe outdoor stove. Add the canned ingredients and heat as directed. Prepare only the amount the group will eat."
+    },
+    {
+      "day": 2,
+      "id": "d2-breakfast",
+      "title": "Oats, peanut butter and fruit",
+      "type": "Low-water",
+      "ingredients": [
+        {
+          "productId": "oats",
+          "unitsPerPerson": 0.12
+        },
+        {
+          "productId": "peanut-butter",
+          "unitsPerPerson": 0.08
+        },
+        {
+          "productId": "c-peaches",
+          "unitsPerPerson": 0.25
+        }
+      ],
+      "waterLitersPerPerson": 0.18,
+      "burnerMinutes": 8,
+      "instructions": "Cook oats according to the package using safe water. Add peanut butter and fruit. For no-cook days substitute a ready-to-eat labeled breakfast."
+    },
+    {
+      "day": 2,
+      "id": "d2-lunch",
+      "title": "Chicken, black bean and corn bowl",
+      "type": "No-cook",
+      "ingredients": [
+        {
+          "productId": "c-chicken",
+          "unitsPerPerson": 0.3
+        },
+        {
+          "productId": "c-black-beans",
+          "unitsPerPerson": 0.4
+        },
+        {
+          "productId": "c-corn",
+          "unitsPerPerson": 0.25
+        }
+      ],
+      "waterLitersPerPerson": 0,
+      "burnerMinutes": 0,
+      "instructions": "Use commercially canned food labeled ready to eat. Drain as desired, mix and serve promptly. Scale for the group to use whole packages."
+    },
+    {
+      "day": 2,
+      "id": "d2-dinner",
+      "title": "Canned chili with rice",
+      "type": "Cooked",
+      "ingredients": [
+        {
+          "productId": "white-rice",
+          "unitsPerPerson": 0.18
+        },
+        {
+          "productId": "c-chili",
+          "unitsPerPerson": 0.6
+        },
+        {
+          "productId": "c-green-beans",
+          "unitsPerPerson": 0.3
+        }
+      ],
+      "waterLitersPerPerson": 0.5,
+      "burnerMinutes": 25,
+      "instructions": "Cook rice or pasta by its package directions on a safe outdoor stove. Add the canned ingredients and heat as directed. Prepare only the amount the group will eat."
+    },
+    {
+      "day": 3,
+      "id": "d3-breakfast",
+      "title": "Oats, peanut butter and fruit",
+      "type": "Low-water",
+      "ingredients": [
+        {
+          "productId": "oats",
+          "unitsPerPerson": 0.12
+        },
+        {
+          "productId": "peanut-butter",
+          "unitsPerPerson": 0.08
+        },
+        {
+          "productId": "c-peaches",
+          "unitsPerPerson": 0.25
+        }
+      ],
+      "waterLitersPerPerson": 0.18,
+      "burnerMinutes": 8,
+      "instructions": "Cook oats according to the package using safe water. Add peanut butter and fruit. For no-cook days substitute a ready-to-eat labeled breakfast."
+    },
+    {
+      "day": 3,
+      "id": "d3-lunch",
+      "title": "Tuna and chickpea vegetable bowl",
+      "type": "No-cook",
+      "ingredients": [
+        {
+          "productId": "c-tuna",
+          "unitsPerPerson": 0.5
+        },
+        {
+          "productId": "c-chickpeas",
+          "unitsPerPerson": 0.4
+        },
+        {
+          "productId": "c-carrots",
+          "unitsPerPerson": 0.25
+        }
+      ],
+      "waterLitersPerPerson": 0,
+      "burnerMinutes": 0,
+      "instructions": "Use commercially canned food labeled ready to eat. Drain as desired, mix and serve promptly. Scale for the group to use whole packages."
+    },
+    {
+      "day": 3,
+      "id": "d3-dinner",
+      "title": "Pasta, tomato and chicken",
+      "type": "Cooked",
+      "ingredients": [
+        {
+          "productId": "pasta",
+          "unitsPerPerson": 0.2
+        },
+        {
+          "productId": "c-tomato-sauce",
+          "unitsPerPerson": 0.35
+        },
+        {
+          "productId": "c-chicken",
+          "unitsPerPerson": 0.3
+        },
+        {
+          "productId": "oil",
+          "unitsPerPerson": 0.004
+        }
+      ],
+      "waterLitersPerPerson": 0.5,
+      "burnerMinutes": 25,
+      "instructions": "Cook rice or pasta by its package directions on a safe outdoor stove. Add the canned ingredients and heat as directed. Prepare only the amount the group will eat."
+    },
+    {
+      "day": 4,
+      "id": "d4-breakfast",
+      "title": "Oats, peanut butter and fruit",
+      "type": "Low-water",
+      "ingredients": [
+        {
+          "productId": "oats",
+          "unitsPerPerson": 0.12
+        },
+        {
+          "productId": "peanut-butter",
+          "unitsPerPerson": 0.08
+        },
+        {
+          "productId": "c-peaches",
+          "unitsPerPerson": 0.25
+        }
+      ],
+      "waterLitersPerPerson": 0.18,
+      "burnerMinutes": 8,
+      "instructions": "Cook oats according to the package using safe water. Add peanut butter and fruit. For no-cook days substitute a ready-to-eat labeled breakfast."
+    },
+    {
+      "day": 4,
+      "id": "d4-lunch",
+      "title": "Chicken, black bean and corn bowl",
+      "type": "No-cook",
+      "ingredients": [
+        {
+          "productId": "c-chicken",
+          "unitsPerPerson": 0.3
+        },
+        {
+          "productId": "c-black-beans",
+          "unitsPerPerson": 0.4
+        },
+        {
+          "productId": "c-corn",
+          "unitsPerPerson": 0.25
+        }
+      ],
+      "waterLitersPerPerson": 0,
+      "burnerMinutes": 0,
+      "instructions": "Use commercially canned food labeled ready to eat. Drain as desired, mix and serve promptly. Scale for the group to use whole packages."
+    },
+    {
+      "day": 4,
+      "id": "d4-dinner",
+      "title": "Canned chili with rice",
+      "type": "Cooked",
+      "ingredients": [
+        {
+          "productId": "white-rice",
+          "unitsPerPerson": 0.18
+        },
+        {
+          "productId": "c-chili",
+          "unitsPerPerson": 0.6
+        },
+        {
+          "productId": "c-green-beans",
+          "unitsPerPerson": 0.3
+        }
+      ],
+      "waterLitersPerPerson": 0.5,
+      "burnerMinutes": 25,
+      "instructions": "Cook rice or pasta by its package directions on a safe outdoor stove. Add the canned ingredients and heat as directed. Prepare only the amount the group will eat."
+    },
+    {
+      "day": 5,
+      "id": "d5-breakfast",
+      "title": "Oats, peanut butter and fruit",
+      "type": "Low-water",
+      "ingredients": [
+        {
+          "productId": "oats",
+          "unitsPerPerson": 0.12
+        },
+        {
+          "productId": "peanut-butter",
+          "unitsPerPerson": 0.08
+        },
+        {
+          "productId": "c-peaches",
+          "unitsPerPerson": 0.25
+        }
+      ],
+      "waterLitersPerPerson": 0.18,
+      "burnerMinutes": 8,
+      "instructions": "Cook oats according to the package using safe water. Add peanut butter and fruit. For no-cook days substitute a ready-to-eat labeled breakfast."
+    },
+    {
+      "day": 5,
+      "id": "d5-lunch",
+      "title": "Tuna and chickpea vegetable bowl",
+      "type": "No-cook",
+      "ingredients": [
+        {
+          "productId": "c-tuna",
+          "unitsPerPerson": 0.5
+        },
+        {
+          "productId": "c-chickpeas",
+          "unitsPerPerson": 0.4
+        },
+        {
+          "productId": "c-carrots",
+          "unitsPerPerson": 0.25
+        }
+      ],
+      "waterLitersPerPerson": 0,
+      "burnerMinutes": 0,
+      "instructions": "Use commercially canned food labeled ready to eat. Drain as desired, mix and serve promptly. Scale for the group to use whole packages."
+    },
+    {
+      "day": 5,
+      "id": "d5-dinner",
+      "title": "Rice, beans and canned chicken",
+      "type": "Cooked",
+      "ingredients": [
+        {
+          "productId": "white-rice",
+          "unitsPerPerson": 0.2
+        },
+        {
+          "productId": "c-kidney-beans",
+          "unitsPerPerson": 0.4
+        },
+        {
+          "productId": "c-chicken",
+          "unitsPerPerson": 0.3
+        },
+        {
+          "productId": "oil",
+          "unitsPerPerson": 0.004
+        }
+      ],
+      "waterLitersPerPerson": 0.5,
+      "burnerMinutes": 25,
+      "instructions": "Cook rice or pasta by its package directions on a safe outdoor stove. Add the canned ingredients and heat as directed. Prepare only the amount the group will eat."
+    },
+    {
+      "day": 6,
+      "id": "d6-breakfast",
+      "title": "Oats, peanut butter and fruit",
+      "type": "Low-water",
+      "ingredients": [
+        {
+          "productId": "oats",
+          "unitsPerPerson": 0.12
+        },
+        {
+          "productId": "peanut-butter",
+          "unitsPerPerson": 0.08
+        },
+        {
+          "productId": "c-peaches",
+          "unitsPerPerson": 0.25
+        }
+      ],
+      "waterLitersPerPerson": 0.18,
+      "burnerMinutes": 8,
+      "instructions": "Cook oats according to the package using safe water. Add peanut butter and fruit. For no-cook days substitute a ready-to-eat labeled breakfast."
+    },
+    {
+      "day": 6,
+      "id": "d6-lunch",
+      "title": "Chicken, black bean and corn bowl",
+      "type": "No-cook",
+      "ingredients": [
+        {
+          "productId": "c-chicken",
+          "unitsPerPerson": 0.3
+        },
+        {
+          "productId": "c-black-beans",
+          "unitsPerPerson": 0.4
+        },
+        {
+          "productId": "c-corn",
+          "unitsPerPerson": 0.25
+        }
+      ],
+      "waterLitersPerPerson": 0,
+      "burnerMinutes": 0,
+      "instructions": "Use commercially canned food labeled ready to eat. Drain as desired, mix and serve promptly. Scale for the group to use whole packages."
+    },
+    {
+      "day": 6,
+      "id": "d6-dinner",
+      "title": "Pasta, tomato and chicken",
+      "type": "Cooked",
+      "ingredients": [
+        {
+          "productId": "pasta",
+          "unitsPerPerson": 0.2
+        },
+        {
+          "productId": "c-tomato-sauce",
+          "unitsPerPerson": 0.35
+        },
+        {
+          "productId": "c-chicken",
+          "unitsPerPerson": 0.3
+        },
+        {
+          "productId": "oil",
+          "unitsPerPerson": 0.004
+        }
+      ],
+      "waterLitersPerPerson": 0.5,
+      "burnerMinutes": 25,
+      "instructions": "Cook rice or pasta by its package directions on a safe outdoor stove. Add the canned ingredients and heat as directed. Prepare only the amount the group will eat."
+    },
+    {
+      "day": 7,
+      "id": "d7-breakfast",
+      "title": "Oats, peanut butter and fruit",
+      "type": "Low-water",
+      "ingredients": [
+        {
+          "productId": "oats",
+          "unitsPerPerson": 0.12
+        },
+        {
+          "productId": "peanut-butter",
+          "unitsPerPerson": 0.08
+        },
+        {
+          "productId": "c-peaches",
+          "unitsPerPerson": 0.25
+        }
+      ],
+      "waterLitersPerPerson": 0.18,
+      "burnerMinutes": 8,
+      "instructions": "Cook oats according to the package using safe water. Add peanut butter and fruit. For no-cook days substitute a ready-to-eat labeled breakfast."
+    },
+    {
+      "day": 7,
+      "id": "d7-lunch",
+      "title": "Tuna and chickpea vegetable bowl",
+      "type": "No-cook",
+      "ingredients": [
+        {
+          "productId": "c-tuna",
+          "unitsPerPerson": 0.5
+        },
+        {
+          "productId": "c-chickpeas",
+          "unitsPerPerson": 0.4
+        },
+        {
+          "productId": "c-carrots",
+          "unitsPerPerson": 0.25
+        }
+      ],
+      "waterLitersPerPerson": 0,
+      "burnerMinutes": 0,
+      "instructions": "Use commercially canned food labeled ready to eat. Drain as desired, mix and serve promptly. Scale for the group to use whole packages."
+    },
+    {
+      "day": 7,
+      "id": "d7-dinner",
+      "title": "Rice, beans and canned chicken",
+      "type": "Cooked",
+      "ingredients": [
+        {
+          "productId": "white-rice",
+          "unitsPerPerson": 0.2
+        },
+        {
+          "productId": "c-kidney-beans",
+          "unitsPerPerson": 0.4
+        },
+        {
+          "productId": "c-chicken",
+          "unitsPerPerson": 0.3
+        },
+        {
+          "productId": "oil",
+          "unitsPerPerson": 0.004
+        }
+      ],
+      "waterLitersPerPerson": 0.5,
+      "burnerMinutes": 25,
+      "instructions": "Cook rice or pasta by its package directions on a safe outdoor stove. Add the canned ingredients and heat as directed. Prepare only the amount the group will eat."
+    }
+  ],
+  "equipment": [
+    {
+      "id": "canning-0",
+      "name": "Validated pressure canner and jar rack",
+      "group": "Canning",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": ""
+    },
+    {
+      "id": "canning-1",
+      "name": "Wide-mouth quart jars",
+      "group": "Canning",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": ""
+    },
+    {
+      "id": "canning-2",
+      "name": "Wide-mouth pint jars",
+      "group": "Canning",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": ""
+    },
+    {
+      "id": "canning-3",
+      "name": "New flat canning lids",
+      "group": "Canning",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": ""
+    },
+    {
+      "id": "canning-4",
+      "name": "Reusable screw bands",
+      "group": "Canning",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": ""
+    },
+    {
+      "id": "canning-5",
+      "name": "Jar lifter",
+      "group": "Canning",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": ""
+    },
+    {
+      "id": "canning-6",
+      "name": "Canning funnel",
+      "group": "Canning",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": ""
+    },
+    {
+      "id": "canning-7",
+      "name": "Headspace gauge",
+      "group": "Canning",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": ""
+    },
+    {
+      "id": "canning-8",
+      "name": "Bubble remover",
+      "group": "Canning",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": ""
+    },
+    {
+      "id": "canning-9",
+      "name": "Independent timer",
+      "group": "Canning",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": ""
+    },
+    {
+      "id": "canning-10",
+      "name": "Labels",
+      "group": "Canning",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": ""
+    },
+    {
+      "id": "canning-11",
+      "name": "Cleaning supplies",
+      "group": "Canning",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": ""
+    },
+    {
+      "id": "canning-12",
+      "name": "Official tested recipe reference",
+      "group": "Canning",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": ""
+    },
+    {
+      "id": "pantry-0",
+      "name": "Food-grade 5-gallon buckets",
+      "group": "Pantry",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": ""
+    },
+    {
+      "id": "pantry-1",
+      "name": "Compatible bucket lids",
+      "group": "Pantry",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": ""
+    },
+    {
+      "id": "pantry-2",
+      "name": "Food-safe Mylar bags",
+      "group": "Pantry",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": ""
+    },
+    {
+      "id": "pantry-3",
+      "name": "Food-appropriate oxygen absorbers",
+      "group": "Pantry",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": "Only for suitable low-moisture dry foods. See packaging guide."
+    },
+    {
+      "id": "pantry-4",
+      "name": "Heat sealer",
+      "group": "Pantry",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": ""
+    },
+    {
+      "id": "pantry-5",
+      "name": "Load-rated shelving",
+      "group": "Pantry",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": ""
+    },
+    {
+      "id": "pantry-6",
+      "name": "Temperature / humidity monitor",
+      "group": "Pantry",
+      "desired": 1,
+      "priority": "Normal",
+      "notes": ""
+    },
+    {
+      "id": "pantry-7",
+      "name": "Manual can opener",
+      "group": "Pantry",
+      "desired": 1,
+      "priority": "High",
+      "notes": ""
+    }
+  ]
+}

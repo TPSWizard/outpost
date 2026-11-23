@@ -62,6 +62,7 @@ import java.time.LocalDate
 data class GridNav(
     val firstAid: () -> Unit,
     val supplies: () -> Unit,
+    val food: () -> Unit,
     val household: () -> Unit,
     val calculators: () -> Unit,
     val weather: () -> Unit,
@@ -216,6 +217,7 @@ fun TodayScreen(nav: GridNav) {
                     Triple("Offline field guide", Icons.AutoMirrored.Filled.FactCheck, nav.fieldGuide),
                     Triple("First aid", Icons.Filled.Healing, nav.firstAid),
                     Triple("Supplies", Icons.Filled.Inventory2, nav.supplies),
+                    Triple("Food & Water", Icons.Filled.Inventory2, nav.food),
                     Triple("Water & food", Icons.Filled.Calculate, nav.calculators),
                     Triple("Household", Icons.Filled.Group, nav.household),
                     Triple("Power", Icons.Filled.BatteryChargingFull, nav.power),

@@ -64,6 +64,7 @@ class AppContainer(private val context: Context) {
     fun syncTextIndex() = appScope.launch { runCatching { index.syncTexts(textLibrary()) } }
     val assistant by lazy { Assistant(context, this) }
     val gridDown = com.conza.outpost.griddown.GridDownRepo(context, db, settings)
+    val food by lazy { com.conza.outpost.food.FoodRepository(context, db) }
     val nearby by lazy { com.conza.outpost.griddown.NearbyMesh(context, appScope) }
     val meshtastic by lazy { com.conza.outpost.griddown.MeshtasticLink(context, appScope) }
 }

@@ -26,7 +26,9 @@ jobs:
           packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
       - uses: gradle/actions/setup-gradle@v6
       - name: Test and assemble Preview
-        run: ./gradlew :app:testPreviewUnitTest :app:assemblePreview :app:lintPreview --no-daemon
+        run: |
+          ./gradlew :app:testPreviewUnitTest :app:lintPreview --no-daemon --max-workers=2 --stacktrace
+          ./gradlew :app:assemblePreview --no-daemon --max-workers=2 --stacktrace
       - name: Verify the phone APK
         shell: bash
         run: |

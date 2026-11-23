@@ -142,5 +142,6 @@ class FoodRepositoryTest {
         assertEquals(4.0, db.inventory().byUuid("old-preset")!!.quantity, 0.0)
         assertEquals(5.0, db.inventory().byUuid(second.uuid)!!.quantity, 0.0)
         FoodBackups.decode(repo.export())
+        Unit
     }
 }
